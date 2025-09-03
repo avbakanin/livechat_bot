@@ -82,7 +82,7 @@ async def handle_message(message: Message):
         # --- Запрос к OpenAI GPT-5 Nano ---
         try:
             response = await openai.ChatCompletion.acreate(
-                model="gpt-5-nano",
+                model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": message.text}],
                 max_completion_tokens=1000
             )

@@ -61,7 +61,8 @@ async def handle_callback_query(callback: CallbackQuery):
                 [
                     InlineKeyboardButton(text="Выбрать девушку 😊", callback_data="gender_female"),
                     InlineKeyboardButton(text="Выбрать молодого человека 😉", callback_data="gender_male")
-                ]
+                ],
+                [InlineKeyboardButton(text="Купить премиум 💳", callback_data="subscribe_premium")]
             ])
             await callback.message.edit_text(f"Спасибо за согласие! У тебя {FREE_MESSAGE_LIMIT} бесплатных сообщений в день. Выбери пол компаньона:", reply_markup=keyboard)
         except Exception as e:

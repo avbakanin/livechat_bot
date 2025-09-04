@@ -9,6 +9,7 @@ CREATE TABLE public.users (
 	subscription_expires_at TIMESTAMP,
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
+CREATE INDEX idx_users_subscription_expires_at ON public.users USING btree (subscription_expires_at);
 
 CREATE TABLE public.messages (
     id SERIAL NOT NULL,

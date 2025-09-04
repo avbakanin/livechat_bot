@@ -1,4 +1,7 @@
 aiogram==3.1.0
 asyncpg==0.27.0
-openai==0.28.0
-typing-extensions~=4.7.1
+openai==1.40.0  # Обновлено для async и gpt-4o-mini
+python-dotenv==1.0.0
+pytest==7.4.0
+black==23.7.0
+flake8==6.1.0

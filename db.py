@@ -1,6 +1,6 @@
 import asyncpg
 import logging
-from config import DB_CONFIG
+from config import DB_CONFIG, FREE_MESSAGE_LIMIT
 
 async def create_pool():
     try:
@@ -55,16 +55,14 @@ async def get_context(pool, user_id, limit=10):
 async def can_send(pool, user_id):
     async with pool.acquire() as conn:
         try:
-            subscription_status = await conn.fetchval("SELECT subscription_status FROM users WHERE id=$1", user_id)
-            if subscription_status == 'premium':
-                logging.info(f"User {user_id} has premium subscription, can send messages")
+            if await is_subscription_active(pool, user_id):
+                logging.info(f"User {user_id} has active premium subscription, can send messages")
                 return True
             today_messages = await conn.fetchval("""
                 SELECT COUNT(*)
                 FROM messages
                 WHERE user_id=$1 AND created_at::date = CURRENT_DATE AND role='user'
             """, user_id)
-            from config import FREE_MESSAGE_LIMIT
             can_send = today_messages < FREE_MESSAGE_LIMIT
             logging.info(f"User {user_id} has sent {today_messages}/{FREE_MESSAGE_LIMIT} messages today, can_send={can_send}")
             return can_send

@@ -79,7 +79,7 @@ async def handle_message(message: Message):
             user_id, message.text
         )
 
-        # --- Запрос к OpenAI GPT-5 Nano ---
+        # --- Запрос к OpenAI ---
         try:
             response = await openai.ChatCompletion.acreate(
                 model="gpt-3.5-turbo",

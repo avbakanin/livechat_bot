@@ -6,6 +6,7 @@ CREATE TABLE public.users (
     gender_preference TEXT DEFAULT 'female',
     subscription_status TEXT DEFAULT 'free',
 	consent_given BOOLEAN DEFAULT FALSE,
+	subscription_expires_at TIMESTAMP,
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
@@ -29,3 +30,4 @@ CREATE TABLE public.payments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT payments_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE
 );
+CREATE INDEX idx_payments_user_id ON public.payments USING btree (user_id);

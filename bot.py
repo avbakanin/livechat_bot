@@ -1,54 +1,37 @@
 import os
 from dotenv import load_dotenv
 import asyncio
-import asyncpg
+import logging
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
 from aiogram.types import Message
-import logging
-import openai
+from openai import AsyncOpenAI
+from db import create_pool, add_user, add_message, can_send, get_context, get_gender_preference, set_gender_preference
+from config import TELEGRAM_TOKEN, OPENAI_API_KEY, FREE_MESSAGE_LIMIT
 
-load_dotenv() 
+load_dotenv()
 
-# --- Логирование ---
 logging.basicConfig(level=logging.INFO)
 
-# --- Настройки бота и OpenAI ---
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-FREE_MESSAGE_LIMIT = 100
-
-DB_CONFIG = {
-    "user": os.getenv("DB_USER"),
-    "password": os.getenv("DB_PASSWORD"),
-    "database": os.getenv("DB_NAME"),
-    "host": os.getenv("DB_HOST"),
-    "port": int(os.getenv("DB_PORT"))
-}
-
-# --- Настройка OpenAI ---
-openai.api_key = OPENAI_API_KEY
-
-# --- Настройка бота ---
 bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher()
+client = AsyncOpenAI(api_key=OPENAI_API_KEY)
 
-# --- Подключение к PostgreSQL ---
-async def create_pool():
-    return await asyncpg.create_pool(
-        user=DB_CONFIG['user'],
-        password=DB_CONFIG['password'],
-        database=DB_CONFIG['database'],
-        host=DB_CONFIG['host'],
-        port=DB_CONFIG['port']
-    )
-
-# --- Обработчик команды /start ---
 @dp.message(Command(commands=["start"]))
 async def cmd_start(message: Message):
-    await message.answer(f"Привет! У тебя {FREE_MESSAGE_LIMIT} бесплатных сообщений.")
+    await message.answer(f"Привет! У тебя {FREE_MESSAGE_LIMIT} бесплатных сообщений в день. Выбери пол компаньона: /choose_gender female или male.")
 
-# --- Обработчик текстовых сообщений ---
+@dp.message(Command(commands=["choose_gender"]))
+async def cmd_choose_gender(message: Message):
+    args = message.text.split()[1:] if len(message.text.split()) > 1 else []
+    if not args or args[0] not in ['female', 'male']:
+        await message.answer("Укажи пол: /choose_gender female или /choose_gender male")
+        return
+    preference = args[0]
+    user_id = message.from_user.id
+    await set_gender_preference(dp.pool, user_id, preference)
+    await message.answer(f"Пол компаньона изменен на {preference == 'female' and 'девушку' or 'молодого человека'}.")
+
 @dp.message()
 async def handle_message(message: Message):
     user_id = message.from_user.id
@@ -56,52 +39,38 @@ async def handle_message(message: Message):
     first_name = message.from_user.first_name or ""
     last_name = message.from_user.last_name or ""
 
-    async with dp.pool.acquire() as conn:
-        # Добавляем пользователя в таблицу users
-        await conn.execute("""
-            INSERT INTO users(id, username, first_name, last_name)
-            VALUES($1, $2, $3, $4)
-            ON CONFLICT (id) DO NOTHING
-        """, user_id, username, first_name, last_name)
+    await add_user(dp.pool, user_id, username, first_name, last_name)
 
-        # Проверяем лимит сообщений
-        row = await conn.fetchrow(
-            "SELECT COUNT(*) AS cnt FROM messages WHERE user_id=$1", user_id
+    if not await can_send(dp.pool, user_id):
+        await message.answer("Превышен ежедневный лимит бесплатных сообщений.")
+        return
+
+    await add_message(dp.pool, user_id, 'user', message.text)
+
+    try:
+        gender = await get_gender_preference(dp.pool, user_id)
+        system_prompt = {
+            'female': "Ты ИИ-девушка, флиртующая и supportive для одиноких людей. Будь милой, empathetic и игривой.",
+            'male': "Ты ИИ-молодой человек, флиртующий и supportive для одиноких людей. Будь уверенным, empathetic и игривым."
+        }[gender]
+
+        history = await get_context(dp.pool, user_id, limit=10)
+        messages = [{"role": "system", "content": system_prompt}] + history + [{"role": "user", "content": message.text}]
+
+        response = await client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=messages,
+            temperature=0.7,
+            max_completion_tokens=1000
         )
-        used = row["cnt"] if row else 0
-        if used >= FREE_MESSAGE_LIMIT:
-            await message.answer("Превышен лимит бесплатных сообщений.")
-            return
+        answer = response.choices[0].message.content.strip() or "OpenAI вернул пустой ответ."
+    except Exception as e:
+        answer = f"Ошибка: {e}"
+        logging.error(f"OpenAI error: {e}")
 
-        # Сохраняем сообщение пользователя
-        await conn.execute(
-            "INSERT INTO messages(user_id, text, role) VALUES($1, $2, 'user')",
-            user_id, message.text
-        )
+    await add_message(dp.pool, user_id, 'assistant', answer)
+    await message.answer(answer)
 
-        # --- Запрос к OpenAI ---
-        try:
-            response = await openai.ChatCompletion.acreate(
-                model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": message.text}],
-                max_completion_tokens=1000
-            )
-            raw_answer = response.choices[0].message.content
-            answer = raw_answer.strip() if raw_answer and raw_answer.strip() else "OpenAI вернул пустой ответ."
-        except Exception as e:
-            answer = f"Ошибка при обращении к OpenAI: {e}"
-            logging.error(f"Ошибка GPT: {e}")
-
-        # Сохраняем ответ
-        await conn.execute(
-            "INSERT INTO messages(user_id, text, role) VALUES($1, $2, 'assistant')",
-            user_id, answer
-        )
-
-        # Отправляем ответ пользователю
-        await message.answer(answer)
-
-# --- Основная функция ---
 async def main():
     dp.pool = await create_pool()
     logging.info("Connected to PostgreSQL!")

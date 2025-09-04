@@ -11,7 +11,7 @@ from config import TELEGRAM_TOKEN, OPENAI_API_KEY, FREE_MESSAGE_LIMIT
 
 load_dotenv()
 
-logging.basicConfig(level=logging.INFO)
+logging.basicBasicConfig(level=logging.INFO)
 
 bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher()

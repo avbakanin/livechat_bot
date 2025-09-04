@@ -5,6 +5,7 @@ CREATE TABLE public.users (
     last_name TEXT,
     gender_preference TEXT DEFAULT 'female',
     subscription_status TEXT DEFAULT 'free',
+	consent_given BOOLEAN DEFAULT FALSE,
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
@@ -18,3 +19,13 @@ CREATE TABLE public.messages (
     CONSTRAINT messages_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE
 );
 CREATE INDEX idx_messages_user_id_created_at ON public.messages USING btree (user_id, created_at DESC);
+
+CREATE TABLE public.payments (
+    id SERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_status TEXT NOT NULL,
+    payment_id TEXT,  -- ID платежа от YooKassa
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT payments_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE
+);

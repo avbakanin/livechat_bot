@@ -143,3 +143,14 @@ async def is_subscription_active(pool, user_id):
         except Exception as e:
             logging.error(f"Error in is_subscription_active for user {user_id}: {e}")
             raise
+
+async def activate_subscription(pool, user_id, expires_at):
+    async with pool.acquire() as conn:
+        try:
+            await conn.execute("""
+                UPDATE users SET subscription_status='premium', subscription_expires_at=$1 WHERE id=$2
+            """, expires_at, user_id)
+            logging.info(f"Activated premium subscription for user {user_id}, expires at {expires_at}")
+        except Exception as e:
+            logging.error(f"Error in activate_subscription for user {user_id}: {e}")
+            raise

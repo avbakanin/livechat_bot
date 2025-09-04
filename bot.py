@@ -7,34 +7,33 @@ from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from openai import AsyncOpenAI
-from yookassa import Configuration, Payment
+# from yookassa import Configuration, Payment  # Закомментировано, раскомментируйте после установки yookassa
 from db import create_pool, add_user, add_message, can_send, get_context, get_gender_preference, set_gender_preference, get_user_consent, set_user_consent, add_payment, get_payment_status, is_subscription_active, activate_subscription
 from config import TELEGRAM_TOKEN, OPENAI_API_KEY, YOOKASSA_SHOP_ID, YOOKASSA_SECRET_KEY, FREE_MESSAGE_LIMIT
 
 load_dotenv()
 
-logging.basicConfig(level=logging.INFO)  # Исправлена опечатка: basicBasicConfig -> basicConfig
+logging.basicConfig(level=logging.INFO)
 
 bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher()
 client = AsyncOpenAI(api_key=OPENAI_API_KEY)
 
-Configuration.configure(YOOKASSA_SHOP_ID, YOOKASSA_SECRET_KEY)
-
-async def create_payment(user_id, amount):
-    try:
-        payment = Payment.create({
-            "amount": {"value": str(amount), "currency": "RUB"},
-            "confirmation": {"type": "redirect", "return_url": "https://your-site.com/return"},
-            "capture": True,
-            "description": f"Премиум-подписка для {user_id}"
-        })
-        await add_payment(dp.pool, user_id, amount, payment.status, payment.id)
-        logging.info(f"Created payment {payment.id} for user {user_id}")
-        return payment.confirmation.confirmation_url
-    except Exception as e:
-        logging.error(f"Error creating payment for user {user_id}: {e}")
-        return None
+# async def create_payment(user_id, amount):
+#     try:
+#         Configuration.configure(YOOKASSA_SHOP_ID, YOOKASSA_SECRET_KEY)
+#         payment = Payment.create({
+#             "amount": {"value": str(amount), "currency": "RUB"},
+#             "confirmation": {"type": "redirect", "return_url": "https://your-site.com/return"},
+#             "capture": True,
+#             "description": f"Премиум-подписка для {user_id}"
+#         })
+#         await add_payment(dp.pool, user_id, amount, payment.status, payment.id)
+#         logging.info(f"Created payment {payment.id} for user {user_id}")
+#         return payment.confirmation.confirmation_url
+#     except Exception as e:
+#         logging.error(f"Error creating payment for user {user_id}: {e}")
+#         return None
 
 @dp.message(Command(commands=["start"]))
 async def cmd_start(message: Message):
@@ -42,7 +41,7 @@ async def cmd_start(message: Message):
     username = message.from_user.username or ""
     first_name = message.from_user.first_name or ""
     last_name = message.from_user.last_name or ""
-    await add_user(dp.pool, user_id, username, first_name, last_name)  # Добавляем пользователя в начале
+    await add_user(dp.pool, user_id, username, first_name, last_name)
     consent = await get_user_consent(dp.pool, user_id)
     if not consent:
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -80,7 +79,7 @@ async def handle_callback_query(callback: CallbackQuery):
     first_name = callback.from_user.first_name or ""
     last_name = callback.from_user.last_name or ""
 
-    await add_user(dp.pool, user_id, username, first_name, last_name)  # Гарантируем создание пользователя
+    await add_user(dp.pool, user_id, username, first_name, last_name)
 
     if data == "consent_agree":
         try:
@@ -108,11 +107,12 @@ async def handle_callback_query(callback: CallbackQuery):
             logging.error(f"Error setting gender_preference: {e}")
             await callback.message.edit_text("Произошла ошибка. Попробуйте снова.")
     elif data == "subscribe_premium":
-        payment_url = await create_payment(user_id, 500.00)
-        if payment_url:
-            await callback.message.edit_text(f"Перейдите по ссылке для оплаты премиум-подписки: [Оплатить]({payment_url})")
-        else:
-            await callback.message.edit_text("Ошибка при создании платежа. Попробуйте позже.")
+        # payment_url = await create_payment(user_id, 500.00)
+        # if payment_url:
+        #     await callback.message.edit_text(f"Перейдите по ссылке для оплаты премиум-подписки: [Оплатить]({payment_url})")
+        # else:
+        #     await callback.message.edit_text("Ошибка при создании платежа. Попробуйте позже.")
+        await callback.message.edit_text("Функция оплаты временно недоступна. Попробуйте позже.")
     else:
         await callback.message.edit_text("Некорректный выбор. Попробуйте снова.")
     
@@ -127,7 +127,7 @@ async def handle_message(message: Message):
     first_name = message.from_user.first_name or ""
     last_name = message.from_user.last_name or ""
 
-    await add_user(dp.pool, user_id, username, first_name, last_name)  # Гарантируем создание пользователя
+    await add_user(dp.pool, user_id, username, first_name, last_name)
 
     if not await get_user_consent(dp.pool, user_id):
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -171,11 +171,13 @@ async def handle_message(message: Message):
     await message.answer(answer)
 
 async def main():
-    dp.pool = await create_pool()
-    logging.info("Connected to PostgreSQL!")
     try:
+        dp.pool = await create_pool()
+        logging.info("Connected to PostgreSQL!")
         logging.info("Bot started!")
         await dp.start_polling(bot)
+    except Exception as e:
+        logging.error(f"Bot polling error: {e}")
     finally:
         await dp.pool.close()
         await bot.session.close()

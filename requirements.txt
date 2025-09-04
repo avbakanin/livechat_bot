@@ -1,6 +1,6 @@
-aiogram==3.1.0
+aiogram==3.13.1
 asyncpg==0.27.0
-openai==1.40.0  # Обновлено для async и gpt-4o-mini
+openai==1.40.0
 python-dotenv==1.0.0
 pytest==7.4.0
 black==23.7.0

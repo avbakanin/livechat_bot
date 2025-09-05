@@ -118,7 +118,7 @@ async def handle_callback_query(callback: CallbackQuery):
     
     await callback.answer()
 
-@dp.message()
+@dp.message
 async def handle_message(message: Message):
     if message.text.startswith('/'):
         return

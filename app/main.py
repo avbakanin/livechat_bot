@@ -8,7 +8,7 @@ from openai import AsyncOpenAI
 from aiogram import Bot, Dispatcher
 
 from core.database import db_manager
-from core.middleware import AccessMiddleware, LoggingMiddleware, DatabaseMiddleware, ServiceMiddleware
+from core.middleware import AccessMiddleware, LoggingMiddleware, ServiceMiddleware
 from config.telegram import TELEGRAM_CONFIG
 from config.openai import OPENAI_CONFIG
 from domain.user.handlers import router as user_router
@@ -56,8 +56,6 @@ async def main():
         dp.callback_query.middleware(AccessMiddleware(TELEGRAM_CONFIG['allowed_user_ids']))
         dp.message.middleware(LoggingMiddleware())
         dp.callback_query.middleware(LoggingMiddleware())
-        dp.message.middleware(DatabaseMiddleware(pool))
-        dp.callback_query.middleware(DatabaseMiddleware(pool))
         dp.message.middleware(ServiceMiddleware(user_service, message_service))
         dp.callback_query.middleware(ServiceMiddleware(user_service, message_service))
         

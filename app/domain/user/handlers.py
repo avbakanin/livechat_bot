@@ -5,15 +5,15 @@ import logging
 from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery
-from aiogram.enums import ChatAction
 
-from shared.models.user import UserCreate
 from domain.user.services import UserService
 from domain.user.keyboards import (
     get_consent_keyboard,
     get_consent_given_keyboard,
     get_gender_keyboard,
-    get_gender_change_confirmation_keyboard
+    get_gender_change_confirmation_keyboard,
+    get_help_keyboard,
+    get_privacy_info_keyboard
 )
 from domain.user.messages import (
     get_consent_given_text,
@@ -23,7 +23,6 @@ from domain.user.messages import (
 from domain.subscription.keyboards import get_premium_info_keyboard
 from domain.subscription.messages import get_premium_info_text
 from shared.messages.common import get_help_text, get_privacy_info_text
-from shared.keyboards.common import get_back_keyboard
 from shared.utils.helpers import destructure_user
 from core.exceptions import UserException
 

@@ -19,7 +19,8 @@ frozenlist==1.7.0
 gunicorn==20.1.0
 h11==0.16.0
 httpcore==1.0.9
-httpx==0.28.1
+# httpx==0.28.1
+httpx==0.24.1 # установлено для совместимости
 idna==3.10
 iniconfig==2.1.0
 jiter==0.10.0

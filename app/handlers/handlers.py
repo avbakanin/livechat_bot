@@ -1,4 +1,6 @@
 import logging
+from domain.user.keyboards import get_consent_given_keyboard, get_consent_keyboard, get_gender_change_confirmation_keyboard, get_gender_keyboard, get_help_keyboard, get_privacy_info_keyboard
+from shared.keyboards.keyboards import get_consent_given_text, get_help_text, get_limit_exceeded_keyboard, get_premium_info_keyboard, get_premium_info_text, get_privacy_info_text
 import asyncpg
 from aiogram import Router, F
 from aiogram.filters import Command
@@ -10,15 +12,7 @@ from openai import AsyncOpenAI
 from services import add_user, add_message, get_context, get_gender_preference, set_gender_preference, can_send, get_user_consent, set_user_consent, delete_user_messages
 
 from shared.helpers import destructure_user
-from shared.keyboards import (
-    get_consent_keyboard, get_start_keyboard, get_start_text,
-    get_consent_given_keyboard, get_consent_given_text,
-    get_gender_keyboard, get_gender_change_confirmation_keyboard,
-    get_help_keyboard, get_help_text,
-    get_premium_info_keyboard, get_premium_info_text,
-    get_limit_exceeded_keyboard,
-    get_privacy_info_text, get_privacy_info_keyboard
-) # get_premium_keyboard
+
 from shared.middlewares.middlewares import AccessMiddleware
 
 router = Router()

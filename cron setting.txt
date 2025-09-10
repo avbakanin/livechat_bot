@@ -1,0 +1,16 @@
+# редактируем cron командой 
+# crontab -e
+
+0 5 25 * * docker exec root-postgres-new psql -U lifechat_user -d lifechat_db -c "SELECT public.ensure_messages_partition((date_trunc('month', CURRENT_DATE) + INTERVAL '1 month')::date);" >> /var/log/cron_pg_partitions.log 2>&1
+
+0 5 1 * * docker exec root-postgres-new psql -U lifechat_user -d lifechat_db -c "SELECT public.drop_messages_partition((date_trunc('month', CURRENT_DATE) - INTERVAL '2 months')::date);" >> /var/log/cron_pg_partitions.log 2>&1
+
+
+# тест запуска крона и создание/удаление партиций из консоли
+docker exec root-postgres-new psql -U lifechat_user -d lifechat_db -c "SELECT public.drop_messages_partition((date_trunc('month', CURRENT_DATE) + INTERVAL '1 months')::date);" >> /var/log/cron_pg_partitions.log 2>&1
+
+docker exec root-postgres-new psql -U lifechat_user -d lifechat_db -c "SELECT public.drop_messages_partition((date_trunc('month', CURRENT_DATE) - INTERVAL '2 months')::date);" >> /var/log/cron_pg_partitions.log 2>&1
+
+
+#проверка лога
+cat /var/log/cron_pg_partitions.log

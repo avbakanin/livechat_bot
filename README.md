@@ -4,7 +4,7 @@
 sudo systemctl restart bot # Перезапускает системный сервис с именем bot
 sudo systemctl status bot # Показывает текущее состояние сервиса bot
 sudo journalctl -u bot -f # Показывает журнал (логи) сервиса bot в реальном времени
-ps aux | grep bot.py # Ищет процесс bot.py среди всех запущенных процессов
+ps aux | grep main.py # Ищет процесс main.py среди всех запущенных процессов
 ```
 
 # Работа с пакетами Python
@@ -52,7 +52,7 @@ git clone https://github.com/your-username/chat-training-server.git
 cd chat-training-server
 
 # Создание виртуального окружения
-py -m venv venv
+python -m venv venv
 
 # Активация (выберите вашу ОС)
 source venv/bin/activate      # Linux/Mac
@@ -67,7 +67,7 @@ cp .env.example .env
 # Отредактируйте .env файл под ваши настройки
 
 # Запуск сервера
-py bot.py
+python main.py
 ```
 
 ## Конфигурация

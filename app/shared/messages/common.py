@@ -2,65 +2,49 @@
 Common messages used across different domains.
 """
 from aiogram.utils.markdown import hbold
+from shared.i18n import i18n
 
 
 def get_error_message(error_type: str = "general") -> str:
     """Get error message based on error type."""
-    messages = {
-        "general": "Произошла ошибка. Попробуйте позже.",
-        "database": "Ошибка базы данных. Попробуйте позже.",
-        "openai": "Ошибка при обработке сообщения. Попробуйте позже.",
-        "validation": "Некорректные данные. Проверьте ввод.",
-        "permission": "У вас нет прав для выполнения этого действия.",
-        "limit": "Превышен лимит. Попробуйте позже."
-    }
-    return messages.get(error_type, messages["general"])
+    return i18n.t(f"errors.{error_type}")
 
 
 def get_success_message(action: str = "general") -> str:
     """Get success message based on action."""
-    messages = {
-        "general": "Операция выполнена успешно!",
-        "saved": "Данные сохранены!",
-        "updated": "Данные обновлены!",
-        "deleted": "Данные удалены!",
-        "sent": "Сообщение отправлено!"
-    }
-    return messages.get(action, messages["general"])
+    return i18n.t(f"success.{action}")
 
 
 def get_help_text() -> str:
     """Get general help text."""
     return f"""
-{hbold('🤖 Помощь по боту')}
+{hbold(i18n.t('commands.help.title'))}
 
-{hbold('Доступные команды:')}
-/start - Начать общение с ботом
-/help - Показать эту справку
-/choose_gender - Выбрать пол компаньона
+{hbold(i18n.t('commands.help.commands_title'))}
+{i18n.t('commands.help.start_command')}
+{i18n.t('commands.help.help_command')}
+{i18n.t('commands.help.gender_command')}
 
-{hbold('💬 Общение:')}
-• Бесплатно: 100 сообщений в день
-• Премиум: безлимитное общение
+{hbold(i18n.t('commands.help.communication_title'))}
+{i18n.t('commands.help.free_limit', free_limit=100)}
+{i18n.t('commands.help.premium_unlimited')}
 
-{hbold('🎭 Выбор компаньона:')}
-• Девушка - милая и empathetic
-• Молодой человек - уверенный и игривый
+{hbold(i18n.t('commands.help.companion_title'))}
+{i18n.t('commands.help.female_description')}
+{i18n.t('commands.help.male_description')}
 
-{hbold('💎 Премиум подписка:')}
-Открывает безлимитное общение и дополнительные возможности
+{hbold(i18n.t('commands.help.premium_title'))}
+{i18n.t('commands.help.premium_description')}
 
-{hbold('❓ Частые вопросы:')}
-• Бот запоминает контекст разговора
-• Можно сменить пол компаньона в любое время
-• Лимит сообщений сбрасывается каждый день
+{hbold(i18n.t('commands.help.faq_title'))}
+{i18n.t('commands.help.context_memory')}
+{i18n.t('commands.help.gender_change')}
+{i18n.t('commands.help.limit_reset')}
 
-Для начала общения используйте {hbold('/start')}
+{i18n.t('commands.help.start_instruction', start_command=hbold('/start'))}
 """
 
 
 def get_privacy_info_text() -> str:
     """Get privacy policy text."""
-    return ("🔐 <b>Политика конфиденциальности</b>\n\n"
-            "Здесь ваш текст политики конфиденциальности...\n\n"
-            "Полная версия: https://yourwebsite.com/privacy")
+    return f"{i18n.t('consent.privacy_title')}\n\n{i18n.t('consent.privacy_text')}"

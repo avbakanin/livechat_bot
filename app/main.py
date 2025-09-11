@@ -9,6 +9,7 @@ from aiogram import Bot, Dispatcher
 
 from core.database import db_manager
 from core.middleware import AccessMiddleware, LoggingMiddleware, ServiceMiddleware
+from shared.middlewares.i18n_middleware import I18nMiddleware
 from config.telegram import TELEGRAM_CONFIG
 from config.openai import OPENAI_CONFIG
 from domain.user.handlers import router as user_router
@@ -52,6 +53,8 @@ async def main():
         message_service = MessageService(pool, openai_client)
         
         # Setup middleware
+        dp.message.middleware(I18nMiddleware())
+        dp.callback_query.middleware(I18nMiddleware())
         dp.message.middleware(AccessMiddleware(TELEGRAM_CONFIG['allowed_user_ids']))
         dp.callback_query.middleware(AccessMiddleware(TELEGRAM_CONFIG['allowed_user_ids']))
         dp.message.middleware(LoggingMiddleware())

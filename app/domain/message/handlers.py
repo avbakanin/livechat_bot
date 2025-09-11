@@ -18,7 +18,7 @@ router = Router()
 
 
 @router.message()
-async def handle_message(message: Message, message_service: MessageService, user_service: UserService, bot):
+async def handle_message(message: Message, message_service: MessageService, user_service: UserService, bot, i18n):
     """Handle incoming text messages."""
     # Skip commands
     if message.text.startswith('/'):
@@ -32,7 +32,7 @@ async def handle_message(message: Message, message_service: MessageService, user
     # Check consent
     if not await user_service.get_consent_status(user_id):
         await message.answer(
-            "Пожалуйста, согласись с политикой конфиденциальности:",
+            i18n.t("consent.request"),
             reply_markup=get_consent_keyboard()
         )
         return
@@ -40,7 +40,7 @@ async def handle_message(message: Message, message_service: MessageService, user
     # Check message limit
     if not await message_service.can_send_message(user_id):
         await message.answer(
-            "Превышен ежедневный лимит бесплатных сообщений. Хочешь безлимит? Купи премиум!",
+            i18n.t("messages.limit_exceeded"),
             reply_markup=get_limit_exceeded_keyboard()
         )
         return

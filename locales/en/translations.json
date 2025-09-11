@@ -1,0 +1,97 @@
+{
+  "commands": {
+    "start": {
+      "welcome": "Hello! You have {free_limit} free messages per day. Choose your companion's gender:",
+      "already_started": "Bot is already running - just send a message 😊"
+    },
+    "help": {
+      "title": "🤖 Bot Help",
+      "commands_title": "Available commands:",
+      "start_command": "/start - Start chatting with the bot",
+      "help_command": "/help - Show this help",
+      "gender_command": "/choose_gender - Choose companion's gender",
+      "communication_title": "💬 Communication:",
+      "free_limit": "• Free: {free_limit} messages per day",
+      "premium_unlimited": "• Premium: unlimited communication",
+      "companion_title": "🎭 Companion Selection:",
+      "female_description": "• Girl - sweet and empathetic",
+      "male_description": "• Young man - confident and playful",
+      "premium_title": "💎 Premium Subscription:",
+      "premium_description": "Opens unlimited communication and additional features",
+      "faq_title": "❓ Frequently Asked Questions:",
+      "context_memory": "• Bot remembers conversation context",
+      "gender_change": "• You can change companion's gender anytime",
+      "limit_reset": "• Message limit resets every day",
+      "start_instruction": "To start chatting use {start_command}"
+    }
+  },
+  "consent": {
+    "request": "Please agree to the privacy policy:",
+    "agreed": "Thank you for agreeing! You have {free_limit} free messages per day. Choose your companion's gender:",
+    "privacy_title": "🔐 Privacy Policy",
+    "privacy_text": "Your privacy policy text here...\n\nFull version: https://yourwebsite.com/privacy"
+  },
+  "gender": {
+    "choose": "Choose companion's gender:",
+    "choose_for_chat": "Choose companion's gender for chatting:",
+    "changed_to_female": "Companion's gender changed to girl 😊",
+    "changed_to_male": "Companion's gender changed to young man 😉",
+    "change_warning": "⚠️ Are you sure you want to change companion's gender?\n\nAll chat history will be deleted!",
+    "change_confirmed": "Chat history deleted. Choose companion's gender:",
+    "change_cancelled": "Gender change cancelled. You can continue chatting."
+  },
+  "messages": {
+    "limit_exceeded": "Daily free message limit exceeded. Want unlimited? Buy premium!",
+    "processing_error": "Sorry, an error occurred while processing your message. Please try again later.",
+    "save_error": "An error occurred while saving the message.",
+    "unexpected_error": "An unexpected error occurred. Please try again later.",
+    "empty_response": "OpenAI returned an empty response."
+  },
+  "premium": {
+    "info_title": "💎 Premium Information",
+    "info_text": "Payment information will be added later.",
+    "unavailable": "Payment function is temporarily unavailable. Please try again later."
+  },
+  "errors": {
+    "general": "An error occurred. Please try again later.",
+    "database": "Database error. Please try again later.",
+    "openai": "Error processing message. Please try again later.",
+    "validation": "Invalid data. Please check your input.",
+    "permission": "You don't have permission to perform this action.",
+    "limit": "Limit exceeded. Please try again later.",
+    "access_denied": "❌ Access denied. Contact administrator.",
+    "access_denied_alert": "❌ Access denied.",
+    "private_bot": "Bot is private. Access is limited.",
+    "try_again": "An error occurred. Please try again."
+  },
+  "success": {
+    "general": "Operation completed successfully!",
+    "saved": "Data saved!",
+    "updated": "Data updated!",
+    "deleted": "Data deleted!",
+    "sent": "Message sent!"
+  },
+  "buttons": {
+    "agree_privacy": "Agree to privacy policy",
+    "read_privacy": "Read privacy policy",
+    "choose_female": "Choose girl 😊",
+    "choose_male": "Choose young man 😉",
+    "female": "Girl 😊",
+    "male": "Young man 😉",
+    "buy_premium": "Buy premium 💳",
+    "pay": "💳 Pay",
+    "yes_change": "Yes, change gender",
+    "cancel": "Cancel",
+    "back": "↩️ Back",
+    "yes": "✅ Yes",
+    "no": "❌ No",
+    "choose_gender_help": "🎭 Choose companion's gender",
+    "premium_info_help": "💎 Premium information",
+    "privacy_info_help": "📝 Privacy policy",
+    "back_to_help": "↩️ Back to help"
+  },
+  "ai_prompts": {
+    "female": "You are an AI girl, flirty and supportive for lonely people. Be sweet, empathetic and playful.",
+    "male": "You are an AI young man, flirty and supportive for lonely people. Be confident, empathetic and playful."
+  }
+}

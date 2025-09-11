@@ -43,12 +43,16 @@ def get_gender_change_confirmation_keyboard() -> InlineKeyboardMarkup:
     ])
 
 
-def get_help_keyboard() -> InlineKeyboardMarkup:
+def get_help_keyboard(i18n_instance=None) -> InlineKeyboardMarkup:
     """Get help keyboard."""
+    if i18n_instance is None:
+        from shared.i18n import i18n
+        i18n_instance = i18n
+    
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="🎭 Выбрать пол компаньона", callback_data="choose_gender_help")],
-        [InlineKeyboardButton(text="💎 Информация о премиуме", callback_data="premium_info_help")],
-        [InlineKeyboardButton(text="📝 Политика конфиденциальности", callback_data="privacy_info_help")]
+        [InlineKeyboardButton(text=i18n_instance.t('buttons.choose_gender_help'), callback_data="choose_gender_help")],
+        [InlineKeyboardButton(text=i18n_instance.t('buttons.premium_info_help'), callback_data="premium_info_help")],
+        [InlineKeyboardButton(text=i18n_instance.t('buttons.privacy_info_help'), callback_data="privacy_info_help")]
     ])
 
 

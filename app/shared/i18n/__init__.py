@@ -10,14 +10,14 @@ from pathlib import Path
 class I18nManager:
     """Internationalization manager for handling translations."""
     
-    def __init__(self, translations_file: str = None):
+    def __init__(self, locales_dir: str = None):
         """Initialize the i18n manager."""
-        if translations_file is None:
-            # Default path to translations file
-            current_dir = Path(__file__).parent
-            translations_file = current_dir / "i18n" / "translations.json"
+        if locales_dir is None:
+            # Default path to locales directory
+            current_dir = Path(__file__).parent.parent.parent
+            locales_dir = current_dir / "locales"
         
-        self.translations_file = Path(translations_file)
+        self.locales_dir = Path(locales_dir)
         self.translations: Dict[str, Dict[str, Any]] = {}
         self.default_language = "ru"
         self.current_language = self.default_language
@@ -25,13 +25,24 @@ class I18nManager:
         self._load_translations()
     
     def _load_translations(self) -> None:
-        """Load translations from JSON file."""
+        """Load translations from locale files."""
         try:
-            if self.translations_file.exists():
-                with open(self.translations_file, 'r', encoding='utf-8') as f:
-                    self.translations = json.load(f)
-            else:
-                raise FileNotFoundError(f"Translations file not found: {self.translations_file}")
+            if not self.locales_dir.exists():
+                raise FileNotFoundError(f"Locales directory not found: {self.locales_dir}")
+            
+            # Load translations for each language
+            for language_dir in self.locales_dir.iterdir():
+                if language_dir.is_dir():
+                    translation_file = language_dir / "translations.json"
+                    if translation_file.exists():
+                        with open(translation_file, 'r', encoding='utf-8') as f:
+                            self.translations[language_dir.name] = json.load(f)
+                    else:
+                        print(f"Warning: Translation file not found: {translation_file}")
+            
+            if not self.translations:
+                raise FileNotFoundError(f"No translation files found in: {self.locales_dir}")
+                
         except (json.JSONDecodeError, FileNotFoundError) as e:
             print(f"Error loading translations: {e}")
             self.translations = {}

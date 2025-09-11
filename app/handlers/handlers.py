@@ -111,17 +111,7 @@ async def premium_subscribe(callback: CallbackQuery):
     await callback.message.edit_text("Функция оплаты временно недоступна. Попробуйте позже.")
     await callback.answer()
 
-# HELP handlers
-@router.message(Command(commands=["help"]))
-async def cmd_help(message: Message, pool: asyncpg.Pool):
-    user_id, username, first_name, last_name = destructure_user(message.from_user)
-    await add_user(pool, user_id, username, first_name, last_name)
-    
-    await message.answer(
-        get_help_text(),
-        reply_markup=get_help_keyboard(),
-        parse_mode="HTML"
-    )
+# HELP handlers - moved to domain/user/handlers.py
 
 
 @router.callback_query(F.data == "premium_info_help")

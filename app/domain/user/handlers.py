@@ -144,7 +144,7 @@ async def consent_agree(callback: CallbackQuery, user_service: UserService):
 
 
 @router.message(Command(commands=["help"]))
-async def cmd_help(message: Message, user_service: UserService):
+async def cmd_help(message: Message, user_service: UserService, i18n):
     """Handle /help command."""
     user_id, username, first_name, last_name = destructure_user(message.from_user)
     
@@ -152,8 +152,8 @@ async def cmd_help(message: Message, user_service: UserService):
     await user_service.add_user(user_id, username, first_name, last_name)
     
     await message.answer(
-        get_help_text(),
-        reply_markup=get_help_keyboard(),
+        get_help_text(i18n),
+        reply_markup=get_help_keyboard(i18n),
         parse_mode="HTML"
     )
 

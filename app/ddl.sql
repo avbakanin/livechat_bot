@@ -7,6 +7,8 @@ CREATE TABLE public.users (
     subscription_status TEXT DEFAULT 'free',
 	consent_given BOOLEAN DEFAULT FALSE,
 	subscription_expires_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 CREATE INDEX idx_users_subscription_expires_at ON public.users USING btree (subscription_expires_at);

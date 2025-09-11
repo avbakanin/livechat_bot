@@ -26,13 +26,29 @@ async def get_user(pool: asyncpg.Pool, user_id: int) -> Optional[User]:
     """Get user by ID."""
     async with pool.acquire() as conn:
         try:
-            row = await conn.fetchrow("""
-                SELECT id, username, first_name, last_name, gender_preference,
-                       subscription_status, consent_given, subscription_expires_at,
-                       created_at, updated_at
-                FROM users
-                WHERE id = $1
-            """, user_id)
+            # Check if timestamp columns exist
+            timestamp_columns_exist = await conn.fetchval("""
+                SELECT EXISTS (
+                    SELECT 1 FROM information_schema.columns 
+                    WHERE table_name = 'users' AND column_name IN ('created_at', 'updated_at')
+                )
+            """)
+            
+            if timestamp_columns_exist:
+                row = await conn.fetchrow("""
+                    SELECT id, username, first_name, last_name, gender_preference,
+                           subscription_status, consent_given, subscription_expires_at,
+                           created_at, updated_at
+                    FROM users
+                    WHERE id = $1
+                """, user_id)
+            else:
+                row = await conn.fetchrow("""
+                    SELECT id, username, first_name, last_name, gender_preference,
+                           subscription_status, consent_given, subscription_expires_at
+                    FROM users
+                    WHERE id = $1
+                """, user_id)
             
             if not row:
                 return None
@@ -46,8 +62,8 @@ async def get_user(pool: asyncpg.Pool, user_id: int) -> Optional[User]:
                 subscription_status=row['subscription_status'],
                 consent_given=row['consent_given'],
                 subscription_expires_at=row['subscription_expires_at'],
-                created_at=row['created_at'],
-                updated_at=row['updated_at']
+                created_at=row.get('created_at'),
+                updated_at=row.get('updated_at')
             )
         except Exception as e:
             raise DatabaseException(f"Error getting user {user_id}: {e}", e)
@@ -85,8 +101,18 @@ async def update_user(pool: asyncpg.Pool, user_id: int, user_data: UserUpdate) -
             if not fields:
                 return  # Nothing to update
             
-            fields.append(f"updated_at = ${param_count}")
-            values.append(datetime.utcnow())
+            # Check if updated_at column exists
+            column_exists = await conn.fetchval("""
+                SELECT EXISTS (
+                    SELECT 1 FROM information_schema.columns 
+                    WHERE table_name = 'users' AND column_name = 'updated_at'
+                )
+            """)
+            
+            if column_exists:
+                fields.append(f"updated_at = ${param_count}")
+                values.append(datetime.utcnow())
+            
             values.append(user_id)
             
             query = f"""
@@ -116,11 +142,27 @@ async def set_user_consent(pool: asyncpg.Pool, user_id: int, consent: bool) -> N
     """Set user consent status."""
     async with pool.acquire() as conn:
         try:
-            await conn.execute("""
-                UPDATE users 
-                SET consent_given = $1, updated_at = CURRENT_TIMESTAMP
-                WHERE id = $2
-            """, consent, user_id)
+            # Check if updated_at column exists
+            column_exists = await conn.fetchval("""
+                SELECT EXISTS (
+                    SELECT 1 FROM information_schema.columns 
+                    WHERE table_name = 'users' AND column_name = 'updated_at'
+                )
+            """)
+            
+            if column_exists:
+                await conn.execute("""
+                    UPDATE users 
+                    SET consent_given = $1, updated_at = CURRENT_TIMESTAMP
+                    WHERE id = $2
+                """, consent, user_id)
+            else:
+                # Fallback without updated_at column
+                await conn.execute("""
+                    UPDATE users 
+                    SET consent_given = $1
+                    WHERE id = $2
+                """, consent, user_id)
         except Exception as e:
             raise DatabaseException(f"Error setting user consent {user_id}: {e}", e)
 
@@ -141,10 +183,26 @@ async def set_gender_preference(pool: asyncpg.Pool, user_id: int, preference: st
     """Set user gender preference."""
     async with pool.acquire() as conn:
         try:
-            await conn.execute("""
-                UPDATE users 
-                SET gender_preference = $1, updated_at = CURRENT_TIMESTAMP
-                WHERE id = $2
-            """, preference, user_id)
+            # Check if updated_at column exists
+            column_exists = await conn.fetchval("""
+                SELECT EXISTS (
+                    SELECT 1 FROM information_schema.columns 
+                    WHERE table_name = 'users' AND column_name = 'updated_at'
+                )
+            """)
+            
+            if column_exists:
+                await conn.execute("""
+                    UPDATE users 
+                    SET gender_preference = $1, updated_at = CURRENT_TIMESTAMP
+                    WHERE id = $2
+                """, preference, user_id)
+            else:
+                # Fallback without updated_at column
+                await conn.execute("""
+                    UPDATE users 
+                    SET gender_preference = $1
+                    WHERE id = $2
+                """, preference, user_id)
         except Exception as e:
             raise DatabaseException(f"Error setting gender preference {user_id}: {e}", e)

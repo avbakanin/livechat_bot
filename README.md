@@ -75,32 +75,25 @@ python main.py
 
 ## Конфигурация
 
-# Базовые настройки
+### Базовые настройки
 
-PORT=8000
-HOST=0.0.0.0
-
-# База данных
-
+DB_PORT='your-DB-port'
+DB_HOST='your-DB-host'
+DB_NAME="your-DB-name"
+DB_USER="your-user-from-DB"
+DB_PASSWORD="your-password-from-DB"
 DATABASE_URL=postgresql://user:password@localhost/chat_training
 
-# AI API ключи (OpenAI или аналоги)
+AI_MODEL="your-model-name"
 
-OPENAI_API_KEY=your_openai_api_key_here
-AI_MODEL=model_name
-
-# Безопасность
-
-SECRET_KEY=your-secret-key-for-sessions
-JWT_SECRET=your-jwt-secret-key
-
-# Логирование
+TELEGRAM_TOKEN="your-secret-token-for-sessions"
+OPENAI_API_KEY="your-openai-secret-key"
 
 LOG_LEVEL=INFO
 
-# 🛠 Project PoeToPoet Commands
+# 🛠 Project PoeThePoet Commands
 
-В проекте используется **PoeToPoet** для автоматизации задач по проверке и форматированию кода.
+В проекте используется **PoeThePoet** для автоматизации задач по проверке и форматированию кода.
 
 ## 🎯 Основные команды
 

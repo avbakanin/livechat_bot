@@ -2,7 +2,8 @@
 Database configuration settings.
 """
 import os
-from typing import TypedDict, Optional
+from typing import Optional, TypedDict
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,6 +11,7 @@ load_dotenv()
 
 class DatabaseConfig(TypedDict):
     """Database configuration type."""
+
     user: Optional[str]
     password: Optional[str]
     host: Optional[str]
@@ -22,5 +24,5 @@ DATABASE_CONFIG: DatabaseConfig = {
     "password": os.getenv("DB_PASSWORD"),
     "host": os.getenv("DB_HOST", "localhost"),
     "port": int(os.getenv("DB_PORT", "5432")),
-    "database": os.getenv("DB_NAME")
+    "database": os.getenv("DB_NAME"),
 }

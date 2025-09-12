@@ -1,5 +1,6 @@
 import logging
 
+
 async def set_user_consent(pool, user_id, consent):
     async with pool.acquire() as conn:
         try:
@@ -8,6 +9,7 @@ async def set_user_consent(pool, user_id, consent):
         except Exception as e:
             logging.error(f"Error in set_user_consent for user {user_id}: {e}")
             raise
+
 
 async def get_user_consent(pool, user_id):
     async with pool.acquire() as conn:
@@ -18,4 +20,3 @@ async def get_user_consent(pool, user_id):
         except Exception as e:
             logging.error(f"Error in get_user_consent for user {user_id}: {e}")
             raise
-

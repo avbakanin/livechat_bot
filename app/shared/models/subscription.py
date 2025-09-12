@@ -2,13 +2,14 @@
 Subscription domain models.
 """
 from dataclasses import dataclass
-from typing import Optional
 from datetime import datetime
+from typing import Optional
 
 
 @dataclass
 class Subscription:
     """Subscription model."""
+
     user_id: int
     status: str
     expires_at: Optional[datetime] = None
@@ -19,6 +20,7 @@ class Subscription:
 @dataclass
 class SubscriptionCreate:
     """Subscription creation data."""
+
     user_id: int
     status: str
     expires_at: Optional[datetime] = None
@@ -27,5 +29,6 @@ class SubscriptionCreate:
 @dataclass
 class SubscriptionUpdate:
     """Subscription update data."""
+
     status: Optional[str] = None
     expires_at: Optional[datetime] = None

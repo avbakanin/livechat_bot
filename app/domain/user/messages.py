@@ -11,8 +11,7 @@ def get_consent_given_text() -> str:
 
 def get_gender_change_warning_text() -> str:
     """Get gender change warning text."""
-    return ("⚠️ Вы уверены, что хотите сменить пол компаньона?\n\n"
-            "Вся история переписки будет удалена!")
+    return "⚠️ Вы уверены, что хотите сменить пол компаньона?\n\n" "Вся история переписки будет удалена!"
 
 
 def get_gender_selection_text() -> str:

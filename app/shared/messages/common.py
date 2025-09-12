@@ -19,8 +19,9 @@ def get_help_text(i18n_instance=None, free_limit: int = 100) -> str:
     """Get general help text."""
     if i18n_instance is None:
         from shared.i18n import i18n
+
         i18n_instance = i18n
-    
+
     return f"""
 {hbold(i18n_instance.t('commands.help.title'))}
 

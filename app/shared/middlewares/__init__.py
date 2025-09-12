@@ -1,5 +1,3 @@
 from .middlewares import PoolMiddleware
 
-__all__ = [
-  'PoolMiddleware'
-]
+__all__ = ["PoolMiddleware"]

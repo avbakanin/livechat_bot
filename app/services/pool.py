@@ -1,8 +1,11 @@
-import asyncpg
 import logging
+
+import asyncpg
+
 
 async def create_pool():
     from shared.constants import DB_CONFIG
+
     try:
         pool = await asyncpg.create_pool(**DB_CONFIG)
         logging.info("Successfully created database pool")

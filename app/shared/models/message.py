@@ -2,13 +2,14 @@
 Message domain models.
 """
 from dataclasses import dataclass
-from typing import Optional, List, Dict, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 
 @dataclass
 class Message:
     """Message model."""
+
     id: Optional[int]
     user_id: int
     role: str
@@ -19,6 +20,7 @@ class Message:
 @dataclass
 class MessageCreate:
     """Message creation data."""
+
     user_id: int
     role: str
     text: str
@@ -27,6 +29,7 @@ class MessageCreate:
 @dataclass
 class MessageContext:
     """Message context for OpenAI API."""
+
     role: str
     text: str
 
@@ -34,6 +37,7 @@ class MessageContext:
 @dataclass
 class OpenAIMessage:
     """OpenAI API message format."""
+
     role: str
     content: str
 
@@ -41,5 +45,6 @@ class OpenAIMessage:
 @dataclass
 class ChatHistory:
     """Chat history data."""
+
     messages: List[MessageContext]
     system_prompt: str

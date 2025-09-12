@@ -2,7 +2,8 @@
 OpenAI API configuration settings.
 """
 import os
-from typing import TypedDict, Optional
+from typing import Optional, TypedDict
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,6 +11,7 @@ load_dotenv()
 
 class OpenAIConfig(TypedDict):
     """OpenAI configuration type."""
+
     api_key: Optional[str]
     model: str
     temperature: float
@@ -24,5 +26,5 @@ OPENAI_CONFIG: OpenAIConfig = {
     "temperature": 0.7,
     "max_tokens": 1000,
     "base_url": None,  # Use default OpenAI API URL
-    "FREE_MESSAGE_LIMIT": 100
+    "FREE_MESSAGE_LIMIT": 100,
 }

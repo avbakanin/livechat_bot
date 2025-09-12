@@ -27,21 +27,20 @@ run = "python app/main.py"
 install = "pip install -r requirements.txt"
 dev-install = "pip install -r requirements-dev.txt"
 update = "pip install --upgrade -r requirements.txt"
+venv = "python -m venv venv"
 
-# Создание виртуального окружения
-venv = "python -m venv venv && echo '✅ Виртуальное окружение создано' && echo 'Активируй: source venv/bin/activate (Linux/Mac) или .\\venv\\Scripts\\activate (Windows)'"
+# Форматирование кода
+format = "python -m black ."
+isort = "python -m isort ."
 
-# Команды для кодстайла
-format = "python -m black . && python -m isort ."
-lint = "python -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics && python -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics"
-check = "python -m black --check . && python -m isort --check-only . && python -m flake8 ."
+# Линтинг
+lint = "python -m flake8 . --max-line-length=127 --ignore=E501"
 quick-lint = "python -m flake8 . --select=E9,F63,F7,F82 --exit-zero"
 
 # Очистка
-clean = "find . -name '*.pyc' -delete && find . -name '__pycache__' -exec rm -rf {} + && echo '🧹 Кэш очищен!'"
+clean = "find . -name '*.pyc' -delete && find . -name '__pycache__' -exec rm -rf {} +"
 
 # Составные задачи
-setup = ["install", "run"]
-dev-setup = ["dev-install", "run"]
-full-check = ["format", "lint"]
-restart = ["clean", "run"]
+setup = { sequence = ["install", "run"] }
+full-check = { sequence = ["format", "isort"] }
+restart = { sequence = ["clean", "run"] }

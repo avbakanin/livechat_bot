@@ -41,7 +41,7 @@ pip freeze | grep -E "(aiogram|openai|python-dotenv|sqlalchemy|asyncpg)" > requi
 
 ### Предварительные требования
 
-- Python [version]
+- Python 3.11+
 - PostgreSQL
 
 ### Быстрый старт

@@ -1,8 +1,9 @@
 """
 Message domain services - business logic and OpenAI integration.
 """
+
 import logging
-from typing import Any, Dict, List
+from typing import List
 
 import asyncpg
 from config.openai import OPENAI_CONFIG
@@ -11,9 +12,10 @@ from domain.message.queries import create_message as db_create_message
 from domain.message.queries import delete_user_messages as db_delete_user_messages
 from domain.message.queries import get_user_messages as db_get_user_messages
 from openai import AsyncOpenAI
-from shared.models.message import ChatHistory, MessageContext, MessageCreate, OpenAIMessage
+from shared.i18n import i18n
+from shared.models.message import MessageContext, MessageCreate
 
-from core.exceptions import MessageException, OpenAIException
+from core.exceptions import OpenAIException
 
 
 class MessageService:
@@ -71,7 +73,7 @@ class MessageService:
                 max_tokens=OPENAI_CONFIG["max_tokens"],
             )
 
-            return response.choices[0].message.content.strip() or "OpenAI вернул пустой ответ."
+            return response.choices[0].message.content.strip() or i18n.t("error.empty_response")
 
         except Exception as e:
             logging.error(f"OpenAI error: {e}")

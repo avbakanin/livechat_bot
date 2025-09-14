@@ -1,11 +1,13 @@
 """
 User domain services - business logic layer.
 """
+
 from datetime import datetime
 from typing import Optional
 
 import asyncpg
 from domain.user.queries import create_user as db_create_user
+from domain.user.queries import delete_user_messages as db_delete_user_messages
 from domain.user.queries import get_gender_preference as db_get_gender_preference
 from domain.user.queries import get_user as db_get_user
 from domain.user.queries import get_user_consent as db_get_user_consent
@@ -33,6 +35,10 @@ class UserService:
     async def get_user(self, user_id: int) -> Optional[User]:
         """Get user by ID."""
         return await db_get_user(self.pool, user_id)
+
+    async def delete_user_messages(self, user_id: int) -> None:
+        """Delete all user messages."""
+        await db_delete_user_messages(self.pool, user_id)
 
     async def update_user(self, user_id: int, user_data: UserUpdate) -> None:
         """Update user data."""

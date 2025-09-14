@@ -1,14 +1,15 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.markdown import hbold
 from shared.constants import APP_CONFIG
+from shared.i18n import i18n
 
 
 # ===== КЛАВИАТУРЫ ДЛЯ СОГЛАСИЯ С ПОЛИТИКОЙ =====
 def get_consent_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Согласен с политикой конфиденциальности", callback_data="consent_agree")],
-            [InlineKeyboardButton(text="Читать политику", url="https://your-site.com/privacy")],
+            [InlineKeyboardButton(text=i18n.t("buttons.agree_privacy"), callback_data="consent_agree")],
+            [InlineKeyboardButton(text=i18n.t("buttons.read_privacy"), url="https://your-site.com/privacy")],
         ]
     )
 
@@ -18,10 +19,10 @@ def get_start_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="Выбрать девушку 😊", callback_data="gender_female"),
-                InlineKeyboardButton(text="Выбрать молодого человека 😉", callback_data="gender_male"),
+                InlineKeyboardButton(text=i18n.t("buttons.choose_female"), callback_data="gender_female"),
+                InlineKeyboardButton(text=i18n.t("buttons.choose_male"), callback_data="gender_male"),
             ],
-            [InlineKeyboardButton(text="Купить премиум 💳", callback_data="subscribe_premium")],
+            [InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="subscribe_premium")],
         ]
     )
 
@@ -29,7 +30,10 @@ def get_start_keyboard():
 # ===== Текст для команды /start =====
 def get_start_text():
     """Текст для команды /start"""
-    return f"Привет! У тебя {APP_CONFIG['FREE_MESSAGE_LIMIT']} бесплатных сообщений в день. Выбери пол компаньона:"
+    return i18n.t("start.welcome", APP_CONFIG["FREE_MESSAGE_LIMIT"])
+
+
+# f"Привет! У тебя {APP_CONFIG['FREE_MESSAGE_LIMIT']} бесплатных сообщений в день. Выбери пол компаньона:"
 
 
 # ===== Клавиатура после принятия согласия =====
@@ -37,10 +41,10 @@ def get_consent_given_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="Выбрать девушку 😊", callback_data="gender_female"),
-                InlineKeyboardButton(text="Выбрать молодого человека 😉", callback_data="gender_male"),
+                InlineKeyboardButton(text=i18n.t("buttons.choose_female"), callback_data="gender_female"),
+                InlineKeyboardButton(text=i18n.t("buttons.choose_male"), callback_data="gender_male"),
             ],
-            [InlineKeyboardButton(text="Купить премиум 💳", callback_data="subscribe_premium")],
+            [InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="subscribe_premium")],
         ]
     )
 
@@ -48,7 +52,8 @@ def get_consent_given_keyboard():
 # ===== Текст после принятия согласия =====
 def get_consent_given_text():
     return (
-        f"Спасибо за согласие! У тебя {APP_CONFIG['FREE_MESSAGE_LIMIT']} бесплатных сообщений в день. Выбери пол компаньона:"
+        i18n.t("consent.agreed", APP_CONFIG["FREE_MESSAGE_LIMIT"])
+        # f"Спасибо за согласие! У тебя {APP_CONFIG['FREE_MESSAGE_LIMIT']} бесплатных сообщений в день. Выбери пол компаньона:"
     )
 
 
@@ -57,8 +62,8 @@ def get_gender_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="Девушка 😊", callback_data="gender_female"),
-                InlineKeyboardButton(text="Молодой человек 😉", callback_data="gender_male"),
+                InlineKeyboardButton(text=i18n.t("buttons.choose_female"), callback_data="gender_female"),
+                InlineKeyboardButton(text=i18n.t("buttons.choose_male"), callback_data="gender_male"),
             ]
         ]
     )
@@ -67,7 +72,7 @@ def get_gender_keyboard():
 # ===== КЛАВИАТУРЫ ДЛЯ ПРЕМИУМА =====
 def get_premium_keyboard():
     return InlineKeyboardMarkup(
-        inline_keyboard=[[InlineKeyboardButton(text="Купить премиум 💳", callback_data="subscribe_premium")]]
+        inline_keyboard=[[InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="subscribe_premium")]]
     )
 
 
@@ -75,36 +80,38 @@ def get_premium_keyboard():
 def get_help_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="🎭 Выбрать пол компаньона", callback_data="choose_gender_help")],
-            [InlineKeyboardButton(text="💎 Информация о премиуме", callback_data="premium_info_help")],
+            [InlineKeyboardButton(text=i18n.t("buttons.choose_gender_help"), callback_data="choose_gender_help")],
+            [InlineKeyboardButton(text=i18n.t("buttons.premium_info_help"), callback_data="premium_info_help")],
             # [InlineKeyboardButton(text="📝 Политика конфиденциальности", url="https://your-site.com/privacy")]
-            [InlineKeyboardButton(text="📝 Политика конфиденциальности", callback_data="privacy_info_help")],
+            [InlineKeyboardButton(text=i18n.t("buttons.privacy_info_help"), callback_data="privacy_info_help")],
         ]
     )
 
 
 # ===== Текст для команды /help =====
 def get_help_text():
-    return f"""
-{hbold('🤖 Помощь по боту')}
 
-{hbold('Доступные команды:')}
+    # Сделать тут переводы комплексные
+    return f"""
+{hbold(i18n.t("help.title"))}
+
+{hbold(i18n.t("help.commands_title"))}
 /start - Начать общение с ботом
 /help - Показать эту справку
 /choose_gender - Выбрать пол компаньона
 
-{hbold('💬 Общение:')}
+{hbold(i18n.t("help.communication_title"))}
 • Бесплатно: {APP_CONFIG['FREE_MESSAGE_LIMIT']} сообщений в день
 • Премиум: безлимитное общение
 
-{hbold('🎭 Выбор компаньона:')}
+{hbold(i18n.t("help.genders_title"))}
 • Девушка - милая и empathetic
 • Молодой человек - уверенный и игривый
 
 {hbold('💎 Премиум подписка:')}
 Открывает безлимитное общение и дополнительные возможности
 
-{hbold('❓ Частые вопросы:')}
+{hbold(i18n.t("help.faq_title"))}
 • Бот запоминает контекст разговора
 • Можно сменить пол компаньона в любое время
 • Лимит сообщений сбрасывается каждый день
@@ -117,15 +124,15 @@ def get_help_text():
 def get_premium_info_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="💳 Купить премиум", callback_data="subscribe_premium")],
-            [InlineKeyboardButton(text="↩️ Назад к справке", callback_data="back_to_help")],
+            [InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="subscribe_premium")],
+            [InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="back_to_help")],
         ]
     )
 
 
 def get_privacy_info_keyboard():
     return InlineKeyboardMarkup(
-        inline_keyboard=[[InlineKeyboardButton(text="↩️ Назад к справке", callback_data="back_to_help")]]
+        inline_keyboard=[[InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="back_to_help")]]
     )
 
 
@@ -159,7 +166,7 @@ def get_privacy_info_text():
 # ===== КЛАВИАТУРА ДЛЯ ЛИМИТА СООБЩЕНИЙ =====
 def get_limit_exceeded_keyboard():
     return InlineKeyboardMarkup(
-        inline_keyboard=[[InlineKeyboardButton(text="Купить премиум 💳", callback_data="subscribe_premium")]]
+        inline_keyboard=[[InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="subscribe_premium")]]
     )
 
 
@@ -168,8 +175,8 @@ def get_gender_change_confirmation_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="Да, сменить пол", callback_data="gender_change_confirm"),
-                InlineKeyboardButton(text="Отмена", callback_data="gender_change_cancel"),
+                InlineKeyboardButton(text=i18n.t("buttons.yes_change"), callback_data="gender_change_confirm"),
+                InlineKeyboardButton(text=i18n.t("buttons.cancel"), callback_data="gender_change_cancel"),
             ]
         ]
     )

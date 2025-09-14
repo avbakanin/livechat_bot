@@ -6,6 +6,7 @@ from typing import Any
 from aiogram import Bot, Dispatcher
 from config.openai import OPENAI_CONFIG
 from config.telegram import TELEGRAM_CONFIG
+from domain import setup_routers
 from domain.message.handlers import router as message_router
 from domain.message.services import MessageService
 from domain.payment.handlers import router as payment_router
@@ -60,9 +61,7 @@ async def main():
         dp["pool"] = pool
 
         # Include routers
-        dp.include_router(user_router)
-        dp.include_router(message_router)
-        dp.include_router(payment_router)
+        setup_routers(dp)
 
         logging.info("Connected to PostgreSQL!")
         logging.info("Bot started!")

@@ -1,6 +1,7 @@
 """
 User domain queries for PostgreSQL.
 """
+
 from datetime import datetime
 from typing import Optional
 
@@ -82,6 +83,21 @@ async def get_user(pool: asyncpg.Pool, user_id: int) -> Optional[User]:
             )
         except Exception as e:
             raise DatabaseException(f"Error getting user {user_id}: {e}", e)
+
+
+async def delete_user_messages(pool: asyncpg.Pool, user_id: int) -> None:
+    """Delete all user messages."""
+    async with pool.acquire() as conn:
+        try:
+            await conn.execute(
+                """
+                DELETE FROM messages
+                WHERE user_id = $1
+            """,
+                user_id,
+            )
+        except Exception as e:
+            raise DatabaseException(f"Error deleting user messages {user_id}: {e}", e)
 
 
 async def update_user(pool: asyncpg.Pool, user_id: int, user_data: UserUpdate) -> None:

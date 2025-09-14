@@ -33,6 +33,7 @@
   },
   "gender": {
     "choose": "Choose companion's gender:",
+    "toggle_gender": "Companion's gender changed to {gender} 😊",
     "choose_for_chat": "Choose companion's gender for chatting:",
     "changed_to_female": "Companion's gender changed to girl 😊",
     "changed_to_male": "Companion's gender changed to young man 😉",
@@ -45,7 +46,8 @@
     "processing_error": "Sorry, an error occurred while processing your message. Please try again later.",
     "save_error": "An error occurred while saving the message.",
     "unexpected_error": "An unexpected error occurred. Please try again later.",
-    "empty_response": "OpenAI returned an empty response."
+    "empty_response": "OpenAI returned an empty response.",
+    "bot_already_started": "Bot is already running 😊"
   },
   "premium": {
     "info_title": "💎 Premium Information",

@@ -1,6 +1,7 @@
 """
 Message domain handlers - Telegram bot handlers for messages.
 """
+
 import logging
 
 from aiogram import F, Router
@@ -60,10 +61,10 @@ async def handle_message(message: Message, message_service: MessageService, user
 
     except OpenAIException as e:
         logging.error(f"OpenAI error: {e}")
-        await message.answer("Извините, произошла ошибка при обработке сообщения. Попробуйте позже.")
+        await message.answer(i18n.t("messages.processing_error"))
     except MessageException as e:
         logging.error(f"Message error: {e}")
-        await message.answer("Произошла ошибка при сохранении сообщения.")
+        await message.answer(i18n.t("messages.save_error"))
     except Exception as e:
         logging.error(f"Unexpected error: {e}")
-        await message.answer("Произошла неожиданная ошибка. Попробуйте позже.")
+        await message.answer(i18n.t("messages.unexpected_error"))

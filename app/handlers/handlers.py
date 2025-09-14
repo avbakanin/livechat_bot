@@ -1,5 +1,4 @@
 import logging
-from typing import Dict, List, Union
 
 import asyncpg
 from aiogram import F, Router
@@ -36,6 +35,8 @@ from shared.keyboards.keyboards import (
     get_privacy_info_text,
 )
 from shared.middlewares.middlewares import AccessMiddleware
+
+from app.shared.helpers.openai_helpers import get_openapi_response
 
 router = Router()
 
@@ -215,20 +216,6 @@ async def handle_message(message: Message, pool: asyncpg.Pool, client: AsyncOpen
 
     await add_message(pool, user_id, "assistant", answer)
     await message.answer(answer)
-
-
-# Вынести в другой файл, хелперы?
-async def get_openapi_response(messages: List[Dict[str, Union[str, None]]], client: AsyncOpenAI) -> str:
-    response = await client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=messages,
-        temperature=0.7,
-        max_tokens=1000  # Используй старый параметр
-        # max_completion_tokens=1000  # Изменилось название параметра
-        # max_completion_tokens=1000
-    )
-
-    return response.choices[0].message.content.strip() or "OpenAI вернул пустой ответ."
 
 
 @router.message(Command(commands=["privacy"]))

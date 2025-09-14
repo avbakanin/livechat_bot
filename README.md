@@ -14,6 +14,8 @@ ps aux | grep main.py # Ищет процесс main.py среди всех за
 ### Заморозка зависимостей в requirements.txt
 
 ```bash
+# удалить все установленные пакеты из окружения
+pip freeze | xargs pip uninstall -y
 # Заморозить все установленные пакеты
 pip freeze > requirements.txt
 # Только пакеты, установленные через pip (исключает системные пакеты)

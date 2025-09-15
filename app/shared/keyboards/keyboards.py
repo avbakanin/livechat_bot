@@ -8,8 +8,17 @@ from shared.i18n import i18n
 def get_consent_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text=i18n.t("buttons.agree_privacy"), callback_data="consent_agree")],
-            [InlineKeyboardButton(text=i18n.t("buttons.read_privacy"), url="https://your-site.com/privacy")],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.agree_privacy"), callback_data="consent_agree"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.read_privacy"),
+                    url="https://your-site.com/privacy",
+                )
+            ],
         ]
     )
 
@@ -19,10 +28,19 @@ def get_start_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text=i18n.t("buttons.choose_female"), callback_data="gender_female"),
-                InlineKeyboardButton(text=i18n.t("buttons.choose_male"), callback_data="gender_male"),
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.choose_female"), callback_data="gender_female"
+                ),
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.choose_male"), callback_data="gender_male"
+                ),
             ],
-            [InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="subscribe_premium")],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.buy_premium"),
+                    callback_data="subscribe_premium",
+                )
+            ],
         ]
     )
 
@@ -38,10 +56,19 @@ def get_consent_given_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text=i18n.t("buttons.choose_female"), callback_data="gender_female"),
-                InlineKeyboardButton(text=i18n.t("buttons.choose_male"), callback_data="gender_male"),
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.choose_female"), callback_data="gender_female"
+                ),
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.choose_male"), callback_data="gender_male"
+                ),
             ],
-            [InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="subscribe_premium")],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.buy_premium"),
+                    callback_data="subscribe_premium",
+                )
+            ],
         ]
     )
 
@@ -56,8 +83,12 @@ def get_gender_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text=i18n.t("buttons.choose_female"), callback_data="gender_female"),
-                InlineKeyboardButton(text=i18n.t("buttons.choose_male"), callback_data="gender_male"),
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.choose_female"), callback_data="gender_female"
+                ),
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.choose_male"), callback_data="gender_male"
+                ),
             ]
         ]
     )
@@ -66,7 +97,14 @@ def get_gender_keyboard():
 # ===== КЛАВИАТУРЫ ДЛЯ ПРЕМИУМА =====
 def get_premium_keyboard():
     return InlineKeyboardMarkup(
-        inline_keyboard=[[InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="subscribe_premium")]]
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.buy_premium"),
+                    callback_data="subscribe_premium",
+                )
+            ]
+        ]
     )
 
 
@@ -74,10 +112,25 @@ def get_premium_keyboard():
 def get_help_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text=i18n.t("buttons.choose_gender_help"), callback_data="choose_gender_help")],
-            [InlineKeyboardButton(text=i18n.t("buttons.premium_info_help"), callback_data="premium_info_help")],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.choose_gender_help"),
+                    callback_data="choose_gender_help",
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.premium_info_help"),
+                    callback_data="premium_info_help",
+                )
+            ],
             # [InlineKeyboardButton(text="📝 Политика конфиденциальности", url="https://your-site.com/privacy")]
-            [InlineKeyboardButton(text=i18n.t("buttons.privacy_info_help"), callback_data="privacy_info_help")],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.privacy_info_help"),
+                    callback_data="privacy_info_help",
+                )
+            ],
         ]
     )
 
@@ -119,15 +172,30 @@ def get_help_text():
 def get_premium_info_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="subscribe_premium")],
-            [InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="back_to_help")],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.buy_premium"),
+                    callback_data="subscribe_premium",
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.buy_premium"), callback_data="back_to_help"
+                )
+            ],
         ]
     )
 
 
 def get_privacy_info_keyboard():
     return InlineKeyboardMarkup(
-        inline_keyboard=[[InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="back_to_help")]]
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.buy_premium"), callback_data="back_to_help"
+                )
+            ]
+        ]
     )
 
 
@@ -161,7 +229,14 @@ def get_privacy_info_text():
 # ===== КЛАВИАТУРА ДЛЯ ЛИМИТА СООБЩЕНИЙ =====
 def get_limit_exceeded_keyboard():
     return InlineKeyboardMarkup(
-        inline_keyboard=[[InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="subscribe_premium")]]
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.buy_premium"),
+                    callback_data="subscribe_premium",
+                )
+            ]
+        ]
     )
 
 
@@ -170,8 +245,13 @@ def get_gender_change_confirmation_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text=i18n.t("buttons.yes_change"), callback_data="gender_change_confirm"),
-                InlineKeyboardButton(text=i18n.t("buttons.cancel"), callback_data="gender_change_cancel"),
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.yes_change"),
+                    callback_data="gender_change_confirm",
+                ),
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.cancel"), callback_data="gender_change_cancel"
+                ),
             ]
         ]
     )

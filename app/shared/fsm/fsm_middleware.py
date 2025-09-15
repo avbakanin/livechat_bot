@@ -6,14 +6,17 @@ from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message, TelegramObject
-from shared.fsm.user_cache import UserCacheData, user_cache
+from shared.fsm.user_cache import user_cache
 
 
 class FSMMiddleware(BaseMiddleware):
     """Middleware for caching user data in FSM."""
 
     async def __call__(
-        self, handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]], event: TelegramObject, data: Dict[str, Any]
+        self,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
+        data: Dict[str, Any],
     ) -> Any:
         """Process event and inject cached user data."""
 

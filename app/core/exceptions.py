@@ -7,8 +7,6 @@ from typing import Optional
 class BotException(Exception):
     """Base exception for bot-related errors."""
 
-    pass
-
 
 class DatabaseException(BotException):
     """Database-related exceptions."""
@@ -21,25 +19,17 @@ class DatabaseException(BotException):
 class UserException(BotException):
     """User-related exceptions."""
 
-    pass
-
 
 class SubscriptionException(BotException):
     """Subscription-related exceptions."""
-
-    pass
 
 
 class PaymentException(BotException):
     """Payment-related exceptions."""
 
-    pass
-
 
 class MessageException(BotException):
     """Message-related exceptions."""
-
-    pass
 
 
 class OpenAIException(BotException):
@@ -53,10 +43,6 @@ class OpenAIException(BotException):
 class ValidationException(BotException):
     """Data validation exceptions."""
 
-    pass
-
 
 class ConfigurationException(BotException):
     """Configuration-related exceptions."""
-
-    pass

@@ -7,7 +7,6 @@ from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message, TelegramObject
 
 
-
 class AccessMiddleware(BaseMiddleware):
     """Middleware to restrict bot access to specific user IDs."""
 
@@ -15,7 +14,10 @@ class AccessMiddleware(BaseMiddleware):
         self.allowed_ids = allowed_ids
 
     async def __call__(
-        self, handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]], event: TelegramObject, data: Dict[str, Any]
+        self,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
+        data: Dict[str, Any],
     ) -> Any:
         """Check if user is allowed to use the bot."""
 
@@ -40,7 +42,10 @@ class LoggingMiddleware(BaseMiddleware):
     """Middleware for logging user interactions."""
 
     async def __call__(
-        self, handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]], event: TelegramObject, data: Dict[str, Any]
+        self,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
+        data: Dict[str, Any],
     ) -> Any:
         """Log user interactions."""
         import logging
@@ -64,7 +69,10 @@ class ServiceMiddleware(BaseMiddleware):
         self.message_service = message_service
 
     async def __call__(
-        self, handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]], event: TelegramObject, data: Dict[str, Any]
+        self,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
+        data: Dict[str, Any],
     ) -> Any:
         """Inject services into handler data."""
         data["user_service"] = self.user_service

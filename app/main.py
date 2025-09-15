@@ -6,10 +6,7 @@ from aiogram import Bot, Dispatcher
 from config.openai import OPENAI_CONFIG
 from config.telegram import TELEGRAM_CONFIG
 from domain import setup_routers
-from domain.message.handlers import router as message_router
 from domain.message.services import MessageService
-from domain.payment.handlers import router as payment_router
-from domain.user.handlers import router as user_router
 from domain.user.services_cached import UserService
 from openai import AsyncOpenAI
 from services.counter import DailyCounterService
@@ -31,7 +28,10 @@ async def main():
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[logging.StreamHandler(), logging.FileHandler("bot.log", encoding="utf-8")],
+        handlers=[
+            logging.StreamHandler(),
+            logging.FileHandler("bot.log", encoding="utf-8"),
+        ],
     )
 
     # Initialize services
@@ -44,7 +44,9 @@ async def main():
 
         # Initialize bot and OpenAI client
         bot = Bot(token=TELEGRAM_CONFIG["token"])
-        openai_client = AsyncOpenAI(api_key=OPENAI_CONFIG["api_key"], base_url=OPENAI_CONFIG["base_url"])
+        openai_client = AsyncOpenAI(
+            api_key=OPENAI_CONFIG["api_key"], base_url=OPENAI_CONFIG["base_url"]
+        )
 
         # Initialize services
         user_service = UserService(pool)
@@ -75,7 +77,9 @@ async def main():
         # Create partition management task for automatic partition creation/deletion
         partition_management_task = PartitionManagementTask(pool)
 
-        message_service = MessageService(pool, openai_client, persona_service, counter_service)
+        message_service = MessageService(
+            pool, openai_client, persona_service, counter_service
+        )
 
         apply_middlewares(
             dp,

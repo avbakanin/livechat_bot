@@ -6,7 +6,9 @@ import asyncpg
 from core.exceptions import DatabaseException
 
 
-async def create_payment_record(pool: asyncpg.Pool, user_id: int, amount: float, status: str) -> int:
+async def create_payment_record(
+    pool: asyncpg.Pool, user_id: int, amount: float, status: str
+) -> int:
     """Create payment record - placeholder implementation."""
     async with pool.acquire() as conn:
         try:

@@ -1,6 +1,5 @@
 import random
-
-from typing import Dict, Any
+from typing import Any, Dict
 
 from shared.i18n import i18n
 

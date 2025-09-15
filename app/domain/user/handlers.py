@@ -32,7 +32,12 @@ router.callback_query.middleware(AccessMiddleware(allowed_ids={627875032, 151245
 
 
 @router.message(Command(commands=["start"]))
-async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddleware, cached_user: UserCacheData = None):
+async def cmd_start(
+    message: Message,
+    user_service: UserService,
+    i18n: I18nMiddleware,
+    cached_user: UserCacheData = None,
+):
     user_id, username, first_name, last_name = destructure_user(message.from_user)
 
     # Check if user is new before adding
@@ -57,12 +62,17 @@ async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddl
         await message.answer(i18n.t("commands.start.already_started"))
         return
 
-    await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard(i18n))
+    await message.answer(
+        i18n.t("consent.request"), reply_markup=get_consent_keyboard(i18n)
+    )
 
 
 @router.message(Command(commands=["choose_gender"]))
 async def cmd_choose_gender(
-    message: Message, user_service: UserService, i18n: I18nMiddleware, cached_user: UserCacheData = None
+    message: Message,
+    user_service: UserService,
+    i18n: I18nMiddleware,
+    cached_user: UserCacheData = None,
 ):
     user_id, username, first_name, last_name = destructure_user(message.from_user)
 
@@ -77,14 +87,21 @@ async def cmd_choose_gender(
 
     # Always show warning when changing gender (regardless of current gender)
     if current_gender:
-        await message.answer(i18n.t("gender.change_warning"), reply_markup=get_gender_change_confirmation_keyboard(i18n))
+        await message.answer(
+            i18n.t("gender.change_warning"),
+            reply_markup=get_gender_change_confirmation_keyboard(i18n),
+        )
     else:
         # First time choosing gender - no warning needed
-        await message.answer(i18n.t("gender.choose"), reply_markup=get_gender_keyboard(i18n))
+        await message.answer(
+            i18n.t("gender.choose"), reply_markup=get_gender_keyboard(i18n)
+        )
 
 
 @router.callback_query(F.data.in_(["gender_female", "gender_male"]))
-async def gender_choice(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
+async def gender_choice(
+    callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware
+):
     user = callback.from_user
     preference = "female" if callback.data == "gender_female" else "male"
 
@@ -93,8 +110,14 @@ async def gender_choice(callback: CallbackQuery, user_service: UserService, i18n
         await user_service.set_gender_preference(user.id, preference)
 
         # Use translated gender names
-        gender_name = i18n.t("buttons.female") if preference == "female" else i18n.t("buttons.male")
-        await callback.message.edit_text(i18n.t("gender.toggle_gender", gender=gender_name))
+        gender_name = (
+            i18n.t("buttons.female")
+            if preference == "female"
+            else i18n.t("buttons.male")
+        )
+        await callback.message.edit_text(
+            i18n.t("gender.toggle_gender", gender=gender_name)
+        )
     except UserException as e:
         logging.error(f"Error setting gender preference: {e}")
         await callback.message.edit_text(i18n.t("error.try_again"))
@@ -106,7 +129,9 @@ async def gender_choice(callback: CallbackQuery, user_service: UserService, i18n
 
 
 @router.callback_query(F.data == "gender_change_confirm")
-async def gender_change_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
+async def gender_change_confirm(
+    callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware
+):
     """Handle gender change confirmation."""
     user = callback.from_user
 
@@ -114,7 +139,9 @@ async def gender_change_confirm(callback: CallbackQuery, user_service: UserServi
         # Delete all user messages
         await user_service.delete_user_messages(user.id)
 
-        await callback.message.edit_text(i18n.t("gender.change_confirmed"), reply_markup=get_gender_keyboard(i18n))
+        await callback.message.edit_text(
+            i18n.t("gender.change_confirmed"), reply_markup=get_gender_keyboard(i18n)
+        )
     except Exception as e:
         logging.error(f"Error in gender change confirmation: {e}")
         await callback.message.edit_text(i18n.t("error.try_again"))
@@ -130,7 +157,9 @@ async def gender_change_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
 
 
 @router.callback_query(F.data == "consent_agree")
-async def consent_agree(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
+async def consent_agree(
+    callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware
+):
     """Handle consent agreement."""
     user = callback.from_user
 
@@ -138,7 +167,9 @@ async def consent_agree(callback: CallbackQuery, user_service: UserService, i18n
 
     try:
         await user_service.set_consent_status(user.id, True)
-        await callback.message.edit_text(get_consent_given_text(), reply_markup=get_consent_given_keyboard(i18n))
+        await callback.message.edit_text(
+            get_consent_given_text(), reply_markup=get_consent_given_keyboard(i18n)
+        )
     except Exception as e:
         logging.error(f"Error setting consent: {e}")
         await callback.message.edit_text(i18n.t("error.try_again"))
@@ -153,7 +184,9 @@ async def cmd_help(message: Message, user_service: UserService, i18n: I18nMiddle
     # Add user to database
     await user_service.add_user(user_id, username, first_name, last_name)
 
-    await message.answer(get_help_text(), reply_markup=get_help_keyboard(i18n), parse_mode="HTML")
+    await message.answer(
+        get_help_text(), reply_markup=get_help_keyboard(i18n), parse_mode="HTML"
+    )
 
 
 @router.message(Command(commands=["privacy"]))
@@ -165,21 +198,31 @@ async def cmd_privacy(message: Message):
 @router.callback_query(F.data == "premium_info_help")
 async def premium_info(callback: CallbackQuery):
     """Handle premium info callback."""
-    await callback.message.edit_text(get_premium_info_text(), reply_markup=get_premium_info_keyboard(), parse_mode="HTML")
+    await callback.message.edit_text(
+        get_premium_info_text(),
+        reply_markup=get_premium_info_keyboard(),
+        parse_mode="HTML",
+    )
     await callback.answer()
 
 
 @router.callback_query(F.data == "privacy_info_help")
 async def privacy_info(callback: CallbackQuery):
     """Handle privacy info callback."""
-    await callback.message.edit_text(get_privacy_info_text(), reply_markup=get_privacy_info_keyboard(), parse_mode="HTML")
+    await callback.message.edit_text(
+        get_privacy_info_text(),
+        reply_markup=get_privacy_info_keyboard(),
+        parse_mode="HTML",
+    )
     await callback.answer()
 
 
 @router.callback_query(F.data == "back_to_help")
 async def back_to_help(callback: CallbackQuery, i18n: I18nMiddleware):
     """Handle back to help callback."""
-    await callback.message.edit_text(get_help_text(), reply_markup=get_help_keyboard(i18n), parse_mode="HTML")
+    await callback.message.edit_text(
+        get_help_text(), reply_markup=get_help_keyboard(i18n), parse_mode="HTML"
+    )
     await callback.answer()
 
 
@@ -200,7 +243,9 @@ async def cmd_check_messages(
         subscription_expires_at = cached_user.subscription_expires_at
     else:
         subscription_status = await user_service.get_subscription_status(user_id)
-        subscription_expires_at = await user_service.get_subscription_expires_at(user_id)
+        subscription_expires_at = await user_service.get_subscription_expires_at(
+            user_id
+        )
 
     # Check if premium subscription is active
     if subscription_status == "premium" and subscription_expires_at:
@@ -208,7 +253,9 @@ async def cmd_check_messages(
 
         if subscription_expires_at > datetime.utcnow():
             # User has active premium
-            await message.answer(f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.unlimited')}")
+            await message.answer(
+                f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.unlimited')}"
+            )
             return
 
     # Get daily limit from config
@@ -222,9 +269,7 @@ async def cmd_check_messages(
 
     # Prepare response based on remaining messages
     if remaining == 0:
-        response = (
-            f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.used_all', total=daily_limit)}"
-        )
+        response = f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.used_all', total=daily_limit)}"
     else:
         response = f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.remaining_free', remaining=remaining, total=daily_limit)}"
 
@@ -259,7 +304,10 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     import time
 
     current_time = time.time()
-    if _metrics_cache["response"] and (current_time - _metrics_cache["last_update"]) < _metrics_cache["ttl"]:
+    if (
+        _metrics_cache["response"]
+        and (current_time - _metrics_cache["last_update"]) < _metrics_cache["ttl"]
+    ):
         await message.answer(_metrics_cache["response"])
         return
 
@@ -273,14 +321,20 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     response += f"uptime_hours: {metrics_summary['uptime_hours']}\n\n"
 
     # Daily user activity metrics (reset at midnight)
-    response += f"unique_active_users_today: {metrics_summary['unique_active_users_today']}\n"
-    response += f"total_interactions_today: {metrics_summary['total_interactions_today']}\n"
+    response += (
+        f"unique_active_users_today: {metrics_summary['unique_active_users_today']}\n"
+    )
+    response += (
+        f"total_interactions_today: {metrics_summary['total_interactions_today']}\n"
+    )
     response += f"messages_sent_today: {metrics_summary['messages_sent_today']}\n"
     response += f"commands_used_today: {metrics_summary['commands_used_today']}\n"
     response += f"new_users_today: {metrics_summary['new_users_today']}\n\n"
 
     # General metrics (accumulative, never reset)
-    response += f"total_messages_processed: {metrics_summary['total_messages_processed']}\n"
+    response += (
+        f"total_messages_processed: {metrics_summary['total_messages_processed']}\n"
+    )
     response += f"success_rate: {metrics_summary['success_rate']}\n"
     response += f"average_response_time: {metrics_summary['average_response_time']}\n"
     response += f"limit_exceeded_count: {metrics_summary['limit_exceeded_count']}\n\n"
@@ -301,5 +355,7 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
 @router.callback_query(F.data == "choose_gender_help")
 async def gender_help(callback: CallbackQuery, i18n: I18nMiddleware):
     """Handle gender help callback."""
-    await callback.message.edit_text(i18n.t("buttons.choose_gender_help"), reply_markup=get_gender_keyboard(i18n))
+    await callback.message.edit_text(
+        i18n.t("buttons.choose_gender_help"), reply_markup=get_gender_keyboard(i18n)
+    )
     await callback.answer()

@@ -13,7 +13,7 @@ from domain.user.services_cached import UserService
 from shared.fsm.user_cache import UserCacheData
 from shared.helpers.typingIndicator import TypingIndicator
 from shared.keyboards.common import get_limit_exceeded_keyboard
-from shared.metrics.metrics import record_response_time, safe_record_metric, safe_record_user_interaction
+from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction
 from shared.utils.helpers import destructure_user
 
 from core.exceptions import MessageException, OpenAIException
@@ -23,7 +23,12 @@ router = Router()
 
 @router.message()
 async def handle_message(
-    message: Message, message_service: MessageService, user_service: UserService, bot, i18n, cached_user: UserCacheData = None
+    message: Message,
+    message_service: MessageService,
+    user_service: UserService,
+    bot,
+    i18n,
+    cached_user: UserCacheData = None,
 ):
     """Handle incoming text messages with FSM caching."""
     user_id, username, first_name, last_name = destructure_user(message.from_user)
@@ -61,13 +66,18 @@ async def handle_message(
         safe_record_metric("record_cache_miss")
 
     if not consent_given:
-        await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard(i18n))
+        await message.answer(
+            i18n.t("consent.request"), reply_markup=get_consent_keyboard(i18n)
+        )
         return
 
     # Check message limit
     if not await message_service.can_send_message(user_id):
         safe_record_metric("record_limit_exceeded")
-        await message.answer(i18n.t("messages.limit_exceeded"), reply_markup=get_limit_exceeded_keyboard())
+        await message.answer(
+            i18n.t("messages.limit_exceeded"),
+            reply_markup=get_limit_exceeded_keyboard(),
+        )
         return
 
     # Add user message to database
@@ -84,7 +94,9 @@ async def handle_message(
 
             # Generate AI response with timing
             start_time = time.time()
-            answer = await message_service.generate_response(user_id, message.text, gender)
+            answer = await message_service.generate_response(
+                user_id, message.text, gender
+            )
             response_time = time.time() - start_time
 
             # Record successful response with timing

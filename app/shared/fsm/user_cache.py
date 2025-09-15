@@ -96,7 +96,11 @@ class UserCache:
     async def _cleanup_expired(self) -> None:
         """Remove expired entries from cache."""
         async with self._lock:
-            expired_keys = [user_id for user_id, data in self._cache.items() if data.is_expired(self.ttl_minutes)]
+            expired_keys = [
+                user_id
+                for user_id, data in self._cache.items()
+                if data.is_expired(self.ttl_minutes)
+            ]
 
             for key in expired_keys:
                 del self._cache[key]
@@ -122,7 +126,9 @@ class UserCache:
             # Check cache size limit
             if len(self._cache) >= self.max_size:
                 # Remove least recently accessed entry
-                oldest_key = min(self._cache.keys(), key=lambda k: self._cache[k].last_accessed)
+                oldest_key = min(
+                    self._cache.keys(), key=lambda k: self._cache[k].last_accessed
+                )
                 del self._cache[oldest_key]
 
             self._cache[user_id] = data

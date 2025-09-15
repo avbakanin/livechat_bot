@@ -3,8 +3,6 @@ Subscription domain services - placeholder for future implementation.
 """
 import asyncpg
 
-from core.exceptions import SubscriptionException
-
 
 class SubscriptionService:
     """Subscription business logic service."""

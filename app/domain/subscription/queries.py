@@ -18,4 +18,6 @@ async def get_subscription_status(pool: asyncpg.Pool, user_id: int) -> str:
             )
             return row["subscription_status"] if row else "free"
         except Exception as e:
-            raise DatabaseException(f"Error getting subscription status {user_id}: {e}", e)
+            raise DatabaseException(
+                f"Error getting subscription status {user_id}: {e}", e
+            )

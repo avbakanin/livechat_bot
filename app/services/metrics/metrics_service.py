@@ -3,8 +3,7 @@ Metrics service for persistent storage of bot metrics.
 """
 
 import logging
-
-from typing import Dict, Any
+from typing import Any, Dict
 
 import asyncpg
 
@@ -32,7 +31,9 @@ class MetricsService:
         """Set a metric value in database."""
         try:
             async with self.pool.acquire() as conn:
-                await conn.execute("SELECT public.set_metric($1, $2)", metric_name, value)
+                await conn.execute(
+                    "SELECT public.set_metric($1, $2)", metric_name, value
+                )
         except Exception as e:
             self.logger.error(f"Error setting metric {metric_name}={value}: {e}")
             raise DatabaseException(f"Error setting metric {metric_name}", e)
@@ -41,16 +42,22 @@ class MetricsService:
         """Increment a metric value in database."""
         try:
             async with self.pool.acquire() as conn:
-                await conn.execute("SELECT public.increment_metric($1, $2)", metric_name, increment)
+                await conn.execute(
+                    "SELECT public.increment_metric($1, $2)", metric_name, increment
+                )
         except Exception as e:
-            self.logger.error(f"Error incrementing metric {metric_name}+{increment}: {e}")
+            self.logger.error(
+                f"Error incrementing metric {metric_name}+{increment}: {e}"
+            )
             raise DatabaseException(f"Error incrementing metric {metric_name}", e)
 
     async def get_all_metrics(self) -> Dict[str, Any]:
         """Get all metrics from database."""
         try:
             async with self.pool.acquire() as conn:
-                rows = await conn.fetch("SELECT metric_name, metric_value, metric_text FROM public.bot_metrics")
+                rows = await conn.fetch(
+                    "SELECT metric_name, metric_value, metric_text FROM public.bot_metrics"
+                )
                 result = {}
                 for row in rows:
                     # Use metric_text if available, otherwise metric_value
@@ -83,7 +90,9 @@ class MetricsService:
                             # Convert float to int for storage
                             if isinstance(value, float):
                                 value = int(value)
-                            await conn.execute("SELECT public.set_metric($1, $2)", metric_name, value)
+                            await conn.execute(
+                                "SELECT public.set_metric($1, $2)", metric_name, value
+                            )
         except Exception as e:
             self.logger.error(f"Error saving metrics: {e}")
             raise DatabaseException("Error saving metrics", e)

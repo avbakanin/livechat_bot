@@ -225,7 +225,9 @@ async def get_gender_preference(pool: asyncpg.Pool, user_id: int) -> str:
             )
             return row["gender_preference"] if row else "female"
         except Exception as e:
-            raise DatabaseException(f"Error getting gender preference {user_id}: {e}", e)
+            raise DatabaseException(
+                f"Error getting gender preference {user_id}: {e}", e
+            )
 
 
 async def get_user_subscription_status(pool: asyncpg.Pool, user_id: int) -> str:
@@ -240,7 +242,9 @@ async def get_user_subscription_status(pool: asyncpg.Pool, user_id: int) -> str:
             )
             return row["subscription_status"] if row else "free"
         except Exception as e:
-            raise DatabaseException(f"Error getting subscription status for user {user_id}: {e}", e)
+            raise DatabaseException(
+                f"Error getting subscription status for user {user_id}: {e}", e
+            )
 
 
 async def get_user_subscription_expires_at(pool: asyncpg.Pool, user_id: int):
@@ -255,10 +259,14 @@ async def get_user_subscription_expires_at(pool: asyncpg.Pool, user_id: int):
             )
             return row["subscription_expires_at"] if row else None
         except Exception as e:
-            raise DatabaseException(f"Error getting subscription expiration for user {user_id}: {e}", e)
+            raise DatabaseException(
+                f"Error getting subscription expiration for user {user_id}: {e}", e
+            )
 
 
-async def set_gender_preference(pool: asyncpg.Pool, user_id: int, preference: str) -> None:
+async def set_gender_preference(
+    pool: asyncpg.Pool, user_id: int, preference: str
+) -> None:
     """Set user gender preference."""
     async with pool.acquire() as conn:
         try:
@@ -294,4 +302,6 @@ async def set_gender_preference(pool: asyncpg.Pool, user_id: int, preference: st
                     user_id,
                 )
         except Exception as e:
-            raise DatabaseException(f"Error setting gender preference {user_id}: {e}", e)
+            raise DatabaseException(
+                f"Error setting gender preference {user_id}: {e}", e
+            )

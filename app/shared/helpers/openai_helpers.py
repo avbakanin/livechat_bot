@@ -3,7 +3,9 @@ from typing import Dict, List, Union
 from openai import AsyncOpenAI
 
 
-async def get_openapi_response(messages: List[Dict[str, Union[str, None]]], client: AsyncOpenAI) -> str:
+async def get_openapi_response(
+    messages: List[Dict[str, Union[str, None]]], client: AsyncOpenAI
+) -> str:
     response = await client.chat.completions.create(
         model="gpt-4o-mini",
         messages=messages,

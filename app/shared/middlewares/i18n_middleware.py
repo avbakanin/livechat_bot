@@ -7,7 +7,10 @@ from shared.i18n import i18n
 
 class I18nMiddleware(BaseMiddleware):
     async def __call__(
-        self, handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]], event: TelegramObject, data: Dict[str, Any]
+        self,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
+        data: Dict[str, Any],
     ) -> Any:
         """Process the event and set user language."""
 

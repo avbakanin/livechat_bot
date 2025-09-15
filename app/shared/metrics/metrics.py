@@ -32,7 +32,9 @@ class BotMetrics:
     commands_used_today: int = 0  # Команды (/start, /help, etc.)
 
     # Daily user tracking (for deduplication)
-    daily_user_ids: set = field(default_factory=set)  # Set для отслеживания уникальных пользователей
+    daily_user_ids: set = field(
+        default_factory=set
+    )  # Set для отслеживания уникальных пользователей
 
     # Error metrics
     openai_errors: int = 0
@@ -108,7 +110,9 @@ class MetricsCollector:
         if len(self._response_times) > 100:
             self._response_times = self._response_times[-100:]
 
-        self.metrics.average_response_time = sum(self._response_times) / len(self._response_times)
+        self.metrics.average_response_time = sum(self._response_times) / len(
+            self._response_times
+        )
         self._batch_count += 1
         self._check_batch_save()
 
@@ -170,7 +174,9 @@ class MetricsCollector:
     def record_active_user(self):
         """DEPRECATED: Use record_user_interaction instead."""
         # Keep for backward compatibility, but log warning
-        logging.warning("record_active_user() is deprecated. Use record_user_interaction(user_id, type) instead.")
+        logging.warning(
+            "record_active_user() is deprecated. Use record_user_interaction(user_id, type) instead."
+        )
         self.metrics.total_interactions_today += 1
 
     def get_metrics_summary(self) -> Dict[str, Any]:
@@ -213,14 +219,24 @@ class MetricsCollector:
             db_metrics = await self.metrics_service.load_metrics()
 
             # Load basic metrics
-            self.metrics.total_messages_processed = db_metrics.get("total_messages_processed", 0)
-            self.metrics.successful_responses = db_metrics.get("successful_responses", 0)
+            self.metrics.total_messages_processed = db_metrics.get(
+                "total_messages_processed", 0
+            )
+            self.metrics.successful_responses = db_metrics.get(
+                "successful_responses", 0
+            )
             self.metrics.failed_responses = db_metrics.get("failed_responses", 0)
-            self.metrics.limit_exceeded_count = db_metrics.get("limit_exceeded_count", 0)
+            self.metrics.limit_exceeded_count = db_metrics.get(
+                "limit_exceeded_count", 0
+            )
 
             # Load new user activity metrics
-            self.metrics.total_interactions_today = db_metrics.get("total_interactions_today", 0)
-            self.metrics.unique_active_users_today = db_metrics.get("unique_active_users_today", 0)
+            self.metrics.total_interactions_today = db_metrics.get(
+                "total_interactions_today", 0
+            )
+            self.metrics.unique_active_users_today = db_metrics.get(
+                "unique_active_users_today", 0
+            )
             self.metrics.new_users_today = db_metrics.get("new_users_today", 0)
             self.metrics.messages_sent_today = db_metrics.get("messages_sent_today", 0)
             self.metrics.commands_used_today = db_metrics.get("commands_used_today", 0)
@@ -230,11 +246,19 @@ class MetricsCollector:
             if daily_user_ids_str:
                 try:
                     # Parse comma-separated user IDs from database
-                    user_ids = [int(uid.strip()) for uid in daily_user_ids_str.split(",") if uid.strip()]
+                    user_ids = [
+                        int(uid.strip())
+                        for uid in daily_user_ids_str.split(",")
+                        if uid.strip()
+                    ]
                     self.metrics.daily_user_ids = set(user_ids)
-                    logging.info(f"📊 Loaded {len(self.metrics.daily_user_ids)} daily user IDs from database")
+                    logging.info(
+                        f"📊 Loaded {len(self.metrics.daily_user_ids)} daily user IDs from database"
+                    )
                 except (ValueError, AttributeError) as e:
-                    logging.warning(f"Failed to parse daily_user_ids from database: {e}")
+                    logging.warning(
+                        f"Failed to parse daily_user_ids from database: {e}"
+                    )
                     self.metrics.daily_user_ids.clear()
             else:
                 self.metrics.daily_user_ids.clear()
@@ -251,7 +275,9 @@ class MetricsCollector:
             self.metrics.total_response_time = db_metrics.get("total_response_time", 0)
 
             # Load average response time from DB
-            self.metrics.average_response_time = db_metrics.get("average_response_time", 0.0)
+            self.metrics.average_response_time = db_metrics.get(
+                "average_response_time", 0.0
+            )
 
             # Reset uptime on each startup - this is more logical for monitoring
             self.metrics.started_at = datetime.utcnow()
@@ -265,7 +291,9 @@ class MetricsCollector:
                 if loaded_last_reset <= current_time:
                     self.metrics.last_reset = loaded_last_reset
                 else:
-                    logging.warning(f"Loaded last_reset ({loaded_last_reset}) is in future, using current time")
+                    logging.warning(
+                        f"Loaded last_reset ({loaded_last_reset}) is in future, using current time"
+                    )
                     self.metrics.last_reset = current_time
             else:
                 self.metrics.last_reset = datetime.utcnow()

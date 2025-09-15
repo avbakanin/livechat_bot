@@ -4,12 +4,9 @@ Performance test to compare FSM caching vs direct database queries.
 
 import asyncio
 import time
-from typing import List
 
-import asyncpg
 from domain.user.services import UserService as OriginalUserService
 from domain.user.services_cached import UserService as CachedUserService
-from shared.fsm.user_cache import UserCache, UserCacheData
 
 
 async def test_performance():
@@ -90,7 +87,12 @@ def print_cache_stats():
     print("=" * 30)
 
     # This would show real cache stats in production
-    stats = {"total_entries": 0, "max_size": 10000, "ttl_minutes": 30, "hit_rate": "N/A (simulation)"}
+    stats = {
+        "total_entries": 0,
+        "max_size": 10000,
+        "ttl_minutes": 30,
+        "hit_rate": "N/A (simulation)",
+    }
 
     for key, value in stats.items():
         print(f"{key}: {value}")

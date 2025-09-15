@@ -6,7 +6,9 @@ from typing import Optional, Tuple
 from aiogram.types import User
 
 
-def destructure_user(user: User) -> Tuple[int, Optional[str], Optional[str], Optional[str]]:
+def destructure_user(
+    user: User,
+) -> Tuple[int, Optional[str], Optional[str], Optional[str]]:
     """Extract user information from Telegram User object."""
     return (user.id, user.username, user.first_name, user.last_name)
 

@@ -168,7 +168,9 @@ def contains_stopwords(text):
 
 
 # Более быстрый вариант с предкомпилированными regex
-stop_patterns = [re.compile(r"\b" + re.escape(word) + r"\w*\b", re.IGNORECASE) for word in stoplist]
+stop_patterns = [
+    re.compile(r"\b" + re.escape(word) + r"\w*\b", re.IGNORECASE) for word in stoplist
+]
 
 
 def contains_stopwords_fast(text):

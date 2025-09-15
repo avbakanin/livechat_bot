@@ -48,10 +48,14 @@ class DailyResetTask:
             try:
                 # Вычисляем время до следующей полночи
                 now = datetime.now()
-                next_midnight = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+                next_midnight = (now + timedelta(days=1)).replace(
+                    hour=0, minute=0, second=0, microsecond=0
+                )
                 sleep_seconds = (next_midnight - now).total_seconds()
 
-                logging.info(f"Daily reset task: waiting {sleep_seconds:.0f} seconds until next midnight")
+                logging.info(
+                    f"Daily reset task: waiting {sleep_seconds:.0f} seconds until next midnight"
+                )
 
                 # Ждем до следующей полночи
                 await asyncio.sleep(sleep_seconds)
@@ -63,8 +67,12 @@ class DailyResetTask:
                 yesterday = date.today() - timedelta(days=1)
                 logging.info(f"Daily reset task: resetting counters for {yesterday}")
 
-                deleted_count = await self.counter_service.reset_counters_for_date(yesterday)
-                logging.info(f"Daily reset task: reset {deleted_count} counters for {yesterday}")
+                deleted_count = await self.counter_service.reset_counters_for_date(
+                    yesterday
+                )
+                logging.info(
+                    f"Daily reset task: reset {deleted_count} counters for {yesterday}"
+                )
 
                 # Reset daily metrics in memory
                 from shared.metrics.metrics import metrics_collector
@@ -75,7 +83,9 @@ class DailyResetTask:
 
                 # Record metrics for successful reset
                 if metrics_collector:
-                    metrics_collector.record_successful_response(0.0)  # Reset operation time
+                    metrics_collector.record_successful_response(
+                        0.0
+                    )  # Reset operation time
 
             except asyncio.CancelledError:
                 logging.info("Daily reset task cancelled")

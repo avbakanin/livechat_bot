@@ -1,5 +1,5 @@
 [tool.black]
-line-length = 127
+line-length = 88
 target-version = ['py310']
 include = '\.pyi?$'
 extend-exclude = '''
@@ -13,7 +13,7 @@ extend-exclude = '''
 
 [tool.isort]
 profile = "black"
-line_length = 127
+line_length = 88
 known_first_party = ["app", "core", "handlers"]
 
 
@@ -30,11 +30,12 @@ update = "pip install --upgrade -r requirements.txt"
 venv = "python -m venv venv"
 
 # Форматирование кода
-format = "python -m black ."
+format = "autoflake . --remove-all-unused-imports --recursive --in-place --ignore-init-module-imports"
+black = "python -m black ."
 isort = "python -m isort ."
 
 # Линтинг
-lint = "python -m flake8 . --max-line-length=127 --ignore=E501"
+lint = "python -m flake8 . --max-line-length=88 --ignore=E501"
 quick-lint = "python -m flake8 . --select=E9,F63,F7,F82 --exit-zero"
 
 # Очистка
@@ -42,5 +43,5 @@ clean = "find . -name '*.pyc' -delete && find . -name '__pycache__' -exec rm -rf
 
 # Составные задачи
 setup = { sequence = ["install", "run"] }
-full-check = { sequence = ["format", "isort"] }
+full-check = { sequence = ["format", "isort", "black"] }
 restart = { sequence = ["clean", "run"] }

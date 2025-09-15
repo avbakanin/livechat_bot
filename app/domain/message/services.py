@@ -7,7 +7,9 @@ from typing import List
 
 import asyncpg
 from config.openai import OPENAI_CONFIG
-from domain.message.queries import count_user_messages_today as db_count_user_messages_today
+from domain.message.queries import (
+    count_user_messages_today as db_count_user_messages_today,
+)
 from domain.message.queries import create_message as db_create_message
 from domain.message.queries import delete_user_messages as db_delete_user_messages
 from domain.message.queries import get_user_messages as db_get_user_messages
@@ -44,7 +46,9 @@ class MessageService:
         if role == "user" and self.counter_service:
             await self.counter_service.increment_user_count(user_id)
 
-    async def get_chat_history(self, user_id: int, limit: int = 10) -> List[MessageContext]:
+    async def get_chat_history(
+        self, user_id: int, limit: int = 10
+    ) -> List[MessageContext]:
         """Get user's chat history."""
         return await db_get_user_messages(self.pool, user_id, limit)
 
@@ -70,14 +74,18 @@ class MessageService:
         daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
 
         if self.counter_service:
-            return await self.counter_service.get_remaining_messages(user_id, daily_limit)
+            return await self.counter_service.get_remaining_messages(
+                user_id, daily_limit
+            )
         else:
             # Fallback calculation
             messages_today = await db_count_user_messages_today(self.pool, user_id)
             remaining = daily_limit - messages_today
             return max(0, remaining)
 
-    async def generate_response(self, user_id: int, user_message: str, gender_preference: str) -> str:
+    async def generate_response(
+        self, user_id: int, user_message: str, gender_preference: str
+    ) -> str:
         """Generate AI response using OpenAI with dynamic personas."""
         try:
             # Get chat history
@@ -85,7 +93,9 @@ class MessageService:
 
             # Create system prompt - use persona service if available, otherwise fallback
             if self.persona_service:
-                system_prompt = self.persona_service.get_persona_for_gender(gender_preference)
+                system_prompt = self.persona_service.get_persona_for_gender(
+                    gender_preference
+                )
             else:
                 system_prompt = self._get_system_prompt(gender_preference)
 
@@ -107,7 +117,9 @@ class MessageService:
                 max_tokens=OPENAI_CONFIG["max_tokens"],
             )
 
-            return response.choices[0].message.content.strip() or i18n.t("messages.empty_response")
+            return response.choices[0].message.content.strip() or i18n.t(
+                "messages.empty_response"
+            )
 
         except Exception as e:
             logging.error(f"OpenAI error: {e}")

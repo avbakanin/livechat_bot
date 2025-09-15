@@ -35,7 +35,9 @@ async def create_message(pool: asyncpg.Pool, message_data: MessageCreate) -> Mes
             raise DatabaseException(f"Error creating message: {e}", e)
 
 
-async def get_user_messages(pool: asyncpg.Pool, user_id: int, limit: int = 10) -> List[MessageContext]:
+async def get_user_messages(
+    pool: asyncpg.Pool, user_id: int, limit: int = 10
+) -> List[MessageContext]:
     """Get user's recent messages for context."""
     async with pool.acquire() as conn:
         try:
@@ -52,7 +54,9 @@ async def get_user_messages(pool: asyncpg.Pool, user_id: int, limit: int = 10) -
             )
 
             # Reverse to get chronological order
-            return [MessageContext(role=r["role"], text=r["text"]) for r in reversed(rows)]
+            return [
+                MessageContext(role=r["role"], text=r["text"]) for r in reversed(rows)
+            ]
         except Exception as e:
             raise DatabaseException(f"Error getting user messages {user_id}: {e}", e)
 
@@ -71,7 +75,9 @@ async def delete_user_messages(pool: asyncpg.Pool, user_id: int) -> int:
             # Extract number of deleted rows from result
             return int(result.split()[-1]) if result else 0
         except Exception as e:
-            raise DatabaseException(f"Error deleting messages for user {user_id}: {e}", e)
+            raise DatabaseException(
+                f"Error deleting messages for user {user_id}: {e}", e
+            )
 
 
 async def count_user_messages_today(pool: asyncpg.Pool, user_id: int) -> int:

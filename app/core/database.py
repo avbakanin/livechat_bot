@@ -35,7 +35,9 @@ class DatabaseManager:
     def pool(self) -> asyncpg.Pool:
         """Get the current pool."""
         if not self._pool:
-            raise RuntimeError("Database pool not initialized. Call create_pool() first.")
+            raise RuntimeError(
+                "Database pool not initialized. Call create_pool() first."
+            )
         return self._pool
 
     @asynccontextmanager

@@ -11,7 +11,9 @@ async def is_subscription_active(pool, user_id):
                 user_id,
             )
             is_active = status == "premium"
-            logging.info(f"Checked subscription for user {user_id}: is_active={is_active}")
+            logging.info(
+                f"Checked subscription for user {user_id}: is_active={is_active}"
+            )
             return is_active
         except Exception as e:
             logging.error(f"Error in is_subscription_active for user {user_id}: {e}")
@@ -28,7 +30,9 @@ async def activate_subscription(pool, user_id, expires_at):
                 expires_at,
                 user_id,
             )
-            logging.info(f"Activated premium subscription for user {user_id}, expires at {expires_at}")
+            logging.info(
+                f"Activated premium subscription for user {user_id}, expires at {expires_at}"
+            )
         except Exception as e:
             logging.error(f"Error in activate_subscription for user {user_id}: {e}")
             raise
@@ -38,7 +42,9 @@ async def can_send(pool, user_id):
     async with pool.acquire() as conn:
         try:
             if await is_subscription_active(pool, user_id):
-                logging.info(f"User {user_id} has active premium subscription, can send messages")
+                logging.info(
+                    f"User {user_id} has active premium subscription, can send messages"
+                )
                 return True
             today_messages = await conn.fetchval(
                 """

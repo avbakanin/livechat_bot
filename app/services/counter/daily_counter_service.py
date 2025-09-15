@@ -17,7 +17,9 @@ class DailyCounterService:
     def __init__(self, pool: asyncpg.Pool):
         self.pool = pool
 
-    async def increment_user_count(self, user_id: int, target_date: Optional[date] = None) -> int:
+    async def increment_user_count(
+        self, user_id: int, target_date: Optional[date] = None
+    ) -> int:
         """
         Increment user's daily message count and return new count.
 
@@ -33,13 +35,19 @@ class DailyCounterService:
 
         async with self.pool.acquire() as conn:
             try:
-                count = await conn.fetchval("SELECT public.increment_user_daily_count($1, $2)", user_id, target_date)
+                count = await conn.fetchval(
+                    "SELECT public.increment_user_daily_count($1, $2)",
+                    user_id,
+                    target_date,
+                )
                 return count or 0
             except Exception as e:
                 logging.error(f"Error incrementing counter for user {user_id}: {e}")
                 raise DatabaseException(f"Error incrementing counter: {e}", e)
 
-    async def get_user_count(self, user_id: int, target_date: Optional[date] = None) -> int:
+    async def get_user_count(
+        self, user_id: int, target_date: Optional[date] = None
+    ) -> int:
         """
         Get user's daily message count.
 
@@ -55,13 +63,17 @@ class DailyCounterService:
 
         async with self.pool.acquire() as conn:
             try:
-                count = await conn.fetchval("SELECT public.get_user_daily_count($1, $2)", user_id, target_date)
+                count = await conn.fetchval(
+                    "SELECT public.get_user_daily_count($1, $2)", user_id, target_date
+                )
                 return count or 0
             except Exception as e:
                 logging.error(f"Error getting counter for user {user_id}: {e}")
                 raise DatabaseException(f"Error getting counter: {e}", e)
 
-    async def can_send_message(self, user_id: int, daily_limit: int, target_date: Optional[date] = None) -> bool:
+    async def can_send_message(
+        self, user_id: int, daily_limit: int, target_date: Optional[date] = None
+    ) -> bool:
         """
         Check if user can send a message (hasn't exceeded daily limit).
 
@@ -76,7 +88,9 @@ class DailyCounterService:
         current_count = await self.get_user_count(user_id, target_date)
         return current_count < daily_limit
 
-    async def get_remaining_messages(self, user_id: int, daily_limit: int, target_date: Optional[date] = None) -> int:
+    async def get_remaining_messages(
+        self, user_id: int, daily_limit: int, target_date: Optional[date] = None
+    ) -> int:
         """
         Get remaining messages for the day.
 
@@ -104,7 +118,9 @@ class DailyCounterService:
         """
         async with self.pool.acquire() as conn:
             try:
-                deleted_count = await conn.fetchval("SELECT public.reset_daily_counters_for_date($1)", target_date)
+                deleted_count = await conn.fetchval(
+                    "SELECT public.reset_daily_counters_for_date($1)", target_date
+                )
                 logging.info(f"Reset {deleted_count} counters for date {target_date}")
                 return deleted_count or 0
             except Exception as e:
@@ -120,7 +136,9 @@ class DailyCounterService:
         """
         async with self.pool.acquire() as conn:
             try:
-                deleted_count = await conn.fetchval("SELECT public.cleanup_old_counters()")
+                deleted_count = await conn.fetchval(
+                    "SELECT public.cleanup_old_counters()"
+                )
                 logging.info(f"Cleaned up {deleted_count} old counter records")
                 return deleted_count or 0
             except Exception as e:
@@ -151,7 +169,9 @@ class DailyCounterService:
                     user_id,
                     days,
                 )
-                return [{"date": row["date"], "count": row["message_count"]} for row in rows]
+                return [
+                    {"date": row["date"], "count": row["message_count"]} for row in rows
+                ]
             except Exception as e:
                 logging.error(f"Error getting stats for user {user_id}: {e}")
                 raise DatabaseException(f"Error getting user stats: {e}", e)

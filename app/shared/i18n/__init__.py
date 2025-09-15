@@ -21,7 +21,9 @@ class I18nManager:
     def _load_translations(self) -> None:
         try:
             if not self.locales_dir.exists():
-                raise FileNotFoundError(f"Locales directory not found: {self.locales_dir}")
+                raise FileNotFoundError(
+                    f"Locales directory not found: {self.locales_dir}"
+                )
 
             # Load translations for each language
             for language_dir in self.locales_dir.iterdir():
@@ -31,10 +33,14 @@ class I18nManager:
                         with open(translation_file, "r", encoding="utf-8") as f:
                             self.translations[language_dir.name] = json.load(f)
                     else:
-                        print(f"Warning: Translation file not found: {translation_file}")
+                        print(
+                            f"Warning: Translation file not found: {translation_file}"
+                        )
 
             if not self.translations:
-                raise FileNotFoundError(f"No translation files found in: {self.locales_dir}")
+                raise FileNotFoundError(
+                    f"No translation files found in: {self.locales_dir}"
+                )
 
         except (json.JSONDecodeError, FileNotFoundError) as e:
             print(f"Error loading translations: {e}")
@@ -45,7 +51,9 @@ class I18nManager:
         if language in self.translations:
             self.current_language = language
         else:
-            print(f"Language '{language}' not found, using default: {self.default_language}")
+            print(
+                f"Language '{language}' not found, using default: {self.default_language}"
+            )
             self.current_language = self.default_language
 
     def get_language(self) -> str:

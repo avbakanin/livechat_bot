@@ -1,7 +1,5 @@
 import logging
 
-from shared.constants import APP_CONFIG
-
 # from yookassa import Configuration, Payment  # Закомментировано, раскомментируйте после установки yookassa
 
 
@@ -39,7 +37,9 @@ async def add_payment(pool, user_id, amount, payment_status, payment_id):
                 payment_status,
                 payment_id,
             )
-            logging.info(f"Added payment {payment_id} for user {user_id}, status: {payment_status}")
+            logging.info(
+                f"Added payment {payment_id} for user {user_id}, status: {payment_status}"
+            )
         except Exception as e:
             logging.error(f"Error in add_payment for user {user_id}: {e}")
             raise
@@ -48,7 +48,9 @@ async def add_payment(pool, user_id, amount, payment_status, payment_id):
 async def get_payment_status(pool, payment_id):
     async with pool.acquire() as conn:
         try:
-            status = await conn.fetchval("SELECT payment_status FROM payments WHERE payment_id=$1", payment_id)
+            status = await conn.fetchval(
+                "SELECT payment_status FROM payments WHERE payment_id=$1", payment_id
+            )
             logging.info(f"Retrieved payment_status for payment {payment_id}: {status}")
             return status
         except Exception as e:

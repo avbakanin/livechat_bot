@@ -26,10 +26,16 @@ class UserService:
         self.pool = pool
 
     async def add_user(
-        self, user_id: int, username: Optional[str], first_name: Optional[str], last_name: Optional[str]
+        self,
+        user_id: int,
+        username: Optional[str],
+        first_name: Optional[str],
+        last_name: Optional[str],
     ) -> None:
         """Add or update user information."""
-        user_data = UserCreate(id=user_id, username=username, first_name=first_name, last_name=last_name)
+        user_data = UserCreate(
+            id=user_id, username=username, first_name=first_name, last_name=last_name
+        )
         await db_create_user(self.pool, user_data)
 
         # Update cache if user exists

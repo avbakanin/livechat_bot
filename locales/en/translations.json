@@ -53,7 +53,7 @@
     "unexpected_error": "An unexpected error occurred. Please try again later.",
     "empty_response": "OpenAI returned an empty response.",
     "empty_message": "Please send a non-empty message.",
-    "message_too_long": "Message is too long. Maximum 4000 characters."
+    "message_too_long": "Message is too long. Maximum 2500 characters."
   },
   "persons": {
     "gender": {

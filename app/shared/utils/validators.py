@@ -28,7 +28,7 @@ def validate_message_text(text: Any) -> str:
     if not text.strip():
         raise ValidationException("Message text cannot be empty")
 
-    if len(text) > 4000:  # Telegram message limit
+    if len(text) > 2500:  # Telegram message limit
         raise ValidationException("Message text too long")
 
     return text.strip()

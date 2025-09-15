@@ -49,7 +49,7 @@ async def handle_message(
         await message.answer(i18n.t("messages.empty_message"))
         return
 
-    if len(message.text) > 4000:  # Telegram message limit
+    if len(message.text) > 2500:  # Telegram message limit
         safe_record_metric("record_failed_response", "validation")
         await message.answer(i18n.t("messages.message_too_long"))
         return

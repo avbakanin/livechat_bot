@@ -13,6 +13,7 @@ from domain.user.services_cached import UserService
 from shared.fsm.user_cache import UserCacheData
 from shared.helpers.typingIndicator import TypingIndicator
 from shared.keyboards.common import get_limit_exceeded_keyboard
+from shared.metrics import metrics_collector, record_response_time
 from shared.utils.helpers import destructure_user
 
 from core.exceptions import MessageException, OpenAIException
@@ -30,8 +31,22 @@ async def handle_message(
     cached_user: UserCacheData = None
 ):
     """Handle incoming text messages with FSM caching."""
+    # Record message processing
+    metrics_collector.record_message_processed()
+    
     # Skip commands
     if message.text.startswith("/"):
+        return
+
+    # Validate message content
+    if not message.text or len(message.text.strip()) == 0:
+        metrics_collector.record_failed_response("validation")
+        await message.answer(i18n.t("messages.empty_message"))
+        return
+    
+    if len(message.text) > 4000:  # Telegram message limit
+        metrics_collector.record_failed_response("validation")
+        await message.answer(i18n.t("messages.message_too_long"))
         return
 
     user_id, username, first_name, last_name = destructure_user(message.from_user)
@@ -42,8 +57,10 @@ async def handle_message(
     # Check consent using cache if available
     if cached_user:
         consent_given = cached_user.consent_given
+        metrics_collector.record_cache_hit()
     else:
         consent_given = await user_service.get_consent_status(user_id)
+        metrics_collector.record_cache_miss()
     
     if not consent_given:
         await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard(i18n))
@@ -51,6 +68,7 @@ async def handle_message(
 
     # Check message limit
     if not await message_service.can_send_message(user_id):
+        metrics_collector.record_limit_exceeded()
         await message.answer(i18n.t("messages.limit_exceeded"), reply_markup=get_limit_exceeded_keyboard())
         return
 
@@ -77,10 +95,13 @@ async def handle_message(
 
         except OpenAIException as e:
             logging.error(f"OpenAI error: {e}")
+            metrics_collector.record_failed_response("openai")
             await message.answer(i18n.t("messages.processing_error"))
         except MessageException as e:
             logging.error(f"Message error: {e}")
+            metrics_collector.record_failed_response("database")
             await message.answer(i18n.t("messages.save_error"))
         except Exception as e:
             logging.error(f"Unexpected error: {e}")
+            metrics_collector.record_failed_response("unknown")
             await message.answer(i18n.t("messages.unexpected_error"))

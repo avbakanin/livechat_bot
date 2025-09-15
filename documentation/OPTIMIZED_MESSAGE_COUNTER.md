@@ -31,7 +31,7 @@ WHERE user_id = $1 AND role = 'user' AND DATE(created_at) = CURRENT_DATE
 
 ### 1. ✅ **Новая таблица счетчиков**
 
-**Файл:** `app/migrations/add_daily_counters.sql`
+**Файл:** `app/ddl.sql` (интегрировано в основной DDL)
 
 ```sql
 CREATE TABLE public.user_daily_counters (

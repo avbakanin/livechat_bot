@@ -1,13 +1,13 @@
 import random
 from typing import Dict, List, Any
-from shared.middlewares.i18n_middleware import I18nMiddleware
+from shared.i18n import i18n
 
 
 class PersonaService:
     """Сервис для генерации динамических персонажей на основе переводов"""
     
-    def __init__(self, i18n: I18nMiddleware):
-        self.i18n = i18n
+    def __init__(self):
+        pass
     
     def generate_dynamic_persona(self, user_gender: str) -> Dict[str, str]:
         """
@@ -20,7 +20,18 @@ class PersonaService:
             Dict с системным промптом для персонажа
         """
         # Получаем данные персонажей из переводов
-        persons_data = self.i18n.t("persons")
+        persons_data = i18n.t("persons")
+        
+        # Проверяем, что данные получены корректно
+        if not isinstance(persons_data, dict) or persons_data.startswith("["):
+            # Fallback к простому промпту
+            return {
+                "role": "system",
+                "content": "Ты дружелюбный AI-компаньон. Отвечай на русском языке.",
+                "persona_gender": "unknown",
+                "temperament": "unknown",
+                "traits": []
+            }
         
         # Выбираем пол персонажа (противоположный пользователю)
         persona_gender = "female" if user_gender == "male" else "male"

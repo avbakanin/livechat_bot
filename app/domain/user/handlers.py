@@ -21,6 +21,7 @@ from shared.messages.common import get_help_text, get_privacy_info_text
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.middlewares.middlewares import AccessMiddleware
 from shared.utils.helpers import destructure_user
+from shared.metrics import metrics_collector
 
 from core.exceptions import UserException
 
@@ -213,6 +214,25 @@ async def cmd_check_messages(
     
     # Add reset info
     response += f"\n\n{i18n.t('commands.check_messages.reset_info')}"
+    
+    await message.answer(response)
+
+
+@router.message(Command(commands=["metrics"]))
+async def cmd_metrics(message: Message, i18n: I18nMiddleware):
+    """Show bot metrics (admin only)."""
+    user_id = message.from_user.id
+    
+    # Check if user is admin (hardcoded for now)
+    if user_id not in {627875032, 1512454100}:
+        await message.answer("Access denied.")
+        return
+    
+    metrics_summary = metrics_collector.get_metrics_summary()
+    
+    response = "📊 Bot Metrics\n\n"
+    for key, value in metrics_summary.items():
+        response += f"{key}: {value}\n"
     
     await message.answer(response)
 

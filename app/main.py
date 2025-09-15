@@ -24,7 +24,7 @@ from core.middleware import AccessMiddleware, LoggingMiddleware, ServiceMiddlewa
 
 
 async def main():
-    print("MAIN IS STARTED")
+    logging.info("MAIN IS STARTED")
 
     # Setup logging
     logging.basicConfig(
@@ -50,7 +50,7 @@ async def main():
         
         # Create I18n middleware first to use in PersonaService
         i18n_middleware = I18nMiddleware()
-        persona_service = PersonaService(i18n_middleware)
+        persona_service = PersonaService()
         
         # Create counter service for efficient message counting
         counter_service = DailyCounterService(pool)
@@ -124,6 +124,6 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("\nПрограмма завершена пользователем")
+        logging.info("Программа завершена пользователем")
     except Exception as e:
         logging.error(f"Критическая ошибка: {e}")

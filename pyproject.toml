@@ -15,7 +15,7 @@ extend-exclude = '''
 profile = "black"
 line_length = 88
 known_first_party = ["app", "core", "handlers"]
-
+remove_redundant_aliases = true
 
 [build-system]
 requires = ["setuptools>=42", "wheel"]

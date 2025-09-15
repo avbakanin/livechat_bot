@@ -8,7 +8,7 @@ from datetime import date, datetime, timedelta
 from typing import Optional
 
 import asyncpg
-from shared.metrics import metrics_collector
+from shared.metrics.metrics import metrics_collector
 
 from core.exceptions import DatabaseException
 

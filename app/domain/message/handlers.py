@@ -9,7 +9,8 @@ from aiogram.enums import ChatAction
 from aiogram.types import Message
 from domain.message.services import MessageService
 from domain.user.keyboards import get_consent_keyboard
-from domain.user.services import UserService
+from domain.user.services_cached import UserService
+from shared.fsm.user_cache import UserCacheData
 from shared.keyboards.common import get_limit_exceeded_keyboard
 from shared.utils.helpers import destructure_user
 
@@ -19,19 +20,31 @@ router = Router()
 
 
 @router.message()
-async def handle_message(message: Message, message_service: MessageService, user_service: UserService, bot, i18n):
-    """Handle incoming text messages."""
+async def handle_message(
+    message: Message, 
+    message_service: MessageService, 
+    user_service: UserService, 
+    bot, 
+    i18n,
+    cached_user: UserCacheData = None
+):
+    """Handle incoming text messages with FSM caching."""
     # Skip commands
     if message.text.startswith("/"):
         return
 
     user_id, username, first_name, last_name = destructure_user(message.from_user)
 
-    # Add user to database
+    # Add user to database (this will update cache if user exists)
     await user_service.add_user(user_id, username, first_name, last_name)
 
-    # Check consent
-    if not await user_service.get_consent_status(user_id):
+    # Check consent using cache if available
+    if cached_user:
+        consent_given = cached_user.consent_given
+    else:
+        consent_given = await user_service.get_consent_status(user_id)
+    
+    if not consent_given:
         await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard())
         return
 
@@ -47,8 +60,11 @@ async def handle_message(message: Message, message_service: MessageService, user
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
 
     try:
-        # Get gender preference
-        gender = await user_service.get_gender_preference(user_id)
+        # Get gender preference using cache if available
+        if cached_user:
+            gender = cached_user.gender_preference
+        else:
+            gender = await user_service.get_gender_preference(user_id)
 
         # Generate AI response
         answer = await message_service.generate_response(user_id, message.text, gender)

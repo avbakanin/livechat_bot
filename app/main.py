@@ -11,8 +11,10 @@ from domain.message.handlers import router as message_router
 from domain.message.services import MessageService
 from domain.payment.handlers import router as payment_router
 from domain.user.handlers import router as user_router
-from domain.user.services import UserService
+from domain.user.services_cached import UserService
 from openai import AsyncOpenAI
+from shared.fsm.fsm_middleware import FSMMiddleware
+from shared.fsm.user_cache import user_cache
 from shared.middlewares.i18n_middleware import I18nMiddleware
 
 from core.database import db_manager
@@ -49,6 +51,7 @@ async def main():
             dp,
             [
                 I18nMiddleware(),
+                FSMMiddleware(),  # Add FSM middleware for caching
                 AccessMiddleware(TELEGRAM_CONFIG["allowed_user_ids"]),
                 LoggingMiddleware(),
                 ServiceMiddleware(user_service, message_service),
@@ -60,10 +63,14 @@ async def main():
         dp["client"] = openai_client
         dp["pool"] = pool
 
+        # Start FSM cache cleanup task
+        await user_cache.start_cleanup_task()
+
         # Include routers
         setup_routers(dp)
 
         logging.info("Connected to PostgreSQL!")
+        logging.info("FSM cache initialized!")
         logging.info("Bot started!")
 
         # Start polling
@@ -77,6 +84,10 @@ async def main():
         logging.error(f"Bot polling error: {e}")
     finally:
         logging.info("Завершаем работу...")
+
+        # Stop FSM cache cleanup task
+        await user_cache.stop_cleanup_task()
+        logging.info("FSM cache cleanup stopped")
 
         # Close database pool
         if pool is not None:

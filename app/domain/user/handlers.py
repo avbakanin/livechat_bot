@@ -14,7 +14,8 @@ from domain.user.keyboards import (
     get_privacy_info_keyboard,
 )
 from domain.user.messages import get_consent_given_text, get_gender_change_warning_text, get_gender_selection_text
-from domain.user.services import UserService
+from domain.user.services_cached import UserService
+from shared.fsm.user_cache import UserCacheData
 from shared.messages.common import get_help_text, get_privacy_info_text
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.middlewares.middlewares import AccessMiddleware
@@ -29,12 +30,16 @@ router.callback_query.middleware(AccessMiddleware(allowed_ids={627875032, 151245
 
 
 @router.message(Command(commands=["start"]))
-async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddleware):
+async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddleware, cached_user: UserCacheData = None):
     user_id, username, first_name, last_name = destructure_user(message.from_user)
 
     await user_service.add_user(user_id, username, first_name, last_name)
 
-    consent = await user_service.get_consent_status(user_id)
+    # Check consent using cache if available
+    if cached_user:
+        consent = cached_user.consent_given
+    else:
+        consent = await user_service.get_consent_status(user_id)
 
     if consent:
         await message.answer(i18n.t("messages.bot_already_started"))
@@ -44,14 +49,17 @@ async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddl
 
 
 @router.message(Command(commands=["choose_gender"]))
-async def cmd_choose_gender(message: Message, user_service: UserService):
+async def cmd_choose_gender(message: Message, user_service: UserService, cached_user: UserCacheData = None):
     user_id, username, first_name, last_name = destructure_user(message.from_user)
 
     # Add user to database
     await user_service.add_user(user_id, username, first_name, last_name)
 
-    # Check current gender preference
-    current_gender = await user_service.get_gender_preference(user_id)
+    # Check current gender preference using cache if available
+    if cached_user:
+        current_gender = cached_user.gender_preference
+    else:
+        current_gender = await user_service.get_gender_preference(user_id)
 
     if current_gender and current_gender != "female":  # 'female' is default
         await message.answer(get_gender_change_warning_text(), reply_markup=get_gender_change_confirmation_keyboard())

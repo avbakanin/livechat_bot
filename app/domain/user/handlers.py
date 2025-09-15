@@ -42,7 +42,7 @@ async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddl
         consent = await user_service.get_consent_status(user_id)
 
     if consent:
-        await message.answer(i18n.t("messages.bot_already_started"))
+        await message.answer(i18n.t("commands.start.already_started"))
         return
 
     await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard(i18n))

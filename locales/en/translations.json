@@ -34,9 +34,6 @@
   "gender": {
     "choose": "Choose companion's gender:",
     "toggle_gender": "Companion's gender changed to {gender} 😊",
-    "choose_for_chat": "Choose companion's gender for chatting:",
-    "changed_to_female": "Companion's gender changed to girl 😊",
-    "changed_to_male": "Companion's gender changed to young man 😉",
     "change_warning": "⚠️ Are you sure you want to change companion's gender?\n\nAll chat history will be deleted!",
     "change_confirmed": "Chat history deleted. Choose companion's gender:",
     "change_cancelled": "Gender change cancelled. You can continue chatting."
@@ -46,8 +43,7 @@
     "processing_error": "Sorry, an error occurred while processing your message. Please try again later.",
     "save_error": "An error occurred while saving the message.",
     "unexpected_error": "An unexpected error occurred. Please try again later.",
-    "empty_response": "OpenAI returned an empty response.",
-    "bot_already_started": "Bot is already running 😊"
+    "empty_response": "OpenAI returned an empty response."
   },
   "premium": {
     "info_title": "💎 Premium Information",

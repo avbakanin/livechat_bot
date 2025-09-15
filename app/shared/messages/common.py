@@ -21,7 +21,7 @@ def get_help_text(free_limit: int = None) -> str:
 
     # Use provided limit or get from config
     if free_limit is None:
-        free_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
+        free_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 50)
 
     return f"""
         {hbold(i18n.t('commands.help.title'))}

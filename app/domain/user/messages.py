@@ -8,7 +8,7 @@ from shared.i18n import i18n
 def get_consent_given_text() -> str:
     """Get text after consent is given."""
     return i18n.t(
-        "consent.agreed", free_limit=OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
+        "consent.agreed", free_limit=OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 50)
     )
 
 

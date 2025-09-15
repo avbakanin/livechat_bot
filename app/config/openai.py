@@ -26,5 +26,5 @@ OPENAI_CONFIG: OpenAIConfig = {
     "temperature": 0.7,
     "max_tokens": 1000,
     "base_url": None,  # Use default OpenAI API URL
-    "FREE_MESSAGE_LIMIT": 100,
+    "FREE_MESSAGE_LIMIT": 50,
 }

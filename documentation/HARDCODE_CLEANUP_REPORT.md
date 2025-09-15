@@ -46,7 +46,7 @@ daily_limit = 100  # Should come from config
 **Решение:**
 ```python
 # ✅ СТАЛО:
-daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
+daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 50)
 ```
 
 **Причина изменения:**
@@ -60,7 +60,7 @@ daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
 **Проблема:**
 ```python
 # ❌ БЫЛО:
-def get_help_text(free_limit: int = 100) -> str:
+def get_help_text(free_limit: int = 50) -> str:
 ```
 
 **Решение:**
@@ -69,7 +69,7 @@ def get_help_text(free_limit: int = 100) -> str:
 def get_help_text(free_limit: int = None) -> str:
     # Use provided limit or get from config
     if free_limit is None:
-        free_limit = OPENAI_CONFIG.get('FREE_MESSAGE_LIMIT', 100)
+        free_limit = OPENAI_CONFIG.get('FREE_MESSAGE_LIMIT', 50)
 ```
 
 **Причина изменения:**
@@ -80,11 +80,11 @@ def get_help_text(free_limit: int = None) -> str:
 ## ✅ Что уже было правильно:
 
 ### 1. **Конфигурационные файлы**
-- `app/config/openai.py` - содержит `FREE_MESSAGE_LIMIT: 100`
-- `app/shared/constants/config.py` - содержит `FREE_MESSAGE_LIMIT: 100`
+- `app/config/openai.py` - содержит `FREE_MESSAGE_LIMIT: 50`
+- `app/shared/constants/config.py` - содержит `FREE_MESSAGE_LIMIT: 50`
 
 ### 2. **Использование конфигурации в других местах**
-- `app/domain/user/messages.py` - использует `OPENAI_CONFIG.get('FREE_MESSAGE_LIMIT', 100)`
+- `app/domain/user/messages.py` - использует `OPENAI_CONFIG.get('FREE_MESSAGE_LIMIT', 50)`
 - Большинство мест уже используют конфигурацию правильно
 
 ### 3. **Локализация**

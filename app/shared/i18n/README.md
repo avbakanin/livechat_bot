@@ -28,7 +28,7 @@ dp.callback_query.middleware(I18nMiddleware())
 @router.message()
 async def handle_message(message: Message, i18n):
     # Получение перевода
-    text = i18n.t("commands.start.welcome", free_limit=100)
+    text = i18n.t("commands.start.welcome", free_limit=50)
     await message.answer(text)
 ```
 
@@ -140,7 +140,7 @@ def get_gender_keyboard() -> InlineKeyboardMarkup:
 "welcome": "Привет! У тебя {free_limit} бесплатных сообщений в день."
 
 # В коде
-i18n.t("commands.start.welcome", free_limit=100)
+i18n.t("commands.start.welcome", free_limit=50)
 # Результат: "Привет! У тебя 100 бесплатных сообщений в день."
 ```
 
@@ -177,7 +177,7 @@ language_mapping = {
 ```python
 @router.message(Command("start"))
 async def cmd_start(message: Message, i18n):
-    await message.answer(i18n.t("commands.start.welcome", free_limit=100))
+    await message.answer(i18n.t("commands.start.welcome", free_limit=50))
 ```
 
 ### В обработчиках callback_query

@@ -76,7 +76,7 @@ class I18nManager:
             Translated string
 
         Example:
-            i18n.t("commands.start.welcome", free_limit=100)
+            i18n.t("commands.start.welcome", free_limit=50)
         """
         try:
             # Split the key by dots to navigate the nested structure

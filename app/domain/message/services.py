@@ -59,7 +59,7 @@ class MessageService:
     async def can_send_message(self, user_id: int) -> bool:
         """Check if user can send messages (not exceeded daily limit)."""
         # Get daily limit from config
-        daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
+        daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 50)
 
         # Use efficient counter service if available, otherwise fallback to old method
         if self.counter_service:
@@ -71,7 +71,7 @@ class MessageService:
 
     async def get_remaining_messages(self, user_id: int) -> int:
         """Get remaining messages for the day."""
-        daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
+        daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 50)
 
         if self.counter_service:
             return await self.counter_service.get_remaining_messages(

@@ -43,7 +43,7 @@ from shared.i18n import i18n
 text = i18n.t('commands.help.title')
 
 # Перевод с параметрами
-text = i18n.t('commands.help.free_limit', free_limit=100)
+text = i18n.t('commands.help.free_limit', free_limit=50)
 
 # Установить язык
 i18n.set_language('en')

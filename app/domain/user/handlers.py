@@ -261,7 +261,7 @@ async def cmd_check_messages(
     # Get daily limit from config
     from config.openai import OPENAI_CONFIG
 
-    daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
+    daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 50)
 
     # Get remaining messages
     remaining = await message_service.get_remaining_messages(user_id)

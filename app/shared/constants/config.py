@@ -35,7 +35,7 @@ APP_CONFIG: AppConfig = {
     "OPENAI_API_KEY": os.getenv("OPENAI_API_KEY"),
     "YOOKASSA_SHOP_ID": os.getenv("YOOKASSA_SHOP_ID"),
     "YOOKASSA_SECRET_KEY": os.getenv("YOOKASSA_SECRET_KEY"),
-    "FREE_MESSAGE_LIMIT": 100,
+    "FREE_MESSAGE_LIMIT": 50,
 }
 
 # ОТКЛЮЧИТЬ

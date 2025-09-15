@@ -14,6 +14,7 @@ from domain.message.queries import get_user_messages as db_get_user_messages
 from openai import AsyncOpenAI
 from shared.i18n import i18n
 from shared.models.message import MessageContext, MessageCreate
+from services.persona import PersonaService
 
 from core.exceptions import OpenAIException
 
@@ -21,9 +22,10 @@ from core.exceptions import OpenAIException
 class MessageService:
     """Message business logic service."""
 
-    def __init__(self, pool: asyncpg.Pool, openai_client: AsyncOpenAI):
+    def __init__(self, pool: asyncpg.Pool, openai_client: AsyncOpenAI, persona_service: PersonaService = None):
         self.pool = pool
         self.openai_client = openai_client
+        self.persona_service = persona_service
 
     async def add_message(self, user_id: int, role: str, text: str) -> None:
         """Add a message to the database."""
@@ -47,13 +49,16 @@ class MessageService:
         return messages_today < daily_limit
 
     async def generate_response(self, user_id: int, user_message: str, gender_preference: str) -> str:
-        """Generate AI response using OpenAI."""
+        """Generate AI response using OpenAI with dynamic personas."""
         try:
             # Get chat history
             history = await self.get_chat_history(user_id, limit=10)
 
-            # Create system prompt based on gender preference
-            system_prompt = self._get_system_prompt(gender_preference)
+            # Create system prompt - use persona service if available, otherwise fallback
+            if self.persona_service:
+                system_prompt = self.persona_service.get_persona_for_gender(gender_preference)
+            else:
+                system_prompt = self._get_system_prompt(gender_preference)
 
             # Prepare messages for OpenAI
             messages = [{"role": "system", "content": system_prompt}]
@@ -73,7 +78,7 @@ class MessageService:
                 max_tokens=OPENAI_CONFIG["max_tokens"],
             )
 
-            return response.choices[0].message.content.strip() or i18n.t("error.empty_response")
+            return response.choices[0].message.content.strip() or i18n.t("messages.empty_response")
 
         except Exception as e:
             logging.error(f"OpenAI error: {e}")

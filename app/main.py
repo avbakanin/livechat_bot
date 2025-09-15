@@ -13,6 +13,7 @@ from domain.payment.handlers import router as payment_router
 from domain.user.handlers import router as user_router
 from domain.user.services_cached import UserService
 from openai import AsyncOpenAI
+from services.persona import PersonaService
 from shared.fsm.fsm_middleware import FSMMiddleware
 from shared.fsm.user_cache import user_cache
 from shared.middlewares.i18n_middleware import I18nMiddleware
@@ -45,12 +46,17 @@ async def main():
 
         # Initialize services
         user_service = UserService(pool)
-        message_service = MessageService(pool, openai_client)
+        
+        # Create I18n middleware first to use in PersonaService
+        i18n_middleware = I18nMiddleware()
+        persona_service = PersonaService(i18n_middleware)
+        
+        message_service = MessageService(pool, openai_client, persona_service)
 
         apply_middlewares(
             dp,
             [
-                I18nMiddleware(),
+                i18n_middleware,
                 FSMMiddleware(),  # Add FSM middleware for caching
                 AccessMiddleware(TELEGRAM_CONFIG["allowed_user_ids"]),
                 LoggingMiddleware(),

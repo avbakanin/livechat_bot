@@ -18,6 +18,7 @@ from services.counter import DailyCounterService
 from shared.fsm.fsm_middleware import FSMMiddleware
 from shared.fsm.user_cache import user_cache
 from shared.middlewares.i18n_middleware import I18nMiddleware
+from shared.tasks import DailyResetTask
 
 from core.database import db_manager
 from core.middleware import AccessMiddleware, LoggingMiddleware, ServiceMiddleware
@@ -55,6 +56,9 @@ async def main():
         # Create counter service for efficient message counting
         counter_service = DailyCounterService(pool)
         
+        # Create daily reset task for automatic counter reset at midnight
+        daily_reset_task = DailyResetTask(counter_service)
+        
         message_service = MessageService(pool, openai_client, persona_service, counter_service)
 
         apply_middlewares(
@@ -75,12 +79,16 @@ async def main():
 
         # Start FSM cache cleanup task
         await user_cache.start_cleanup_task()
+        
+        # Start daily reset task for automatic counter reset at midnight
+        await daily_reset_task.start()
 
         # Include routers
         setup_routers(dp)
 
         logging.info("Connected to PostgreSQL!")
         logging.info("FSM cache initialized!")
+        logging.info("Daily reset task started!")
         logging.info("Bot started!")
 
         # Start polling
@@ -98,6 +106,10 @@ async def main():
         # Stop FSM cache cleanup task
         await user_cache.stop_cleanup_task()
         logging.info("FSM cache cleanup stopped")
+        
+        # Stop daily reset task
+        await daily_reset_task.stop()
+        logging.info("Daily reset task stopped")
 
         # Close database pool
         if pool is not None:

@@ -4,12 +4,15 @@
       "welcome": "Hello! You have {free_limit} free messages per day. Choose your companion's gender:",
       "already_started": "Bot is already running - just send a message 😊"
     },
-    "check_messages": {
-      "title": "📊 Message Statistics",
+    "status": {
+      "title": "📊 Account Status",
       "remaining_free": "You have {remaining} of {total} free messages remaining for today",
       "unlimited": "You have premium subscription - unlimited communication! 💎",
       "used_all": "You've used all free messages for today ({total}/{total})",
-      "reset_info": "Limit will reset tomorrow at midnight"
+      "reset_info": "Limit will reset tomorrow at midnight",
+      "premium_days": "⏰ Premium subscription expires in {days} days",
+      "premium_hours": "⏰ Premium subscription expires in {hours} hours",
+      "premium_expiring": "⚠️ Premium subscription expires today!"
     },
     "help": {
       "title": "🤖 Bot Help",
@@ -17,7 +20,7 @@
       "start_command": "/start - Start chatting with the bot",
       "help_command": "/help - Show this help",
       "gender_command": "/choose_gender - Choose companion's gender",
-      "check_messages_command": "/check_messages - Check remaining free messages",
+      "status_command": "/status - Show account status and subscription info",
       "communication_title": "💬 Communication:",
       "free_limit": "• Free: {free_limit} messages per day",
       "premium_unlimited": "• Premium: unlimited communication",

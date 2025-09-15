@@ -229,15 +229,15 @@ async def back_to_help(callback: CallbackQuery, i18n: I18nMiddleware):
     await callback.answer()
 
 
-@router.message(Command(commands=["check_messages"]))
-async def cmd_check_messages(
+@router.message(Command(commands=["status"]))
+async def cmd_status(
     message: Message,
     message_service: MessageService,
     user_service: UserService,
     i18n: I18nMiddleware,
     cached_user: UserCacheData = None,
 ):
-    """Check remaining free messages for the user."""
+    """Show user status including subscription info and remaining messages."""
     user_id = message.from_user.id
 
     # Check if user has premium subscription
@@ -252,12 +252,24 @@ async def cmd_check_messages(
 
     # Check if premium subscription is active
     if subscription_status == "premium" and subscription_expires_at:
-        from datetime import datetime
+        from datetime import datetime, timedelta
 
         if subscription_expires_at > datetime.utcnow():
-            # User has active premium
+            # User has active premium - calculate days remaining
+            days_remaining = (subscription_expires_at - datetime.utcnow()).days
+            hours_remaining = (subscription_expires_at - datetime.utcnow()).seconds // 3600
+            
+            if days_remaining > 0:
+                premium_info = i18n.t('commands.status.premium_days', days=days_remaining)
+            elif hours_remaining > 0:
+                premium_info = i18n.t('commands.status.premium_hours', hours=hours_remaining)
+            else:
+                premium_info = i18n.t('commands.status.premium_expiring')
+            
             await message.answer(
-                f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.unlimited')}"
+                f"{i18n.t('commands.status.title')}\n\n"
+                f"{i18n.t('commands.status.unlimited')}\n\n"
+                f"{premium_info}"
             )
             return
 
@@ -272,12 +284,12 @@ async def cmd_check_messages(
 
     # Prepare response based on remaining messages
     if remaining == 0:
-        response = f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.used_all', total=daily_limit)}"
+        response = f"{i18n.t('commands.status.title')}\n\n{i18n.t('commands.status.used_all', total=daily_limit)}"
     else:
-        response = f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.remaining_free', remaining=remaining, total=daily_limit)}"
+        response = f"{i18n.t('commands.status.title')}\n\n{i18n.t('commands.status.remaining_free', remaining=remaining, total=daily_limit)}"
 
     # Add reset info
-    response += f"\n\n{i18n.t('commands.check_messages.reset_info')}"
+    response += f"\n\n{i18n.t('commands.status.reset_info')}"
 
     await message.answer(response)
 

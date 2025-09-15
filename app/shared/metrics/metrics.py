@@ -41,9 +41,12 @@ class BotMetrics:
     database_errors: int = 0
     validation_errors: int = 0
 
-    # Cache metrics
-    cache_hits: int = 0
-    cache_misses: int = 0
+    # Security metrics
+    security_flags: int = 0
+    suspicious_content_detected: int = 0
+    flood_attempts_blocked: int = 0
+    sanitization_applied: int = 0
+    access_denied_count: int = 0
 
     # Timestamps
     last_reset: datetime = field(default_factory=datetime.utcnow)
@@ -146,6 +149,36 @@ class MetricsCollector:
         self._batch_count += 1
         self._check_batch_save()
 
+    def record_security_flag(self):
+        """Record a security flag."""
+        self.metrics.security_flags += 1
+        self._batch_count += 1
+        self._check_batch_save()
+
+    def record_suspicious_content(self):
+        """Record suspicious content detection."""
+        self.metrics.suspicious_content_detected += 1
+        self._batch_count += 1
+        self._check_batch_save()
+
+    def record_flood_blocked(self):
+        """Record flood attempt blocked."""
+        self.metrics.flood_attempts_blocked += 1
+        self._batch_count += 1
+        self._check_batch_save()
+
+    def record_sanitization_applied(self):
+        """Record text sanitization applied."""
+        self.metrics.sanitization_applied += 1
+        self._batch_count += 1
+        self._check_batch_save()
+
+    def record_access_denied(self):
+        """Record access denied."""
+        self.metrics.access_denied_count += 1
+        self._batch_count += 1
+        self._check_batch_save()
+
     def record_new_user(self):
         """Record a new user registration."""
         self.metrics.new_users_today += 1
@@ -201,6 +234,12 @@ class MetricsCollector:
             "openai_errors": self.metrics.openai_errors,
             "database_errors": self.metrics.database_errors,
             "validation_errors": self.metrics.validation_errors,
+            # Security metrics (accumulative, never reset)
+            "security_flags": self.metrics.security_flags,
+            "suspicious_content_detected": self.metrics.suspicious_content_detected,
+            "flood_attempts_blocked": self.metrics.flood_attempts_blocked,
+            "sanitization_applied": self.metrics.sanitization_applied,
+            "access_denied_count": self.metrics.access_denied_count,
         }
 
     def log_metrics_summary(self):
@@ -421,6 +460,13 @@ def safe_record_user_interaction(user_id: int, interaction_type: str):
     """Safely record user interaction with new logical method."""
     if metrics_collector:
         metrics_collector.record_user_interaction(user_id, interaction_type)
+
+
+def safe_record_security_metric(method_name: str, *args, **kwargs):
+    """Safely record a security metric if metrics_collector is available."""
+    if metrics_collector and hasattr(metrics_collector, method_name):
+        method = getattr(metrics_collector, method_name)
+        method(*args, **kwargs)
 
 
 def record_response_time(func):

@@ -5,6 +5,7 @@ from typing import Any, Awaitable, Callable, Dict, Set
 
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message, TelegramObject
+from shared.metrics.metrics import safe_record_security_metric
 
 
 class AccessMiddleware(BaseMiddleware):
@@ -29,6 +30,7 @@ class AccessMiddleware(BaseMiddleware):
             user_id = event.from_user.id
 
         if user_id and user_id not in self.allowed_ids:
+            safe_record_security_metric("record_access_denied")
             if isinstance(event, Message):
                 await event.answer("❌ Доступ запрещен. Обратитесь к администратору.")
             elif isinstance(event, CallbackQuery):

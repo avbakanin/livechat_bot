@@ -283,6 +283,40 @@ async def cmd_check_messages(
 _metrics_cache = {"response": None, "last_update": 0, "ttl": 30}  # Cache for 30 seconds
 
 
+@router.message(Command(commands=["security"]))
+async def cmd_security(message: Message, i18n: I18nMiddleware):
+    """Show security metrics (admin only)."""
+    user_id = message.from_user.id
+
+    # Check if user is admin (hardcoded for now)
+    if user_id not in {627875032, 1512454100}:
+        await message.answer("Access denied.")
+        return
+
+    # Get security validator
+    from shared.security import SecurityValidator
+    security_validator = SecurityValidator()
+    
+    # Get user security score
+    security_score = security_validator.get_user_security_score(user_id)
+    
+    response = "🔒 Security Metrics\n\n"
+    response += f"Your Security Score: {security_score['score']}/100\n"
+    response += f"Risk Level: {security_score['risk_level']}\n"
+    response += f"Security Flags: {len(security_score['flags'])}\n"
+    response += f"Message Count: {security_score['message_count']}\n"
+    response += f"Rapid Messages: {security_score['rapid_messages']}\n\n"
+    
+    if security_score['flags']:
+        response += "Flags:\n"
+        for flag in security_score['flags']:
+            response += f"  - {flag}\n"
+    else:
+        response += "No security flags detected ✅"
+
+    await message.answer(response)
+
+
 @router.message(Command(commands=["metrics"]))
 async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     """Show bot metrics (admin only) with caching for scalability."""
@@ -343,7 +377,14 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     response += f"cache_hit_rate: {metrics_summary['cache_hit_rate']}\n"
     response += f"openai_errors: {metrics_summary['openai_errors']}\n"
     response += f"database_errors: {metrics_summary['database_errors']}\n"
-    response += f"validation_errors: {metrics_summary['validation_errors']}"
+    response += f"validation_errors: {metrics_summary['validation_errors']}\n\n"
+    
+    # Security metrics (accumulative, never reset)
+    response += f"security_flags: {metrics_summary['security_flags']}\n"
+    response += f"suspicious_content_detected: {metrics_summary['suspicious_content_detected']}\n"
+    response += f"flood_attempts_blocked: {metrics_summary['flood_attempts_blocked']}\n"
+    response += f"sanitization_applied: {metrics_summary['sanitization_applied']}\n"
+    response += f"access_denied_count: {metrics_summary['access_denied_count']}"
 
     # Update cache
     _metrics_cache["response"] = response

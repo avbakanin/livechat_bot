@@ -6,7 +6,7 @@ from aiogram import Bot
 
 class TypingIndicator:
     """Context manager for showing typing indicator during long operations."""
-    
+
     def __init__(self, bot: Bot, chat_id: int):
         self.bot = bot
         self.chat_id = chat_id
@@ -14,6 +14,7 @@ class TypingIndicator:
 
     async def __aenter__(self):
         """Start typing indicator."""
+
         async def run():
             while True:
                 try:

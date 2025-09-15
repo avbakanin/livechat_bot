@@ -46,7 +46,6 @@ def get_gender_change_confirmation_keyboard(i18n: I18nMiddleware) -> InlineKeybo
 
 
 def get_help_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
-
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text=i18n.t("buttons.choose_gender_help"), callback_data="choose_gender_help")],

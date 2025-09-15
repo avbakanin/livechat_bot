@@ -32,7 +32,7 @@ class UserService:
         """Add or update user information."""
         user_data = UserCreate(id=user_id, username=username, first_name=first_name, last_name=last_name)
         await db_create_user(self.pool, user_data)
-        
+
         # Update cache if user exists
         cached_data = await user_cache.get(user_id)
         if cached_data:
@@ -51,14 +51,14 @@ class UserService:
         cached_data = await user_cache.get(user_id)
         if cached_data:
             return cached_data
-        
+
         # Fetch from database
         user = await db_get_user(self.pool, user_id)
         if user:
             cached_data = UserCacheData.from_user(user)
             await user_cache.set(user_id, cached_data)
             return cached_data
-        
+
         return None
 
     async def delete_user_messages(self, user_id: int) -> None:
@@ -68,7 +68,7 @@ class UserService:
     async def update_user(self, user_id: int, user_data: UserUpdate) -> None:
         """Update user data."""
         await db_update_user(self.pool, user_id, user_data)
-        
+
         # Update cache
         cached_data = await user_cache.get(user_id)
         if cached_data:
@@ -80,7 +80,7 @@ class UserService:
                 cached_data.consent_given = user_data.consent_given
             if user_data.subscription_expires_at is not None:
                 cached_data.subscription_expires_at = user_data.subscription_expires_at
-            
+
             await user_cache.set(user_id, cached_data)
 
     async def get_consent_status(self, user_id: int) -> bool:
@@ -88,14 +88,14 @@ class UserService:
         cached_data = await user_cache.get(user_id)
         if cached_data:
             return cached_data.consent_given
-        
+
         # Fallback to database
         return await db_get_user_consent(self.pool, user_id)
 
     async def set_consent_status(self, user_id: int, consent: bool) -> None:
         """Set user consent status."""
         await db_set_user_consent(self.pool, user_id, consent)
-        
+
         # Update cache
         await user_cache.update_field(user_id, "consent_given", consent)
 
@@ -104,7 +104,7 @@ class UserService:
         cached_data = await user_cache.get(user_id)
         if cached_data:
             return cached_data.gender_preference
-        
+
         # Fallback to database
         return await db_get_gender_preference(self.pool, user_id)
 
@@ -114,7 +114,7 @@ class UserService:
             raise UserException(f"Invalid gender preference: {preference}")
 
         await db_set_gender_preference(self.pool, user_id, preference)
-        
+
         # Update cache
         await user_cache.update_field(user_id, "gender_preference", preference)
 
@@ -123,9 +123,10 @@ class UserService:
         cached_data = await user_cache.get(user_id)
         if cached_data:
             return cached_data.subscription_status
-        
+
         # Fallback to database
         from domain.user.queries import get_user_subscription_status
+
         return await get_user_subscription_status(self.pool, user_id)
 
     async def get_subscription_expires_at(self, user_id: int):
@@ -133,9 +134,10 @@ class UserService:
         cached_data = await user_cache.get(user_id)
         if cached_data:
             return cached_data.subscription_expires_at
-        
+
         # Fallback to database
         from domain.user.queries import get_user_subscription_expires_at
+
         return await get_user_subscription_expires_at(self.pool, user_id)
 
     async def can_send_message(self, user_id: int) -> bool:

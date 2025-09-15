@@ -154,7 +154,7 @@ safe_record_user_interaction(user_id, "message")  # Для сообщений
 📊 Bot Metrics
 
 uptime_seconds: 15430.296739
-uptime_hours: 4.286193538611111
+uptime_minutes: 257.2
 total_messages_processed: 1
 success_rate: 100.0%
 average_response_time: 0.00s

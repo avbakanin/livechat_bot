@@ -23,6 +23,8 @@ class BotMetrics:
     # Performance metrics
     average_response_time: float = 0.0
     total_response_time: float = 0.0
+    cache_hits: int = 0
+    cache_misses: int = 0
 
     # User activity metrics (LOGICAL SEPARATION)
     total_interactions_today: int = 0  # Все взаимодействия (команды + сообщения)
@@ -30,6 +32,11 @@ class BotMetrics:
     new_users_today: int = 0  # Новые пользователи (первый /start)
     messages_sent_today: int = 0  # Сообщения от пользователей
     commands_used_today: int = 0  # Команды (/start, /help, etc.)
+    
+    # Additional informative metrics
+    ai_responses_sent_today: int = 0  # AI ответы отправленные сегодня
+    callback_queries_today: int = 0  # Нажатия кнопок
+    premium_users_active_today: int = 0  # Премиум пользователи активные сегодня
 
     # Daily user tracking (for deduplication)
     daily_user_ids: set = field(
@@ -74,6 +81,9 @@ class BotMetrics:
         self.new_users_today = 0
         self.messages_sent_today = 0
         self.commands_used_today = 0
+        self.ai_responses_sent_today = 0
+        self.callback_queries_today = 0
+        self.premium_users_active_today = 0
 
         # Clear daily user tracking
         self.daily_user_ids.clear()
@@ -179,13 +189,31 @@ class MetricsCollector:
         self._batch_count += 1
         self._check_batch_save()
 
+    def record_ai_response_sent(self):
+        """Record AI response sent."""
+        self.metrics.ai_responses_sent_today += 1
+        self._batch_count += 1
+        self._check_batch_save()
+
+    def record_callback_query(self):
+        """Record callback query (button press)."""
+        self.metrics.callback_queries_today += 1
+        self._batch_count += 1
+        self._check_batch_save()
+
+    def record_premium_user_active(self):
+        """Record premium user activity."""
+        self.metrics.premium_users_active_today += 1
+        self._batch_count += 1
+        self._check_batch_save()
+
     def record_new_user(self):
         """Record a new user registration."""
         self.metrics.new_users_today += 1
         self._batch_count += 1
         self._check_batch_save()
 
-    def record_user_interaction(self, user_id: int, interaction_type: str):
+    def record_user_interaction(self, user_id: int, interaction_type: str, user_service=None):
         """Record any user interaction with deduplication."""
         # Always increment total interactions
         self.metrics.total_interactions_today += 1
@@ -196,10 +224,13 @@ class MetricsCollector:
         elif interaction_type == "command":
             self.metrics.commands_used_today += 1
 
-        # Track unique users
+        # Track unique users with simple and reliable deduplication
         if user_id not in self.metrics.daily_user_ids:
             self.metrics.daily_user_ids.add(user_id)
             self.metrics.unique_active_users_today += 1
+            logging.info(f"📊 New unique user today: {user_id}. Total unique users: {self.metrics.unique_active_users_today}")
+        else:
+            logging.debug(f"📊 Existing user interaction: {user_id}. Total unique users: {self.metrics.unique_active_users_today}")
 
         self._batch_count += 1
         self._check_batch_save()
@@ -214,26 +245,47 @@ class MetricsCollector:
 
     def get_metrics_summary(self) -> Dict[str, Any]:
         """Get a summary of current metrics."""
+        # Calculate engagement metrics
+        avg_messages_per_user = (
+            self.metrics.messages_sent_today / self.metrics.unique_active_users_today
+            if self.metrics.unique_active_users_today > 0 else 0
+        )
+        
+        retention_rate = (
+            (self.metrics.unique_active_users_today - self.metrics.new_users_today) / 
+            max(1, self.metrics.unique_active_users_today) * 100
+            if self.metrics.unique_active_users_today > 0 else 0
+        )
+
         return {
             # System metrics
             "uptime_seconds": self.metrics.get_uptime(),
-            "uptime_hours": self.metrics.get_uptime() / 3600,
+            "uptime_minutes": round(self.metrics.get_uptime() / 60, 1),
+            
             # Daily user activity metrics (reset at midnight)
             "unique_active_users_today": self.metrics.unique_active_users_today,
+            "new_users_today": self.metrics.new_users_today,
+            "retention_rate": f"{retention_rate:.1f}%",
             "total_interactions_today": self.metrics.total_interactions_today,
             "messages_sent_today": self.metrics.messages_sent_today,
             "commands_used_today": self.metrics.commands_used_today,
-            "new_users_today": self.metrics.new_users_today,
+            "callback_queries_today": self.metrics.callback_queries_today,
+            "ai_responses_sent_today": self.metrics.ai_responses_sent_today,
+            "premium_users_active_today": self.metrics.premium_users_active_today,
+            "avg_messages_per_user": f"{avg_messages_per_user:.1f}",
+            
             # General metrics (accumulative, never reset)
             "total_messages_processed": self.metrics.total_messages_processed,
             "success_rate": f"{self.metrics.get_success_rate():.1f}%",
             "average_response_time": f"{self.metrics.average_response_time:.2f}s",
             "limit_exceeded_count": self.metrics.limit_exceeded_count,
+            
             # Performance and error metrics (accumulative, never reset)
             "cache_hit_rate": f"{self.metrics.get_cache_hit_rate():.1f}%",
             "openai_errors": self.metrics.openai_errors,
             "database_errors": self.metrics.database_errors,
             "validation_errors": self.metrics.validation_errors,
+            
             # Security metrics (accumulative, never reset)
             "security_flags": self.metrics.security_flags,
             "suspicious_content_detected": self.metrics.suspicious_content_detected,
@@ -456,10 +508,10 @@ def safe_record_metric(method_name: str, *args, **kwargs):
         method(*args, **kwargs)
 
 
-def safe_record_user_interaction(user_id: int, interaction_type: str):
+def safe_record_user_interaction(user_id: int, interaction_type: str, user_service=None):
     """Safely record user interaction with new logical method."""
     if metrics_collector:
-        metrics_collector.record_user_interaction(user_id, interaction_type)
+        metrics_collector.record_user_interaction(user_id, interaction_type, user_service)
 
 
 def safe_record_security_metric(method_name: str, *args, **kwargs):

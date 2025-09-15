@@ -96,7 +96,7 @@ metrics_collector.record_failed_response("database")
 ```python
 {
     "uptime_seconds": время работы в секундах,
-    "uptime_hours": время работы в часах,
+    "uptime_minutes": время работы в минутах,
     "total_messages": общее количество сообщений,
     "success_rate": процент успешных ответов,
     "cache_hit_rate": процент попаданий в кэш,
@@ -158,7 +158,7 @@ metrics_collector.record_failed_response("database")
 📊 Bot Metrics
 
 uptime_seconds: 86400
-uptime_hours: 24.0
+uptime_minutes: 1440.0
 total_messages: 1250
 success_rate: 98.5%
 cache_hit_rate: 85.2%

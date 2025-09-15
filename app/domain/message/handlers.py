@@ -38,7 +38,7 @@ async def handle_message(
     safe_record_metric("record_message_processed")
 
     # Record user interaction (message)
-    safe_record_user_interaction(user_id, "message")
+    safe_record_user_interaction(user_id, "message", user_service)
 
     # Skip commands
     if message.text.startswith("/"):
@@ -160,6 +160,9 @@ async def handle_message(
 
             # Add AI response to database
             await message_service.add_message(user_id, "assistant", answer)
+
+            # Record AI response sent
+            safe_record_security_metric("record_ai_response_sent")
 
             # Send response
             await message.answer(answer)

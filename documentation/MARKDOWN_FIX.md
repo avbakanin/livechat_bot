@@ -44,7 +44,7 @@ await message.answer(response)
 ```
 📊 Bot Metrics
 
-uptime_hours: 2.5
+uptime_minutes: 150.0
 total_messages: 156
 success_rate: 98.7%
 cache_hit_rate: 85.2%

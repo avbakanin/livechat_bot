@@ -18,7 +18,7 @@ from domain.user.messages import get_consent_given_text
 from domain.user.services_cached import UserService
 from shared.fsm.user_cache import UserCacheData
 from shared.messages.common import get_help_text, get_privacy_info_text
-from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction
+from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction, safe_record_security_metric
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.middlewares.middlewares import AccessMiddleware
 from shared.utils.helpers import destructure_user
@@ -50,7 +50,7 @@ async def cmd_start(
         safe_record_metric("record_new_user")
 
     # Record user interaction (command)
-    safe_record_user_interaction(user_id, "command")
+    safe_record_user_interaction(user_id, "command", user_service)
 
     # Check consent using cache if available
     if cached_user:
@@ -104,6 +104,9 @@ async def gender_choice(
 ):
     user = callback.from_user
     preference = "female" if callback.data == "gender_female" else "male"
+
+    # Record callback query
+    safe_record_security_metric("record_callback_query")
 
     try:
         # change translation to dynamic i18n translations
@@ -317,6 +320,32 @@ async def cmd_security(message: Message, i18n: I18nMiddleware):
     await message.answer(response)
 
 
+@router.message(Command(commands=["reset_metrics"]))
+async def cmd_reset_metrics(message: Message, i18n: I18nMiddleware):
+    """Reset daily metrics (admin only, for testing)."""
+    user_id = message.from_user.id
+
+    # Check if user is admin (hardcoded for now)
+    if user_id not in {627875032, 1512454100}:
+        await message.answer("Access denied.")
+        return
+
+    # Get metrics collector
+    from shared.metrics.metrics import metrics_collector
+    
+    if metrics_collector is None:
+        await message.answer("Metrics not available.")
+        return
+
+    # Reset daily metrics
+    metrics_collector.metrics.reset_daily_metrics()
+    
+    # Save to database
+    await metrics_collector.save_to_database()
+    
+    await message.answer("✅ Daily metrics reset successfully!")
+
+
 @router.message(Command(commands=["metrics"]))
 async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     """Show bot metrics (admin only) with caching for scalability."""
@@ -352,18 +381,22 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
 
     # System metrics
     response += f"uptime_seconds: {metrics_summary['uptime_seconds']}\n"
-    response += f"uptime_hours: {metrics_summary['uptime_hours']}\n\n"
+    response += f"uptime_minutes: {metrics_summary['uptime_minutes']}\n\n"
 
     # Daily user activity metrics (reset at midnight)
-    response += (
-        f"unique_active_users_today: {metrics_summary['unique_active_users_today']}\n"
-    )
-    response += (
-        f"total_interactions_today: {metrics_summary['total_interactions_today']}\n"
-    )
-    response += f"messages_sent_today: {metrics_summary['messages_sent_today']}\n"
-    response += f"commands_used_today: {metrics_summary['commands_used_today']}\n"
-    response += f"new_users_today: {metrics_summary['new_users_today']}\n\n"
+    response += f"👥 USERS TODAY:\n"
+    response += f"  unique_active_users: {metrics_summary['unique_active_users_today']}\n"
+    response += f"  new_users: {metrics_summary['new_users_today']}\n"
+    response += f"  retention_rate: {metrics_summary['retention_rate']}\n"
+    response += f"  avg_messages_per_user: {metrics_summary['avg_messages_per_user']}\n\n"
+    
+    response += f"📊 ACTIVITY TODAY:\n"
+    response += f"  total_interactions: {metrics_summary['total_interactions_today']}\n"
+    response += f"  messages_sent: {metrics_summary['messages_sent_today']}\n"
+    response += f"  commands_used: {metrics_summary['commands_used_today']}\n"
+    response += f"  callback_queries: {metrics_summary['callback_queries_today']}\n"
+    response += f"  ai_responses_sent: {metrics_summary['ai_responses_sent_today']}\n"
+    response += f"  premium_users_active: {metrics_summary['premium_users_active_today']}\n\n"
 
     # General metrics (accumulative, never reset)
     response += (
@@ -384,7 +417,11 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     response += f"suspicious_content_detected: {metrics_summary['suspicious_content_detected']}\n"
     response += f"flood_attempts_blocked: {metrics_summary['flood_attempts_blocked']}\n"
     response += f"sanitization_applied: {metrics_summary['sanitization_applied']}\n"
-    response += f"access_denied_count: {metrics_summary['access_denied_count']}"
+    response += f"access_denied_count: {metrics_summary['access_denied_count']}\n\n"
+    
+    # Debug info
+    response += f"DEBUG - Daily user IDs count: {len(metrics_collector.metrics.daily_user_ids)}\n"
+    response += f"DEBUG - Daily user IDs: {list(metrics_collector.metrics.daily_user_ids)}"
 
     # Update cache
     _metrics_cache["response"] = response

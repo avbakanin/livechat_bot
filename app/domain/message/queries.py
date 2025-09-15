@@ -1,8 +1,7 @@
 """
 Message domain queries for PostgreSQL.
 """
-from datetime import datetime
-from typing import List, Optional
+from typing import List
 
 import asyncpg
 from shared.models.message import Message, MessageContext, MessageCreate

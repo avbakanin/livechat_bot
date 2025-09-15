@@ -1,7 +1,6 @@
 import asyncio
 import logging
 from contextlib import suppress
-from typing import Any
 
 from aiogram import Bot, Dispatcher
 from config.openai import OPENAI_CONFIG
@@ -13,9 +12,9 @@ from domain.payment.handlers import router as payment_router
 from domain.user.handlers import router as user_router
 from domain.user.services_cached import UserService
 from openai import AsyncOpenAI
-from services.persona import PersonaService
 from services.counter import DailyCounterService
 from services.metrics import MetricsService
+from services.persona import PersonaService
 from shared.fsm.fsm_middleware import FSMMiddleware
 from shared.fsm.user_cache import user_cache
 from shared.middlewares.i18n_middleware import I18nMiddleware
@@ -49,31 +48,33 @@ async def main():
 
         # Initialize services
         user_service = UserService(pool)
-        
+
         # Create metrics service for persistent storage
         metrics_service = MetricsService(pool)
-        
+
         # Initialize metrics collector with database service
         from shared.metrics.metrics import MetricsCollector
+
         metrics_collector = MetricsCollector(metrics_service)
-        
+
         # Update global reference
         import shared.metrics.metrics as metrics_module
+
         metrics_module.metrics_collector = metrics_collector
-        
+
         # Create I18n middleware first to use in PersonaService
         i18n_middleware = I18nMiddleware()
         persona_service = PersonaService()
-        
+
         # Create counter service for efficient message counting
         counter_service = DailyCounterService(pool)
-        
+
         # Create daily reset task for automatic counter reset at midnight
         daily_reset_task = DailyResetTask(counter_service)
-        
+
         # Create partition management task for automatic partition creation/deletion
         partition_management_task = PartitionManagementTask(pool)
-        
+
         message_service = MessageService(pool, openai_client, persona_service, counter_service)
 
         apply_middlewares(
@@ -94,16 +95,16 @@ async def main():
 
         # Load metrics from database
         await metrics_collector.load_from_database()
-        
+
         # Start auto-save for metrics every 15 minutes (optimized for scalability)
         await metrics_collector.start_auto_save(interval_seconds=900)
-        
+
         # Start FSM cache cleanup task
         await user_cache.start_cleanup_task()
-        
+
         # Start daily reset task for automatic counter reset at midnight
         await daily_reset_task.start()
-        
+
         # Start partition management task for automatic partition creation/deletion
         await partition_management_task.start()
 
@@ -130,19 +131,19 @@ async def main():
 
         # Save metrics to database before shutdown
         await metrics_collector.save_to_database()
-        
+
         # Stop metrics auto-save
         await metrics_collector.stop_auto_save()
         logging.info("Metrics auto-save stopped")
-        
+
         # Stop FSM cache cleanup task
         await user_cache.stop_cleanup_task()
         logging.info("FSM cache cleanup stopped")
-        
+
         # Stop daily reset task
         await daily_reset_task.stop()
         logging.info("Daily reset task stopped")
-        
+
         # Stop partition management task
         await partition_management_task.stop()
         logging.info("Partition management task stopped")

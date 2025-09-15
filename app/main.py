@@ -18,7 +18,7 @@ from services.counter import DailyCounterService
 from shared.fsm.fsm_middleware import FSMMiddleware
 from shared.fsm.user_cache import user_cache
 from shared.middlewares.i18n_middleware import I18nMiddleware
-from shared.tasks import DailyResetTask
+from shared.tasks import DailyResetTask, PartitionManagementTask
 
 from core.database import db_manager
 from core.middleware import AccessMiddleware, LoggingMiddleware, ServiceMiddleware
@@ -59,6 +59,9 @@ async def main():
         # Create daily reset task for automatic counter reset at midnight
         daily_reset_task = DailyResetTask(counter_service)
         
+        # Create partition management task for automatic partition creation/deletion
+        partition_management_task = PartitionManagementTask(pool)
+        
         message_service = MessageService(pool, openai_client, persona_service, counter_service)
 
         apply_middlewares(
@@ -82,6 +85,9 @@ async def main():
         
         # Start daily reset task for automatic counter reset at midnight
         await daily_reset_task.start()
+        
+        # Start partition management task for automatic partition creation/deletion
+        await partition_management_task.start()
 
         # Include routers
         setup_routers(dp)
@@ -89,6 +95,7 @@ async def main():
         logging.info("Connected to PostgreSQL!")
         logging.info("FSM cache initialized!")
         logging.info("Daily reset task started!")
+        logging.info("Partition management task started!")
         logging.info("Bot started!")
 
         # Start polling
@@ -110,6 +117,10 @@ async def main():
         # Stop daily reset task
         await daily_reset_task.stop()
         logging.info("Daily reset task stopped")
+        
+        # Stop partition management task
+        await partition_management_task.stop()
+        logging.info("Partition management task stopped")
 
         # Close database pool
         if pool is not None:

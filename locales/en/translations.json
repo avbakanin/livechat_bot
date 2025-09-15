@@ -52,7 +52,24 @@
   "premium": {
     "info_title": "💎 Premium Information",
     "info_text": "Payment information will be added later.",
-    "unavailable": "Payment function is temporarily unavailable. Please try again later."
+    "unavailable": "Payment function is temporarily unavailable. Please try again later.",
+    "title": "💎 Premium Subscription",
+    "benefits_title": "Premium benefits:",
+    "benefits": {
+      "unlimited": "✅ Unlimited messages",
+      "priority": "✅ Priority request processing",
+      "history": "✅ Extended chat history",
+      "modes": "✅ Special communication modes"
+    },
+    "price_title": "Price:",
+    "price": "500 RUB / month",
+    "howto_title": "How to purchase:",
+    "howto": "Click 'Buy Premium' button in the main menu (/start)"
+  },
+  "privacy": {
+    "title": "🔐 Privacy Policy",
+    "text": "Your privacy policy text here...",
+    "full": "Full version: %{url}"
   },
   "errors": {
     "general": "An error occurred. Please try again later.",

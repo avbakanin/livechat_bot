@@ -30,10 +30,7 @@ def get_start_keyboard():
 # ===== Текст для команды /start =====
 def get_start_text():
     """Текст для команды /start"""
-    return i18n.t("start.welcome", APP_CONFIG["FREE_MESSAGE_LIMIT"])
-
-
-# f"Привет! У тебя {APP_CONFIG['FREE_MESSAGE_LIMIT']} бесплатных сообщений в день. Выбери пол компаньона:"
+    return i18n.t("start.welcome", free_limit=APP_CONFIG["FREE_MESSAGE_LIMIT"])
 
 
 # ===== Клавиатура после принятия согласия =====
@@ -51,10 +48,7 @@ def get_consent_given_keyboard():
 
 # ===== Текст после принятия согласия =====
 def get_consent_given_text():
-    return (
-        i18n.t("consent.agreed", APP_CONFIG["FREE_MESSAGE_LIMIT"])
-        # f"Спасибо за согласие! У тебя {APP_CONFIG['FREE_MESSAGE_LIMIT']} бесплатных сообщений в день. Выбери пол компаньона:"
-    )
+    return i18n.t("consent.agreed", free_limit=APP_CONFIG["FREE_MESSAGE_LIMIT"])
 
 
 # ===== КЛАВИАТУРЫ ДЛЯ ВЫБОРА ПОЛА =====
@@ -90,34 +84,35 @@ def get_help_keyboard():
 
 # ===== Текст для команды /help =====
 def get_help_text():
-
-    # Сделать тут переводы комплексные
     return f"""
 {hbold(i18n.t("help.title"))}
 
 {hbold(i18n.t("help.commands_title"))}
-/start - Начать общение с ботом
-/help - Показать эту справку
-/choose_gender - Выбрать пол компаньона
+{i18n.t("help.start_command")}
+{i18n.t("help.help_command")}
+{i18n.t("help.gender_command")}
 
 {hbold(i18n.t("help.communication_title"))}
-• Бесплатно: {APP_CONFIG['FREE_MESSAGE_LIMIT']} сообщений в день
-• Премиум: безлимитное общение
+{i18n.t("help.free_limit", free_limit=APP_CONFIG['FREE_MESSAGE_LIMIT'])}
+{i18n.t("help.premiun_unlimited")}
 
 {hbold(i18n.t("help.genders_title"))}
-• Девушка - милая и empathetic
-• Молодой человек - уверенный и игривый
+{i18n.t("help.female_description")}
+{i18n.t("help.male_description")}
 
 {hbold('💎 Премиум подписка:')}
-Открывает безлимитное общение и дополнительные возможности
+{i18n.t("help.premium_description")}
 
 {hbold(i18n.t("help.faq_title"))}
-• Бот запоминает контекст разговора
-• Можно сменить пол компаньона в любое время
-• Лимит сообщений сбрасывается каждый день
+{i18n.t("help.context_memory")}
+{i18n.t("help.gender_change")}
+{i18n.t("help.limit_reset")}
 
-Для начала общения используйте {hbold('/start')}
+{i18n.t("help.start_instructions", start_command=hbold('/start'))}
 """
+
+
+# Для начала общения используйте {hbold('/start')}
 
 
 # ===== Клавиатура для информации о премиуме =====

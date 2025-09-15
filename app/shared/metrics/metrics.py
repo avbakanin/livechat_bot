@@ -86,10 +86,17 @@ class MetricsCollector:
         self.metrics_service = metrics_service
         self._save_task: Optional[asyncio.Task] = None
         self._auto_save_enabled = False
+        
+        # Batch optimization for scalability
+        self._pending_metrics = {}
+        self._batch_size = 100  # Save every 100 metric changes
+        self._batch_count = 0
     
     def record_message_processed(self):
         """Record that a message was processed."""
         self.metrics.total_messages_processed += 1
+        self._batch_count += 1
+        self._check_batch_save()
     
     def record_successful_response(self, response_time: float):
         """Record a successful response."""
@@ -102,6 +109,8 @@ class MetricsCollector:
             self._response_times = self._response_times[-100:]
         
         self.metrics.average_response_time = sum(self._response_times) / len(self._response_times)
+        self._batch_count += 1
+        self._check_batch_save()
     
     def record_failed_response(self, error_type: str = "unknown"):
         """Record a failed response."""
@@ -113,6 +122,9 @@ class MetricsCollector:
             self.metrics.database_errors += 1
         elif error_type == "validation":
             self.metrics.validation_errors += 1
+        
+        self._batch_count += 1
+        self._check_batch_save()
     
     def record_limit_exceeded(self):
         """Record that a user hit the message limit."""
@@ -121,14 +133,20 @@ class MetricsCollector:
     def record_cache_hit(self):
         """Record a cache hit."""
         self.metrics.cache_hits += 1
+        self._batch_count += 1
+        self._check_batch_save()
     
     def record_cache_miss(self):
         """Record a cache miss."""
         self.metrics.cache_misses += 1
+        self._batch_count += 1
+        self._check_batch_save()
     
     def record_new_user(self):
         """Record a new user registration."""
         self.metrics.new_users_today += 1
+        self._batch_count += 1
+        self._check_batch_save()
     
     def record_user_interaction(self, user_id: int, interaction_type: str):
         """Record any user interaction with deduplication."""
@@ -145,6 +163,9 @@ class MetricsCollector:
         if user_id not in self.metrics.daily_user_ids:
             self.metrics.daily_user_ids.add(user_id)
             self.metrics.unique_active_users_today += 1
+        
+        self._batch_count += 1
+        self._check_batch_save()
     
     def record_active_user(self):
         """DEPRECATED: Use record_user_interaction instead."""
@@ -340,6 +361,28 @@ class MetricsCollector:
             except asyncio.CancelledError:
                 pass
         logging.info("📊 Stopped auto-save")
+    
+    def _check_batch_save(self):
+        """Check if we should save metrics due to batch size."""
+        if self._batch_count >= self._batch_size and self.metrics_service:
+            # Schedule async save
+            import asyncio
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_running():
+                    loop.create_task(self._async_batch_save())
+            except RuntimeError:
+                # No event loop running, skip batch save
+                pass
+            self._batch_count = 0
+    
+    async def _async_batch_save(self):
+        """Async batch save to avoid blocking."""
+        try:
+            await self.save_to_database()
+            logging.debug(f"📊 Batch saved metrics ({self._batch_size} changes)")
+        except Exception as e:
+            logging.error(f"Error in batch save: {e}")
 
 
 # Global metrics collector instance (will be initialized in main.py)

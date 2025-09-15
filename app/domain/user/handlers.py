@@ -228,9 +228,16 @@ async def cmd_check_messages(
     await message.answer(response)
 
 
+# Cache for metrics command (optimization for scalability)
+_metrics_cache = {
+    "response": None,
+    "last_update": 0,
+    "ttl": 30  # Cache for 30 seconds
+}
+
 @router.message(Command(commands=["metrics"]))
 async def cmd_metrics(message: Message, i18n: I18nMiddleware):
-    """Show bot metrics (admin only)."""
+    """Show bot metrics (admin only) with caching for scalability."""
     user_id = message.from_user.id
     
     # Check if user is admin (hardcoded for now)
@@ -244,6 +251,15 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
         await message.answer("Metrics not available.")
         return
     
+    # Check cache first (optimization for scalability)
+    import time
+    current_time = time.time()
+    if (_metrics_cache["response"] and 
+        (current_time - _metrics_cache["last_update"]) < _metrics_cache["ttl"]):
+        await message.answer(_metrics_cache["response"])
+        return
+    
+    # Generate fresh metrics
     metrics_summary = metrics_collector.get_metrics_summary()
     
     response = "📊 Bot Metrics\n\n"
@@ -270,6 +286,10 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     response += f"openai_errors: {metrics_summary['openai_errors']}\n"
     response += f"database_errors: {metrics_summary['database_errors']}\n"
     response += f"validation_errors: {metrics_summary['validation_errors']}"
+    
+    # Update cache
+    _metrics_cache["response"] = response
+    _metrics_cache["last_update"] = current_time
     
     await message.answer(response)
 

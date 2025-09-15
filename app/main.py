@@ -95,8 +95,8 @@ async def main():
         # Load metrics from database
         await metrics_collector.load_from_database()
         
-        # Start auto-save for metrics every 5 minutes
-        await metrics_collector.start_auto_save(interval_seconds=300)
+        # Start auto-save for metrics every 15 minutes (optimized for scalability)
+        await metrics_collector.start_auto_save(interval_seconds=900)
         
         # Start FSM cache cleanup task
         await user_cache.start_cleanup_task()

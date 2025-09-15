@@ -15,6 +15,7 @@ from domain.user.services_cached import UserService
 from openai import AsyncOpenAI
 from services.persona import PersonaService
 from services.counter import DailyCounterService
+from services.metrics import MetricsService
 from shared.fsm.fsm_middleware import FSMMiddleware
 from shared.fsm.user_cache import user_cache
 from shared.middlewares.i18n_middleware import I18nMiddleware
@@ -49,6 +50,17 @@ async def main():
         # Initialize services
         user_service = UserService(pool)
         
+        # Create metrics service for persistent storage
+        metrics_service = MetricsService(pool)
+        
+        # Initialize metrics collector with database service
+        from shared.metrics.metrics import MetricsCollector
+        metrics_collector = MetricsCollector(metrics_service)
+        
+        # Update global reference
+        import shared.metrics.metrics as metrics_module
+        metrics_module.metrics_collector = metrics_collector
+        
         # Create I18n middleware first to use in PersonaService
         i18n_middleware = I18nMiddleware()
         persona_service = PersonaService()
@@ -80,6 +92,12 @@ async def main():
         dp["client"] = openai_client
         dp["pool"] = pool
 
+        # Load metrics from database
+        await metrics_collector.load_from_database()
+        
+        # Start auto-save for metrics every 5 minutes
+        await metrics_collector.start_auto_save(interval_seconds=300)
+        
         # Start FSM cache cleanup task
         await user_cache.start_cleanup_task()
         
@@ -110,6 +128,13 @@ async def main():
     finally:
         logging.info("Завершаем работу...")
 
+        # Save metrics to database before shutdown
+        await metrics_collector.save_to_database()
+        
+        # Stop metrics auto-save
+        await metrics_collector.stop_auto_save()
+        logging.info("Metrics auto-save stopped")
+        
         # Stop FSM cache cleanup task
         await user_cache.stop_cleanup_task()
         logging.info("FSM cache cleanup stopped")

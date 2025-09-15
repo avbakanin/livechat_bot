@@ -9,6 +9,7 @@ from typing import Optional
 
 import asyncpg
 from core.exceptions import DatabaseException
+from shared.metrics import metrics_collector
 
 
 class PartitionManagementTask:
@@ -126,8 +127,13 @@ class PartitionManagementTask:
                 
                 logging.info(f"Partition management task: partition creation result: {result}")
                 
+                # Record metrics for successful partition creation
+                metrics_collector.record_successful_response(0.0)
+                
             except Exception as e:
                 logging.error(f"Partition management task: error creating partition: {e}")
+                # Record error metrics
+                metrics_collector.record_failed_response("database")
                 raise DatabaseException(f"Error creating partition: {e}", e)
     
     async def _drop_old_partition(self):
@@ -147,8 +153,13 @@ class PartitionManagementTask:
                 
                 logging.info(f"Partition management task: partition drop result: {result}")
                 
+                # Record metrics for successful partition drop
+                metrics_collector.record_successful_response(0.0)
+                
             except Exception as e:
                 logging.error(f"Partition management task: error dropping partition: {e}")
+                # Record error metrics
+                metrics_collector.record_failed_response("database")
                 raise DatabaseException(f"Error dropping partition: {e}", e)
     
     async def force_create_partition(self, target_date: date):

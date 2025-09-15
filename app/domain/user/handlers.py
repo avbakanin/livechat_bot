@@ -21,7 +21,7 @@ from shared.messages.common import get_help_text, get_privacy_info_text
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.middlewares.middlewares import AccessMiddleware
 from shared.utils.helpers import destructure_user
-from shared.metrics import metrics_collector
+from shared.metrics.metrics import safe_record_metric
 
 from core.exceptions import UserException
 
@@ -35,7 +35,17 @@ router.callback_query.middleware(AccessMiddleware(allowed_ids={627875032, 151245
 async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddleware, cached_user: UserCacheData = None):
     user_id, username, first_name, last_name = destructure_user(message.from_user)
 
+    # Check if user is new before adding
+    user_exists = await user_service.get_user(user_id) is not None
+    
     await user_service.add_user(user_id, username, first_name, last_name)
+    
+    # Record new user if this is their first time
+    if not user_exists:
+        safe_record_metric('record_new_user')
+    
+    # Always record as active user
+    safe_record_metric('record_active_user')
 
     # Check consent using cache if available
     if cached_user:
@@ -226,6 +236,12 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     # Check if user is admin (hardcoded for now)
     if user_id not in {627875032, 1512454100}:
         await message.answer("Access denied.")
+        return
+    
+    # Get metrics collector from global reference
+    from shared.metrics.metrics import metrics_collector
+    if metrics_collector is None:
+        await message.answer("Metrics not available.")
         return
     
     metrics_summary = metrics_collector.get_metrics_summary()

@@ -8,6 +8,7 @@ from datetime import date, datetime, timedelta
 from typing import Optional
 
 from services.counter import DailyCounterService
+from shared.metrics import metrics_collector
 
 
 class DailyResetTask:
@@ -68,11 +69,16 @@ class DailyResetTask:
                 deleted_count = await self.counter_service.reset_counters_for_date(yesterday)
                 logging.info(f"Daily reset task: reset {deleted_count} counters for {yesterday}")
                 
+                # Record metrics for successful reset
+                metrics_collector.record_successful_response(0.0)  # Reset operation time
+                
             except asyncio.CancelledError:
                 logging.info("Daily reset task cancelled")
                 break
             except Exception as e:
                 logging.error(f"Daily reset task error: {e}")
+                # Record error metrics
+                metrics_collector.record_failed_response("database")
                 # При ошибке ждем 1 час перед повторной попыткой
                 await asyncio.sleep(3600)
     

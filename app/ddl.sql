@@ -168,3 +168,72 @@ BEGIN
     RETURN v_deleted_count;
 END;
 $$;
+
+-- Bot metrics table for persistent storage
+CREATE TABLE public.bot_metrics (
+    id SERIAL PRIMARY KEY,
+    metric_name TEXT NOT NULL UNIQUE,
+    metric_value BIGINT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert default metrics
+INSERT INTO public.bot_metrics (metric_name, metric_value) VALUES
+('total_messages_processed', 0),
+('successful_responses', 0),
+('failed_responses', 0),
+('limit_exceeded_count', 0),
+('active_users_today', 0),
+('new_users_today', 0),
+('openai_errors', 0),
+('database_errors', 0),
+('validation_errors', 0),
+('cache_hits', 0),
+('cache_misses', 0),
+('total_response_time', 0),
+('average_response_time', 0),
+('uptime_seconds', 0),
+('last_reset', EXTRACT(EPOCH FROM NOW())),
+('started_at', EXTRACT(EPOCH FROM NOW()))
+ON CONFLICT (metric_name) DO NOTHING;
+
+-- Function to get metric value
+CREATE OR REPLACE FUNCTION public.get_metric(p_metric_name TEXT)
+RETURNS BIGINT LANGUAGE plpgsql AS $$
+DECLARE
+    v_value BIGINT;
+BEGIN
+    SELECT metric_value INTO v_value 
+    FROM public.bot_metrics 
+    WHERE metric_name = p_metric_name;
+    
+    RETURN COALESCE(v_value, 0);
+END;
+$$;
+
+-- Function to set metric value
+CREATE OR REPLACE FUNCTION public.set_metric(p_metric_name TEXT, p_value BIGINT)
+RETURNS VOID LANGUAGE plpgsql AS $$
+BEGIN
+    INSERT INTO public.bot_metrics (metric_name, metric_value, updated_at)
+    VALUES (p_metric_name, p_value, CURRENT_TIMESTAMP)
+    ON CONFLICT (metric_name) 
+    DO UPDATE SET 
+        metric_value = p_value,
+        updated_at = CURRENT_TIMESTAMP;
+END;
+$$;
+
+-- Function to increment metric value
+CREATE OR REPLACE FUNCTION public.increment_metric(p_metric_name TEXT, p_increment BIGINT DEFAULT 1)
+RETURNS VOID LANGUAGE plpgsql AS $$
+BEGIN
+    INSERT INTO public.bot_metrics (metric_name, metric_value, updated_at)
+    VALUES (p_metric_name, p_increment, CURRENT_TIMESTAMP)
+    ON CONFLICT (metric_name) 
+    DO UPDATE SET 
+        metric_value = metric_value + p_increment,
+        updated_at = CURRENT_TIMESTAMP;
+END;
+$$;

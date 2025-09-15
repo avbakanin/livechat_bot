@@ -2,7 +2,6 @@
 Enhanced User Service with FSM caching support.
 """
 
-from datetime import datetime
 from typing import Optional
 
 import asyncpg

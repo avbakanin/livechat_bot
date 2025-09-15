@@ -7,7 +7,6 @@ from typing import Any, Awaitable, Callable, Dict
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message, TelegramObject
 from shared.fsm.user_cache import UserCacheData, user_cache
-from shared.models.user import User
 
 
 class FSMMiddleware(BaseMiddleware):

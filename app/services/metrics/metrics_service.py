@@ -3,7 +3,8 @@ Metrics service for persistent storage of bot metrics.
 """
 
 import logging
-from typing import Any, Dict, Optional
+
+from typing import Dict, Any
 
 import asyncpg
 

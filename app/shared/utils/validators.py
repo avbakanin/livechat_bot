@@ -1,7 +1,7 @@
 """
 Data validation utilities.
 """
-from typing import Any, Optional
+from typing import Any
 
 from core.exceptions import ValidationException
 

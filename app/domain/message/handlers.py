@@ -5,8 +5,7 @@ Message domain handlers - Telegram bot handlers for messages.
 import logging
 import time
 
-from aiogram import F, Router
-from aiogram.enums import ChatAction
+from aiogram import Router
 from aiogram.types import Message
 from domain.message.services import MessageService
 from domain.user.keyboards import get_consent_keyboard

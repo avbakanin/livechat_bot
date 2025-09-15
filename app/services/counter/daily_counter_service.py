@@ -3,7 +3,7 @@ Daily message counter service - efficient counting of user messages per day.
 """
 
 import logging
-from datetime import date, datetime
+from datetime import date
 from typing import Optional
 
 import asyncpg

@@ -1,7 +1,6 @@
 import asyncio
 import logging
 from contextlib import suppress
-from typing import Any
 
 from aiogram import Bot, Dispatcher
 from config.openai import OPENAI_CONFIG

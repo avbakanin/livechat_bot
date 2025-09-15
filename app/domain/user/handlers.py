@@ -14,7 +14,7 @@ from domain.user.keyboards import (
     get_help_keyboard,
     get_privacy_info_keyboard,
 )
-from domain.user.messages import get_consent_given_text, get_gender_change_warning_text, get_gender_selection_text
+from domain.user.messages import get_consent_given_text
 from domain.user.services_cached import UserService
 from shared.fsm.user_cache import UserCacheData
 from shared.messages.common import get_help_text, get_privacy_info_text

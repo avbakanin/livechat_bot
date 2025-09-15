@@ -2,7 +2,6 @@
 User domain services - business logic layer.
 """
 
-from datetime import datetime
 from typing import Optional
 
 import asyncpg

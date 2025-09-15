@@ -24,9 +24,15 @@ class BotMetrics:
     average_response_time: float = 0.0
     total_response_time: float = 0.0
     
-    # User metrics
-    active_users_today: int = 0
-    new_users_today: int = 0
+    # User activity metrics (LOGICAL SEPARATION)
+    total_interactions_today: int = 0        # Все взаимодействия (команды + сообщения)
+    unique_active_users_today: int = 0       # Уникальные активные пользователи
+    new_users_today: int = 0                 # Новые пользователи (первый /start)
+    messages_sent_today: int = 0             # Сообщения от пользователей
+    commands_used_today: int = 0             # Команды (/start, /help, etc.)
+    
+    # Daily user tracking (for deduplication)
+    daily_user_ids: set = field(default_factory=set)  # Set для отслеживания уникальных пользователей
     
     # Error metrics
     openai_errors: int = 0
@@ -57,8 +63,17 @@ class BotMetrics:
     
     def reset_daily_metrics(self):
         """Reset daily metrics (called at midnight)."""
-        self.active_users_today = 0
+        # Reset daily counters
+        self.total_interactions_today = 0
+        self.unique_active_users_today = 0
         self.new_users_today = 0
+        self.messages_sent_today = 0
+        self.commands_used_today = 0
+        
+        # Clear daily user tracking
+        self.daily_user_ids.clear()
+        
+        # Update reset timestamp
         self.last_reset = datetime.utcnow()
 
 
@@ -115,22 +130,50 @@ class MetricsCollector:
         """Record a new user registration."""
         self.metrics.new_users_today += 1
     
+    def record_user_interaction(self, user_id: int, interaction_type: str):
+        """Record any user interaction with deduplication."""
+        # Always increment total interactions
+        self.metrics.total_interactions_today += 1
+        
+        # Track interaction type
+        if interaction_type == "message":
+            self.metrics.messages_sent_today += 1
+        elif interaction_type == "command":
+            self.metrics.commands_used_today += 1
+        
+        # Track unique users
+        if user_id not in self.metrics.daily_user_ids:
+            self.metrics.daily_user_ids.add(user_id)
+            self.metrics.unique_active_users_today += 1
+    
     def record_active_user(self):
-        """Record an active user."""
-        self.metrics.active_users_today += 1
+        """DEPRECATED: Use record_user_interaction instead."""
+        # Keep for backward compatibility, but log warning
+        logging.warning("record_active_user() is deprecated. Use record_user_interaction(user_id, type) instead.")
+        self.metrics.total_interactions_today += 1
     
     def get_metrics_summary(self) -> Dict[str, Any]:
         """Get a summary of current metrics."""
         return {
+            # System metrics
             "uptime_seconds": self.metrics.get_uptime(),
             "uptime_hours": self.metrics.get_uptime() / 3600,
-            "total_messages": self.metrics.total_messages_processed,
-            "success_rate": f"{self.metrics.get_success_rate():.1f}%",
-            "cache_hit_rate": f"{self.metrics.get_cache_hit_rate():.1f}%",
-            "average_response_time": f"{self.metrics.average_response_time:.2f}s",
-            "active_users_today": self.metrics.active_users_today,
+            
+            # Daily user activity metrics (reset at midnight)
+            "unique_active_users_today": self.metrics.unique_active_users_today,
+            "total_interactions_today": self.metrics.total_interactions_today,
+            "messages_sent_today": self.metrics.messages_sent_today,
+            "commands_used_today": self.metrics.commands_used_today,
             "new_users_today": self.metrics.new_users_today,
+            
+            # General metrics (accumulative, never reset)
+            "total_messages_processed": self.metrics.total_messages_processed,
+            "success_rate": f"{self.metrics.get_success_rate():.1f}%",
+            "average_response_time": f"{self.metrics.average_response_time:.2f}s",
             "limit_exceeded_count": self.metrics.limit_exceeded_count,
+            
+            # Performance and error metrics (accumulative, never reset)
+            "cache_hit_rate": f"{self.metrics.get_cache_hit_rate():.1f}%",
             "openai_errors": self.metrics.openai_errors,
             "database_errors": self.metrics.database_errors,
             "validation_errors": self.metrics.validation_errors,
@@ -156,30 +199,45 @@ class MetricsCollector:
             self.metrics.successful_responses = db_metrics.get('successful_responses', 0)
             self.metrics.failed_responses = db_metrics.get('failed_responses', 0)
             self.metrics.limit_exceeded_count = db_metrics.get('limit_exceeded_count', 0)
-            self.metrics.active_users_today = db_metrics.get('active_users_today', 0)
+            
+            # Load new user activity metrics
+            self.metrics.total_interactions_today = db_metrics.get('total_interactions_today', 0)
+            self.metrics.unique_active_users_today = db_metrics.get('unique_active_users_today', 0)
             self.metrics.new_users_today = db_metrics.get('new_users_today', 0)
+            self.metrics.messages_sent_today = db_metrics.get('messages_sent_today', 0)
+            self.metrics.commands_used_today = db_metrics.get('commands_used_today', 0)
+            
+            # Load daily user IDs from database (make it persistent)
+            daily_user_ids_str = db_metrics.get('daily_user_ids', '')
+            if daily_user_ids_str:
+                try:
+                    # Parse comma-separated user IDs from database
+                    user_ids = [int(uid.strip()) for uid in daily_user_ids_str.split(',') if uid.strip()]
+                    self.metrics.daily_user_ids = set(user_ids)
+                    logging.info(f"📊 Loaded {len(self.metrics.daily_user_ids)} daily user IDs from database")
+                except (ValueError, AttributeError) as e:
+                    logging.warning(f"Failed to parse daily_user_ids from database: {e}")
+                    self.metrics.daily_user_ids.clear()
+            else:
+                self.metrics.daily_user_ids.clear()
+                logging.info("📊 No daily user IDs found in database, starting fresh")
+            
+            # Load error metrics
             self.metrics.openai_errors = db_metrics.get('openai_errors', 0)
             self.metrics.database_errors = db_metrics.get('database_errors', 0)
             self.metrics.validation_errors = db_metrics.get('validation_errors', 0)
+            
+            # Load cache metrics
             self.metrics.cache_hits = db_metrics.get('cache_hits', 0)
             self.metrics.cache_misses = db_metrics.get('cache_misses', 0)
             self.metrics.total_response_time = db_metrics.get('total_response_time', 0)
             
-            # Load timestamps
-            started_at_epoch = db_metrics.get('started_at', 0)
-            if started_at_epoch > 0:
-                # Use UTC timestamp directly
-                loaded_started_at = datetime.utcfromtimestamp(started_at_epoch)
-                # Only use loaded timestamp if it's not in the future
-                current_time = datetime.utcnow()
-                if loaded_started_at <= current_time:
-                    self.metrics.started_at = loaded_started_at
-                else:
-                    logging.warning(f"Loaded started_at ({loaded_started_at}) is in future, using current time")
-                    self.metrics.started_at = current_time
-            else:
-                logging.info("No started_at found in database, using current time")
-                self.metrics.started_at = datetime.utcnow()
+            # Load average response time from DB
+            self.metrics.average_response_time = db_metrics.get('average_response_time', 0.0)
+            
+            # Reset uptime on each startup - this is more logical for monitoring
+            self.metrics.started_at = datetime.utcnow()
+            logging.info(f"📊 Started at (reset on startup): {self.metrics.started_at}")
             
             last_reset_epoch = db_metrics.get('last_reset', 0)
             if last_reset_epoch > 0:
@@ -208,19 +266,34 @@ class MetricsCollector:
         
         try:
             metrics_to_save = {
+                # Basic metrics
                 'total_messages_processed': self.metrics.total_messages_processed,
                 'successful_responses': self.metrics.successful_responses,
                 'failed_responses': self.metrics.failed_responses,
                 'limit_exceeded_count': self.metrics.limit_exceeded_count,
-                'active_users_today': self.metrics.active_users_today,
+                
+                # New user activity metrics
+                'total_interactions_today': self.metrics.total_interactions_today,
+                'unique_active_users_today': self.metrics.unique_active_users_today,
                 'new_users_today': self.metrics.new_users_today,
+                'messages_sent_today': self.metrics.messages_sent_today,
+                'commands_used_today': self.metrics.commands_used_today,
+                
+                # Save daily user IDs as comma-separated string
+                'daily_user_ids': ','.join(map(str, self.metrics.daily_user_ids)),
+                
+                # Error metrics
                 'openai_errors': self.metrics.openai_errors,
                 'database_errors': self.metrics.database_errors,
                 'validation_errors': self.metrics.validation_errors,
+                
+                # Cache metrics
                 'cache_hits': self.metrics.cache_hits,
                 'cache_misses': self.metrics.cache_misses,
                 'total_response_time': int(self.metrics.total_response_time),
                 'average_response_time': int(self.metrics.average_response_time),
+                
+                # Timestamps
                 'uptime_seconds': int(self.get_uptime()),
                 'started_at': int(self.metrics.started_at.timestamp()),
                 'last_reset': int(self.metrics.last_reset.timestamp()),
@@ -278,6 +351,12 @@ def safe_record_metric(method_name: str, *args, **kwargs):
     if metrics_collector and hasattr(metrics_collector, method_name):
         method = getattr(metrics_collector, method_name)
         method(*args, **kwargs)
+
+
+def safe_record_user_interaction(user_id: int, interaction_type: str):
+    """Safely record user interaction with new logical method."""
+    if metrics_collector:
+        metrics_collector.record_user_interaction(user_id, interaction_type)
 
 
 def record_response_time(func):

@@ -14,7 +14,7 @@ from domain.user.services_cached import UserService
 from shared.fsm.user_cache import UserCacheData
 from shared.helpers.typingIndicator import TypingIndicator
 from shared.keyboards.common import get_limit_exceeded_keyboard
-from shared.metrics.metrics import safe_record_metric, record_response_time
+from shared.metrics.metrics import safe_record_metric, record_response_time, safe_record_user_interaction
 from shared.utils.helpers import destructure_user
 
 from core.exceptions import MessageException, OpenAIException
@@ -32,11 +32,13 @@ async def handle_message(
     cached_user: UserCacheData = None
 ):
     """Handle incoming text messages with FSM caching."""
+    user_id, username, first_name, last_name = destructure_user(message.from_user)
+    
     # Record message processing
     safe_record_metric('record_message_processed')
     
-    # Record active user
-    safe_record_metric('record_active_user')
+    # Record user interaction (message)
+    safe_record_user_interaction(user_id, "message")
     
     # Skip commands
     if message.text.startswith("/"):
@@ -52,8 +54,6 @@ async def handle_message(
         safe_record_metric('record_failed_response', 'validation')
         await message.answer(i18n.t("messages.message_too_long"))
         return
-
-    user_id, username, first_name, last_name = destructure_user(message.from_user)
 
     # Add user to database (this will update cache if user exists)
     await user_service.add_user(user_id, username, first_name, last_name)

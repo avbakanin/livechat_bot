@@ -21,7 +21,7 @@ from shared.messages.common import get_help_text, get_privacy_info_text
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.middlewares.middlewares import AccessMiddleware
 from shared.utils.helpers import destructure_user
-from shared.metrics.metrics import safe_record_metric
+from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction
 
 from core.exceptions import UserException
 
@@ -44,8 +44,8 @@ async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddl
     if not user_exists:
         safe_record_metric('record_new_user')
     
-    # Always record as active user
-    safe_record_metric('record_active_user')
+    # Record user interaction (command)
+    safe_record_user_interaction(user_id, "command")
 
     # Check consent using cache if available
     if cached_user:
@@ -247,8 +247,29 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     metrics_summary = metrics_collector.get_metrics_summary()
     
     response = "📊 Bot Metrics\n\n"
-    for key, value in metrics_summary.items():
-        response += f"{key}: {value}\n"
+    
+    # System metrics
+    response += f"uptime_seconds: {metrics_summary['uptime_seconds']}\n"
+    response += f"uptime_hours: {metrics_summary['uptime_hours']}\n\n"
+    
+    # Daily user activity metrics (reset at midnight)
+    response += f"unique_active_users_today: {metrics_summary['unique_active_users_today']}\n"
+    response += f"total_interactions_today: {metrics_summary['total_interactions_today']}\n"
+    response += f"messages_sent_today: {metrics_summary['messages_sent_today']}\n"
+    response += f"commands_used_today: {metrics_summary['commands_used_today']}\n"
+    response += f"new_users_today: {metrics_summary['new_users_today']}\n\n"
+    
+    # General metrics (accumulative, never reset)
+    response += f"total_messages_processed: {metrics_summary['total_messages_processed']}\n"
+    response += f"success_rate: {metrics_summary['success_rate']}\n"
+    response += f"average_response_time: {metrics_summary['average_response_time']}\n"
+    response += f"limit_exceeded_count: {metrics_summary['limit_exceeded_count']}\n\n"
+    
+    # Performance and error metrics (accumulative, never reset)
+    response += f"cache_hit_rate: {metrics_summary['cache_hit_rate']}\n"
+    response += f"openai_errors: {metrics_summary['openai_errors']}\n"
+    response += f"database_errors: {metrics_summary['database_errors']}\n"
+    response += f"validation_errors: {metrics_summary['validation_errors']}"
     
     await message.answer(response)
 

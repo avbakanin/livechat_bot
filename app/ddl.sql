@@ -170,10 +170,11 @@ END;
 $$;
 
 -- Bot metrics table for persistent storage
-CREATE TABLE public.bot_metrics (
+CREATE TABLE IF NOT EXISTS public.bot_metrics (
     id SERIAL PRIMARY KEY,
     metric_name TEXT NOT NULL UNIQUE,
     metric_value BIGINT NOT NULL DEFAULT 0,
+    metric_text TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -184,8 +185,11 @@ INSERT INTO public.bot_metrics (metric_name, metric_value) VALUES
 ('successful_responses', 0),
 ('failed_responses', 0),
 ('limit_exceeded_count', 0),
-('active_users_today', 0),
+('total_interactions_today', 0),
+('unique_active_users_today', 0),
 ('new_users_today', 0),
+('messages_sent_today', 0),
+('commands_used_today', 0),
 ('openai_errors', 0),
 ('database_errors', 0),
 ('validation_errors', 0),
@@ -195,7 +199,13 @@ INSERT INTO public.bot_metrics (metric_name, metric_value) VALUES
 ('average_response_time', 0),
 ('uptime_seconds', 0),
 ('last_reset', EXTRACT(EPOCH FROM NOW())),
-('started_at', EXTRACT(EPOCH FROM NOW()))
+('started_at', EXTRACT(EPOCH FROM NOW())),
+('daily_user_ids', 0)
+ON CONFLICT (metric_name) DO NOTHING;
+
+-- Insert daily_user_ids as text (empty string initially)
+INSERT INTO public.bot_metrics (metric_name, metric_text) VALUES
+('daily_user_ids', '')
 ON CONFLICT (metric_name) DO NOTHING;
 
 -- Function to get metric value

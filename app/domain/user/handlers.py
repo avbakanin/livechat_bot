@@ -61,9 +61,11 @@ async def cmd_choose_gender(message: Message, user_service: UserService, cached_
     else:
         current_gender = await user_service.get_gender_preference(user_id)
 
-    if current_gender and current_gender != "female":  # 'female' is default
+    # Always show warning when changing gender (regardless of current gender)
+    if current_gender:
         await message.answer(get_gender_change_warning_text(), reply_markup=get_gender_change_confirmation_keyboard())
     else:
+        # First time choosing gender - no warning needed
         await message.answer(get_gender_selection_text(), reply_markup=get_gender_keyboard())
 
 

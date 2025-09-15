@@ -11,6 +11,7 @@ from domain.message.services import MessageService
 from domain.user.keyboards import get_consent_keyboard
 from domain.user.services_cached import UserService
 from shared.fsm.user_cache import UserCacheData
+from shared.helpers.typingIndicator import TypingIndicator
 from shared.keyboards.common import get_limit_exceeded_keyboard
 from shared.utils.helpers import destructure_user
 
@@ -56,31 +57,30 @@ async def handle_message(
     # Add user message to database
     await message_service.add_message(user_id, "user", message.text)
 
-    # Show typing status
-    await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
+    # Show typing status during AI response generation
+    async with TypingIndicator(bot, message.chat.id):
+        try:
+            # Get gender preference using cache if available
+            if cached_user:
+                gender = cached_user.gender_preference
+            else:
+                gender = await user_service.get_gender_preference(user_id)
 
-    try:
-        # Get gender preference using cache if available
-        if cached_user:
-            gender = cached_user.gender_preference
-        else:
-            gender = await user_service.get_gender_preference(user_id)
+            # Generate AI response
+            answer = await message_service.generate_response(user_id, message.text, gender)
 
-        # Generate AI response
-        answer = await message_service.generate_response(user_id, message.text, gender)
+            # Add AI response to database
+            await message_service.add_message(user_id, "assistant", answer)
 
-        # Add AI response to database
-        await message_service.add_message(user_id, "assistant", answer)
+            # Send response
+            await message.answer(answer)
 
-        # Send response
-        await message.answer(answer)
-
-    except OpenAIException as e:
-        logging.error(f"OpenAI error: {e}")
-        await message.answer(i18n.t("messages.processing_error"))
-    except MessageException as e:
-        logging.error(f"Message error: {e}")
-        await message.answer(i18n.t("messages.save_error"))
-    except Exception as e:
-        logging.error(f"Unexpected error: {e}")
-        await message.answer(i18n.t("messages.unexpected_error"))
+        except OpenAIException as e:
+            logging.error(f"OpenAI error: {e}")
+            await message.answer(i18n.t("messages.processing_error"))
+        except MessageException as e:
+            logging.error(f"Message error: {e}")
+            await message.answer(i18n.t("messages.save_error"))
+        except Exception as e:
+            logging.error(f"Unexpected error: {e}")
+            await message.answer(i18n.t("messages.unexpected_error"))

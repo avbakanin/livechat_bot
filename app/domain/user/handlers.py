@@ -45,11 +45,11 @@ async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddl
         await message.answer(i18n.t("messages.bot_already_started"))
         return
 
-    await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard())
+    await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard(i18n))
 
 
 @router.message(Command(commands=["choose_gender"]))
-async def cmd_choose_gender(message: Message, user_service: UserService, cached_user: UserCacheData = None):
+async def cmd_choose_gender(message: Message, user_service: UserService, i18n: I18nMiddleware, cached_user: UserCacheData = None):
     user_id, username, first_name, last_name = destructure_user(message.from_user)
 
     # Add user to database
@@ -63,10 +63,10 @@ async def cmd_choose_gender(message: Message, user_service: UserService, cached_
 
     # Always show warning when changing gender (regardless of current gender)
     if current_gender:
-        await message.answer(get_gender_change_warning_text(), reply_markup=get_gender_change_confirmation_keyboard())
+        await message.answer(i18n.t("gender.change_warning"), reply_markup=get_gender_change_confirmation_keyboard(i18n))
     else:
         # First time choosing gender - no warning needed
-        await message.answer(get_gender_selection_text(), reply_markup=get_gender_keyboard())
+        await message.answer(i18n.t("gender.choose"), reply_markup=get_gender_keyboard(i18n))
 
 
 @router.callback_query(F.data.in_(["gender_female", "gender_male"]))
@@ -77,8 +77,10 @@ async def gender_choice(callback: CallbackQuery, user_service: UserService, i18n
     try:
         # change translation to dynamic i18n translations
         await user_service.set_gender_preference(user.id, preference)
-        response_text = "девушку 😊" if preference == "female" else "молодого человека 😉"
-        await callback.message.edit_text(i18n.t("gender.toggle_gender", gender=response_text))
+        
+        # Use translated gender names
+        gender_name = i18n.t("buttons.female") if preference == "female" else i18n.t("buttons.male")
+        await callback.message.edit_text(i18n.t("gender.toggle_gender", gender=gender_name))
     except UserException as e:
         logging.error(f"Error setting gender preference: {e}")
         await callback.message.edit_text(i18n.t("error.try_again"))
@@ -98,7 +100,7 @@ async def gender_change_confirm(callback: CallbackQuery, user_service: UserServi
         # Delete all user messages
         await user_service.delete_user_messages(user.id)
 
-        await callback.message.edit_text(i18n.t("gender.change_confirm"), reply_markup=get_gender_keyboard())
+        await callback.message.edit_text(i18n.t("gender.change_confirmed"), reply_markup=get_gender_keyboard(i18n))
     except Exception as e:
         logging.error(f"Error in gender change confirmation: {e}")
         await callback.message.edit_text(i18n.t("error.try_again"))
@@ -109,7 +111,7 @@ async def gender_change_confirm(callback: CallbackQuery, user_service: UserServi
 @router.callback_query(F.data == "gender_change_cancel")
 async def gender_change_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
     """Handle gender change cancellation."""
-    await callback.message.edit_text(i18n.t("gender.change_cancel"))
+    await callback.message.edit_text(i18n.t("gender.change_cancelled"))
     await callback.answer()
 
 
@@ -122,7 +124,7 @@ async def consent_agree(callback: CallbackQuery, user_service: UserService, i18n
 
     try:
         await user_service.set_consent_status(user.id, True)
-        await callback.message.edit_text(get_consent_given_text(), reply_markup=get_consent_given_keyboard())
+        await callback.message.edit_text(get_consent_given_text(), reply_markup=get_consent_given_keyboard(i18n))
     except Exception as e:
         logging.error(f"Error setting consent: {e}")
         await callback.message.edit_text(i18n.t("error.try_again"))
@@ -131,13 +133,13 @@ async def consent_agree(callback: CallbackQuery, user_service: UserService, i18n
 
 
 @router.message(Command(commands=["help"]))
-async def cmd_help(message: Message, user_service: UserService):
+async def cmd_help(message: Message, user_service: UserService, i18n: I18nMiddleware):
     user_id, username, first_name, last_name = destructure_user(message.from_user)
 
     # Add user to database
     await user_service.add_user(user_id, username, first_name, last_name)
 
-    await message.answer(get_help_text(), reply_markup=get_help_keyboard(), parse_mode="HTML")
+    await message.answer(get_help_text(), reply_markup=get_help_keyboard(i18n), parse_mode="HTML")
 
 
 @router.message(Command(commands=["privacy"]))
@@ -161,14 +163,14 @@ async def privacy_info(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "back_to_help")
-async def back_to_help(callback: CallbackQuery):
+async def back_to_help(callback: CallbackQuery, i18n: I18nMiddleware):
     """Handle back to help callback."""
-    await callback.message.edit_text(get_help_text(), reply_markup=get_help_keyboard(), parse_mode="HTML")
+    await callback.message.edit_text(get_help_text(), reply_markup=get_help_keyboard(i18n), parse_mode="HTML")
     await callback.answer()
 
 
 @router.callback_query(F.data == "choose_gender_help")
 async def gender_help(callback: CallbackQuery, i18n: I18nMiddleware):
     """Handle gender help callback."""
-    await callback.message.edit_text(i18n.t("buttons.choose_gender_help"), reply_markup=get_gender_keyboard())
+    await callback.message.edit_text(i18n.t("buttons.choose_gender_help"), reply_markup=get_gender_keyboard(i18n))
     await callback.answer()

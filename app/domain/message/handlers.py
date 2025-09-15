@@ -46,7 +46,7 @@ async def handle_message(
         consent_given = await user_service.get_consent_status(user_id)
     
     if not consent_given:
-        await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard())
+        await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard(i18n))
         return
 
     # Check message limit

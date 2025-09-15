@@ -1,8 +1,8 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from shared.i18n import i18n
+from shared.middlewares.i18n_middleware import I18nMiddleware
 
 
-def get_consent_keyboard() -> InlineKeyboardMarkup:
+def get_consent_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text=i18n.t("buttons.agree_privacy"), callback_data="consent_agree")],
@@ -11,7 +11,7 @@ def get_consent_keyboard() -> InlineKeyboardMarkup:
     )
 
 
-def get_consent_given_keyboard() -> InlineKeyboardMarkup:
+def get_consent_given_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -23,7 +23,7 @@ def get_consent_given_keyboard() -> InlineKeyboardMarkup:
     )
 
 
-def get_gender_keyboard() -> InlineKeyboardMarkup:
+def get_gender_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -34,7 +34,7 @@ def get_gender_keyboard() -> InlineKeyboardMarkup:
     )
 
 
-def get_gender_change_confirmation_keyboard() -> InlineKeyboardMarkup:
+def get_gender_change_confirmation_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -45,7 +45,7 @@ def get_gender_change_confirmation_keyboard() -> InlineKeyboardMarkup:
     )
 
 
-def get_help_keyboard() -> InlineKeyboardMarkup:
+def get_help_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
 
     return InlineKeyboardMarkup(
         inline_keyboard=[
@@ -56,7 +56,7 @@ def get_help_keyboard() -> InlineKeyboardMarkup:
     )
 
 
-def get_privacy_info_keyboard() -> InlineKeyboardMarkup:
+def get_privacy_info_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[[InlineKeyboardButton(text=i18n.t("buttons.buy_premium"), callback_data="back_to_help")]]
     )

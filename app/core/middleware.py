@@ -4,10 +4,8 @@ Aiogram middleware for access control and other common functionality.
 from typing import Any, Awaitable, Callable, Dict, Set
 
 from aiogram import BaseMiddleware
-from aiogram.dispatcher.event.handler import HandlerObject
 from aiogram.types import CallbackQuery, Message, TelegramObject
 
-from core.exceptions import UserException
 
 
 class AccessMiddleware(BaseMiddleware):

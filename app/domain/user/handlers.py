@@ -14,14 +14,14 @@ from domain.user.keyboards import (
     get_help_keyboard,
     get_privacy_info_keyboard,
 )
-from domain.user.messages import get_consent_given_text, get_gender_change_warning_text, get_gender_selection_text
+from domain.user.messages import get_consent_given_text
 from domain.user.services_cached import UserService
 from shared.fsm.user_cache import UserCacheData
 from shared.messages.common import get_help_text, get_privacy_info_text
+from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.middlewares.middlewares import AccessMiddleware
 from shared.utils.helpers import destructure_user
-from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction
 
 from core.exceptions import UserException
 
@@ -37,13 +37,13 @@ async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddl
 
     # Check if user is new before adding
     user_exists = await user_service.get_user(user_id) is not None
-    
+
     await user_service.add_user(user_id, username, first_name, last_name)
-    
+
     # Record new user if this is their first time
     if not user_exists:
-        safe_record_metric('record_new_user')
-    
+        safe_record_metric("record_new_user")
+
     # Record user interaction (command)
     safe_record_user_interaction(user_id, "command")
 
@@ -61,7 +61,9 @@ async def cmd_start(message: Message, user_service: UserService, i18n: I18nMiddl
 
 
 @router.message(Command(commands=["choose_gender"]))
-async def cmd_choose_gender(message: Message, user_service: UserService, i18n: I18nMiddleware, cached_user: UserCacheData = None):
+async def cmd_choose_gender(
+    message: Message, user_service: UserService, i18n: I18nMiddleware, cached_user: UserCacheData = None
+):
     user_id, username, first_name, last_name = destructure_user(message.from_user)
 
     # Add user to database
@@ -89,7 +91,7 @@ async def gender_choice(callback: CallbackQuery, user_service: UserService, i18n
     try:
         # change translation to dynamic i18n translations
         await user_service.set_gender_preference(user.id, preference)
-        
+
         # Use translated gender names
         gender_name = i18n.t("buttons.female") if preference == "female" else i18n.t("buttons.male")
         await callback.message.edit_text(i18n.t("gender.toggle_gender", gender=gender_name))
@@ -183,15 +185,15 @@ async def back_to_help(callback: CallbackQuery, i18n: I18nMiddleware):
 
 @router.message(Command(commands=["check_messages"]))
 async def cmd_check_messages(
-    message: Message, 
-    message_service: MessageService, 
-    user_service: UserService, 
+    message: Message,
+    message_service: MessageService,
+    user_service: UserService,
     i18n: I18nMiddleware,
-    cached_user: UserCacheData = None
+    cached_user: UserCacheData = None,
 ):
     """Check remaining free messages for the user."""
     user_id = message.from_user.id
-    
+
     # Check if user has premium subscription
     if cached_user:
         subscription_status = cached_user.subscription_status
@@ -199,98 +201,100 @@ async def cmd_check_messages(
     else:
         subscription_status = await user_service.get_subscription_status(user_id)
         subscription_expires_at = await user_service.get_subscription_expires_at(user_id)
-    
+
     # Check if premium subscription is active
     if subscription_status == "premium" and subscription_expires_at:
         from datetime import datetime
+
         if subscription_expires_at > datetime.utcnow():
             # User has active premium
             await message.answer(f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.unlimited')}")
             return
-    
+
     # Get daily limit from config
     from config.openai import OPENAI_CONFIG
+
     daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
-    
+
     # Get remaining messages
     remaining = await message_service.get_remaining_messages(user_id)
     used = daily_limit - remaining
-    
+
     # Prepare response based on remaining messages
     if remaining == 0:
-        response = f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.used_all', total=daily_limit)}"
+        response = (
+            f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.used_all', total=daily_limit)}"
+        )
     else:
         response = f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.remaining_free', remaining=remaining, total=daily_limit)}"
-    
+
     # Add reset info
     response += f"\n\n{i18n.t('commands.check_messages.reset_info')}"
-    
+
     await message.answer(response)
 
 
 # Cache for metrics command (optimization for scalability)
-_metrics_cache = {
-    "response": None,
-    "last_update": 0,
-    "ttl": 30  # Cache for 30 seconds
-}
+_metrics_cache = {"response": None, "last_update": 0, "ttl": 30}  # Cache for 30 seconds
+
 
 @router.message(Command(commands=["metrics"]))
 async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     """Show bot metrics (admin only) with caching for scalability."""
     user_id = message.from_user.id
-    
+
     # Check if user is admin (hardcoded for now)
     if user_id not in {627875032, 1512454100}:
         await message.answer("Access denied.")
         return
-    
+
     # Get metrics collector from global reference
     from shared.metrics.metrics import metrics_collector
+
     if metrics_collector is None:
         await message.answer("Metrics not available.")
         return
-    
+
     # Check cache first (optimization for scalability)
     import time
+
     current_time = time.time()
-    if (_metrics_cache["response"] and 
-        (current_time - _metrics_cache["last_update"]) < _metrics_cache["ttl"]):
+    if _metrics_cache["response"] and (current_time - _metrics_cache["last_update"]) < _metrics_cache["ttl"]:
         await message.answer(_metrics_cache["response"])
         return
-    
+
     # Generate fresh metrics
     metrics_summary = metrics_collector.get_metrics_summary()
-    
+
     response = "📊 Bot Metrics\n\n"
-    
+
     # System metrics
     response += f"uptime_seconds: {metrics_summary['uptime_seconds']}\n"
     response += f"uptime_hours: {metrics_summary['uptime_hours']}\n\n"
-    
+
     # Daily user activity metrics (reset at midnight)
     response += f"unique_active_users_today: {metrics_summary['unique_active_users_today']}\n"
     response += f"total_interactions_today: {metrics_summary['total_interactions_today']}\n"
     response += f"messages_sent_today: {metrics_summary['messages_sent_today']}\n"
     response += f"commands_used_today: {metrics_summary['commands_used_today']}\n"
     response += f"new_users_today: {metrics_summary['new_users_today']}\n\n"
-    
+
     # General metrics (accumulative, never reset)
     response += f"total_messages_processed: {metrics_summary['total_messages_processed']}\n"
     response += f"success_rate: {metrics_summary['success_rate']}\n"
     response += f"average_response_time: {metrics_summary['average_response_time']}\n"
     response += f"limit_exceeded_count: {metrics_summary['limit_exceeded_count']}\n\n"
-    
+
     # Performance and error metrics (accumulative, never reset)
     response += f"cache_hit_rate: {metrics_summary['cache_hit_rate']}\n"
     response += f"openai_errors: {metrics_summary['openai_errors']}\n"
     response += f"database_errors: {metrics_summary['database_errors']}\n"
     response += f"validation_errors: {metrics_summary['validation_errors']}"
-    
+
     # Update cache
     _metrics_cache["response"] = response
     _metrics_cache["last_update"] = current_time
-    
+
     await message.answer(response)
 
 

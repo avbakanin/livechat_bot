@@ -16,12 +16,12 @@ def get_success_message(action: str = "general") -> str:
 
 
 def get_help_text(free_limit: int = None) -> str:
-    from shared.i18n import i18n
     from config.openai import OPENAI_CONFIG
-    
+    from shared.i18n import i18n
+
     # Use provided limit or get from config
     if free_limit is None:
-        free_limit = OPENAI_CONFIG.get('FREE_MESSAGE_LIMIT', 100)
+        free_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
 
     return f"""
         {hbold(i18n.t('commands.help.title'))}

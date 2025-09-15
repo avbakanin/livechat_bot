@@ -12,10 +12,10 @@ from domain.message.queries import create_message as db_create_message
 from domain.message.queries import delete_user_messages as db_delete_user_messages
 from domain.message.queries import get_user_messages as db_get_user_messages
 from openai import AsyncOpenAI
+from services.counter import DailyCounterService
+from services.persona import PersonaService
 from shared.i18n import i18n
 from shared.models.message import MessageContext, MessageCreate
-from services.persona import PersonaService
-from services.counter import DailyCounterService
 
 from core.exceptions import OpenAIException
 
@@ -23,7 +23,13 @@ from core.exceptions import OpenAIException
 class MessageService:
     """Message business logic service."""
 
-    def __init__(self, pool: asyncpg.Pool, openai_client: AsyncOpenAI, persona_service: PersonaService = None, counter_service: DailyCounterService = None):
+    def __init__(
+        self,
+        pool: asyncpg.Pool,
+        openai_client: AsyncOpenAI,
+        persona_service: PersonaService = None,
+        counter_service: DailyCounterService = None,
+    ):
         self.pool = pool
         self.openai_client = openai_client
         self.persona_service = persona_service
@@ -33,7 +39,7 @@ class MessageService:
         """Add a message to the database and update counter if it's a user message."""
         message_data = MessageCreate(user_id=user_id, role=role, text=text)
         await db_create_message(self.pool, message_data)
-        
+
         # Increment counter for user messages
         if role == "user" and self.counter_service:
             await self.counter_service.increment_user_count(user_id)
@@ -62,7 +68,7 @@ class MessageService:
     async def get_remaining_messages(self, user_id: int) -> int:
         """Get remaining messages for the day."""
         daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
-        
+
         if self.counter_service:
             return await self.counter_service.get_remaining_messages(user_id, daily_limit)
         else:

@@ -68,3 +68,13 @@ class UserService:
         # This would need to be implemented with message counting
         # For now, return True - this should be moved to message service
         return True
+
+    async def get_subscription_status(self, user_id: int) -> str:
+        """Get user subscription status."""
+        from domain.user.queries import get_user_subscription_status
+        return await get_user_subscription_status(self.pool, user_id)
+
+    async def get_subscription_expires_at(self, user_id: int):
+        """Get user subscription expiration date."""
+        from domain.user.queries import get_user_subscription_expires_at
+        return await get_user_subscription_expires_at(self.pool, user_id)

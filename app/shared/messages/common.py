@@ -15,8 +15,13 @@ def get_success_message(action: str = "general") -> str:
     return i18n.t(f"success.{action}")
 
 
-def get_help_text(free_limit: int = 100) -> str:
+def get_help_text(free_limit: int = None) -> str:
     from shared.i18n import i18n
+    from config.openai import OPENAI_CONFIG
+    
+    # Use provided limit or get from config
+    if free_limit is None:
+        free_limit = OPENAI_CONFIG.get('FREE_MESSAGE_LIMIT', 100)
 
     return f"""
         {hbold(i18n.t('commands.help.title'))}
@@ -25,6 +30,7 @@ def get_help_text(free_limit: int = 100) -> str:
         {i18n.t('commands.help.start_command')}
         {i18n.t('commands.help.help_command')}
         {i18n.t('commands.help.gender_command')}
+        {i18n.t('commands.help.check_messages_command')}
 
         {hbold(i18n.t('commands.help.communication_title'))}
         {i18n.t('commands.help.free_limit', free_limit=free_limit)}

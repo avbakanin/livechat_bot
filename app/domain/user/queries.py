@@ -228,6 +228,36 @@ async def get_gender_preference(pool: asyncpg.Pool, user_id: int) -> str:
             raise DatabaseException(f"Error getting gender preference {user_id}: {e}", e)
 
 
+async def get_user_subscription_status(pool: asyncpg.Pool, user_id: int) -> str:
+    """Get user subscription status."""
+    async with pool.acquire() as conn:
+        try:
+            row = await conn.fetchrow(
+                """
+                SELECT subscription_status FROM users WHERE id = $1
+            """,
+                user_id,
+            )
+            return row["subscription_status"] if row else "free"
+        except Exception as e:
+            raise DatabaseException(f"Error getting subscription status for user {user_id}: {e}", e)
+
+
+async def get_user_subscription_expires_at(pool: asyncpg.Pool, user_id: int):
+    """Get user subscription expiration date."""
+    async with pool.acquire() as conn:
+        try:
+            row = await conn.fetchrow(
+                """
+                SELECT subscription_expires_at FROM users WHERE id = $1
+            """,
+                user_id,
+            )
+            return row["subscription_expires_at"] if row else None
+        except Exception as e:
+            raise DatabaseException(f"Error getting subscription expiration for user {user_id}: {e}", e)
+
+
 async def set_gender_preference(pool: asyncpg.Pool, user_id: int, preference: str) -> None:
     """Set user gender preference."""
     async with pool.acquire() as conn:

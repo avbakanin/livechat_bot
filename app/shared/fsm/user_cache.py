@@ -27,6 +27,10 @@ class UserCacheData:
     subscription_status: str = "free"
     subscription_expires_at: Optional[datetime] = None
     
+    # Daily message counter cache
+    daily_message_count: int = 0
+    last_message_date: str = ""
+    
     # Cache metadata
     cached_at: datetime = field(default_factory=datetime.utcnow)
     last_accessed: datetime = field(default_factory=datetime.utcnow)

@@ -118,6 +118,26 @@ class UserService:
         # Update cache
         await user_cache.update_field(user_id, "gender_preference", preference)
 
+    async def get_subscription_status(self, user_id: int) -> str:
+        """Get user subscription status with caching."""
+        cached_data = await user_cache.get(user_id)
+        if cached_data:
+            return cached_data.subscription_status
+        
+        # Fallback to database
+        from domain.user.queries import get_user_subscription_status
+        return await get_user_subscription_status(self.pool, user_id)
+
+    async def get_subscription_expires_at(self, user_id: int):
+        """Get user subscription expiration date with caching."""
+        cached_data = await user_cache.get(user_id)
+        if cached_data:
+            return cached_data.subscription_expires_at
+        
+        # Fallback to database
+        from domain.user.queries import get_user_subscription_expires_at
+        return await get_user_subscription_expires_at(self.pool, user_id)
+
     async def can_send_message(self, user_id: int) -> bool:
         """Check if user can send messages (not exceeded daily limit)."""
         # This would need to be implemented with message counting

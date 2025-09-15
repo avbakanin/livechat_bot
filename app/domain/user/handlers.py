@@ -3,6 +3,7 @@ import logging
 from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import CallbackQuery, Message
+from domain.message.services import MessageService
 from domain.subscription.keyboards import get_premium_info_keyboard
 from domain.subscription.messages import get_premium_info_text
 from domain.user.keyboards import (
@@ -167,6 +168,53 @@ async def back_to_help(callback: CallbackQuery, i18n: I18nMiddleware):
     """Handle back to help callback."""
     await callback.message.edit_text(get_help_text(), reply_markup=get_help_keyboard(i18n), parse_mode="HTML")
     await callback.answer()
+
+
+@router.message(Command(commands=["check_messages"]))
+async def cmd_check_messages(
+    message: Message, 
+    message_service: MessageService, 
+    user_service: UserService, 
+    i18n: I18nMiddleware,
+    cached_user: UserCacheData = None
+):
+    """Check remaining free messages for the user."""
+    user_id = message.from_user.id
+    
+    # Check if user has premium subscription
+    if cached_user:
+        subscription_status = cached_user.subscription_status
+        subscription_expires_at = cached_user.subscription_expires_at
+    else:
+        subscription_status = await user_service.get_subscription_status(user_id)
+        subscription_expires_at = await user_service.get_subscription_expires_at(user_id)
+    
+    # Check if premium subscription is active
+    if subscription_status == "premium" and subscription_expires_at:
+        from datetime import datetime
+        if subscription_expires_at > datetime.utcnow():
+            # User has active premium
+            await message.answer(f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.unlimited')}")
+            return
+    
+    # Get daily limit from config
+    from config.openai import OPENAI_CONFIG
+    daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
+    
+    # Get remaining messages
+    remaining = await message_service.get_remaining_messages(user_id)
+    used = daily_limit - remaining
+    
+    # Prepare response based on remaining messages
+    if remaining == 0:
+        response = f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.used_all', total=daily_limit)}"
+    else:
+        response = f"{i18n.t('commands.check_messages.title')}\n\n{i18n.t('commands.check_messages.remaining_free', remaining=remaining, total=daily_limit)}"
+    
+    # Add reset info
+    response += f"\n\n{i18n.t('commands.check_messages.reset_info')}"
+    
+    await message.answer(response)
 
 
 @router.callback_query(F.data == "choose_gender_help")

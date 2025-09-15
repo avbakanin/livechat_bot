@@ -97,3 +97,74 @@ CREATE TABLE public.payments (
     CONSTRAINT payments_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE
 );
 CREATE INDEX idx_payments_user_id ON public.payments USING btree (user_id);
+
+
+CREATE TABLE IF NOT EXISTS public.user_daily_counters (
+    user_id BIGINT NOT NULL,
+    date DATE NOT NULL,
+    message_count INTEGER DEFAULT 0,
+    last_reset_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT user_daily_counters_pkey PRIMARY KEY (user_id, date),
+    CONSTRAINT user_daily_counters_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE
+);
+
+-- Index for efficient date-based queries
+CREATE INDEX IF NOT EXISTS idx_user_daily_counters_date ON public.user_daily_counters USING btree (date);
+
+-- Function to increment user's daily message count
+CREATE OR REPLACE FUNCTION public.increment_user_daily_count(p_user_id BIGINT, p_date DATE DEFAULT CURRENT_DATE)
+RETURNS INTEGER LANGUAGE plpgsql AS $$
+DECLARE
+    v_count INTEGER;
+BEGIN
+    -- Insert or update counter for the user and date
+    INSERT INTO public.user_daily_counters (user_id, date, message_count)
+    VALUES (p_user_id, p_date, 1)
+    ON CONFLICT (user_id, date)
+    DO UPDATE SET 
+        message_count = user_daily_counters.message_count + 1,
+        last_reset_at = CURRENT_TIMESTAMP
+    RETURNING message_count INTO v_count;
+    
+    RETURN v_count;
+END;
+$$;
+
+-- Function to get user's daily message count
+CREATE OR REPLACE FUNCTION public.get_user_daily_count(p_user_id BIGINT, p_date DATE DEFAULT CURRENT_DATE)
+RETURNS INTEGER LANGUAGE plpgsql AS $$
+DECLARE
+    v_count INTEGER;
+BEGIN
+    SELECT COALESCE(message_count, 0) INTO v_count
+    FROM public.user_daily_counters
+    WHERE user_id = p_user_id AND date = p_date;
+    
+    RETURN COALESCE(v_count, 0);
+END;
+$$;
+
+-- Function to reset all counters for a specific date (useful for cleanup)
+CREATE OR REPLACE FUNCTION public.reset_daily_counters_for_date(p_date DATE)
+RETURNS INTEGER LANGUAGE plpgsql AS $$
+DECLARE
+    v_deleted_count INTEGER;
+BEGIN
+    DELETE FROM public.user_daily_counters WHERE date = p_date;
+    GET DIAGNOSTICS v_deleted_count = ROW_COUNT;
+    RETURN v_deleted_count;
+END;
+$$;
+
+-- Function to cleanup old counters (older than 30 days)
+CREATE OR REPLACE FUNCTION public.cleanup_old_counters()
+RETURNS INTEGER LANGUAGE plpgsql AS $$
+DECLARE
+    v_deleted_count INTEGER;
+BEGIN
+    DELETE FROM public.user_daily_counters 
+    WHERE date < CURRENT_DATE - INTERVAL '30 days';
+    GET DIAGNOSTICS v_deleted_count = ROW_COUNT;
+    RETURN v_deleted_count;
+END;
+$$;

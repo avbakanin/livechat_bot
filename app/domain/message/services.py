@@ -15,6 +15,7 @@ from openai import AsyncOpenAI
 from shared.i18n import i18n
 from shared.models.message import MessageContext, MessageCreate
 from services.persona import PersonaService
+from services.counter import DailyCounterService
 
 from core.exceptions import OpenAIException
 
@@ -22,15 +23,20 @@ from core.exceptions import OpenAIException
 class MessageService:
     """Message business logic service."""
 
-    def __init__(self, pool: asyncpg.Pool, openai_client: AsyncOpenAI, persona_service: PersonaService = None):
+    def __init__(self, pool: asyncpg.Pool, openai_client: AsyncOpenAI, persona_service: PersonaService = None, counter_service: DailyCounterService = None):
         self.pool = pool
         self.openai_client = openai_client
         self.persona_service = persona_service
+        self.counter_service = counter_service
 
     async def add_message(self, user_id: int, role: str, text: str) -> None:
-        """Add a message to the database."""
+        """Add a message to the database and update counter if it's a user message."""
         message_data = MessageCreate(user_id=user_id, role=role, text=text)
         await db_create_message(self.pool, message_data)
+        
+        # Increment counter for user messages
+        if role == "user" and self.counter_service:
+            await self.counter_service.increment_user_count(user_id)
 
     async def get_chat_history(self, user_id: int, limit: int = 10) -> List[MessageContext]:
         """Get user's chat history."""
@@ -42,11 +48,28 @@ class MessageService:
 
     async def can_send_message(self, user_id: int) -> bool:
         """Check if user can send messages (not exceeded daily limit)."""
-        # This should be moved to a separate service or config
-        daily_limit = 100  # Should come from config
+        # Get daily limit from config
+        daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
 
-        messages_today = await db_count_user_messages_today(self.pool, user_id)
-        return messages_today < daily_limit
+        # Use efficient counter service if available, otherwise fallback to old method
+        if self.counter_service:
+            return await self.counter_service.can_send_message(user_id, daily_limit)
+        else:
+            # Fallback to old method
+            messages_today = await db_count_user_messages_today(self.pool, user_id)
+            return messages_today < daily_limit
+
+    async def get_remaining_messages(self, user_id: int) -> int:
+        """Get remaining messages for the day."""
+        daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 100)
+        
+        if self.counter_service:
+            return await self.counter_service.get_remaining_messages(user_id, daily_limit)
+        else:
+            # Fallback calculation
+            messages_today = await db_count_user_messages_today(self.pool, user_id)
+            remaining = daily_limit - messages_today
+            return max(0, remaining)
 
     async def generate_response(self, user_id: int, user_message: str, gender_preference: str) -> str:
         """Generate AI response using OpenAI with dynamic personas."""
@@ -85,9 +108,10 @@ class MessageService:
             raise OpenAIException(f"Error generating response: {e}", e)
 
     def _get_system_prompt(self, gender_preference: str) -> str:
-        """Get system prompt based on gender preference."""
-        prompts = {
-            "female": "Ты ИИ-девушка, флиртующая и supportive для одиноких людей. Будь милой, empathetic и игривой.",
-            "male": "Ты ИИ-молодой человек, флиртующий и supportive для одиноких людей. Будь уверенным, empathetic и игривым.",
+        """Get system prompt based on gender preference (fallback method)."""
+        # Fallback prompts - should be replaced by PersonaService
+        fallback_prompts = {
+            "female": "You are an AI companion. Be friendly, empathetic and supportive.",
+            "male": "You are an AI companion. Be friendly, empathetic and supportive.",
         }
-        return prompts.get(gender_preference, prompts["female"])
+        return fallback_prompts.get(gender_preference, fallback_prompts["female"])

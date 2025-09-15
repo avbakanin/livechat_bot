@@ -14,6 +14,7 @@ from domain.user.handlers import router as user_router
 from domain.user.services_cached import UserService
 from openai import AsyncOpenAI
 from services.persona import PersonaService
+from services.counter import DailyCounterService
 from shared.fsm.fsm_middleware import FSMMiddleware
 from shared.fsm.user_cache import user_cache
 from shared.middlewares.i18n_middleware import I18nMiddleware
@@ -51,7 +52,10 @@ async def main():
         i18n_middleware = I18nMiddleware()
         persona_service = PersonaService(i18n_middleware)
         
-        message_service = MessageService(pool, openai_client, persona_service)
+        # Create counter service for efficient message counting
+        counter_service = DailyCounterService(pool)
+        
+        message_service = MessageService(pool, openai_client, persona_service, counter_service)
 
         apply_middlewares(
             dp,

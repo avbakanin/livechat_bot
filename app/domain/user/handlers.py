@@ -3,6 +3,7 @@ import logging
 from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import CallbackQuery, Message
+from aiogram.exceptions import TelegramBadRequest
 from domain.message.services import MessageService
 from domain.subscription.keyboards import get_premium_info_keyboard
 from domain.subscription.messages import get_premium_info_text
@@ -200,33 +201,70 @@ async def cmd_privacy(message: Message):
 
 @router.callback_query(F.data == "premium_info_help")
 async def premium_info(callback: CallbackQuery):
-    """Handle premium info callback."""
-    await callback.message.edit_text(
-        get_premium_info_text(),
-        reply_markup=get_premium_info_keyboard(),
-        parse_mode="HTML",
-    )
-    await callback.answer()
+    """Handle premium info callback with optimal performance."""
+    try:
+        await callback.message.edit_text(
+            text=get_premium_info_text(),
+            reply_markup=get_premium_info_keyboard(),
+            parse_mode="HTML",
+        )
+        await callback.answer()
+        
+    except TelegramBadRequest as e:
+        if "message is not modified" in str(e).lower():
+            await callback.answer()
+        elif "message to edit not found" in str(e).lower():
+            await callback.answer("Сообщение устарело", show_alert=True)
+        else:
+            logging.error(f"Premium info error: {e}")
+            await callback.answer("❌ Ошибка обновления", show_alert=True)
 
 
 @router.callback_query(F.data == "privacy_info_help")
 async def privacy_info(callback: CallbackQuery):
-    """Handle privacy info callback."""
-    await callback.message.edit_text(
-        get_privacy_info_text(),
-        reply_markup=get_privacy_info_keyboard(),
-        parse_mode="HTML",
-    )
-    await callback.answer()
+    """Handle privacy info callback with optimal performance."""
+    try:
+        await callback.message.edit_text(
+            text=get_privacy_info_text(),
+            reply_markup=get_privacy_info_keyboard(),
+            parse_mode="HTML",
+        )
+        await callback.answer()
+        
+    except TelegramBadRequest as e:
+        if "message is not modified" in str(e).lower():
+            await callback.answer()
+        elif "message to edit not found" in str(e).lower():
+            await callback.answer("Сообщение устарело", show_alert=True)
+        else:
+            logging.error(f"Privacy info error: {e}")
+            await callback.answer("❌ Ошибка обновления", show_alert=True)
 
 
 @router.callback_query(F.data == "back_to_help")
 async def back_to_help(callback: CallbackQuery, i18n: I18nMiddleware):
-    """Handle back to help callback."""
-    await callback.message.edit_text(
-        get_help_text(), reply_markup=get_help_keyboard(i18n), parse_mode="HTML"
-    )
-    await callback.answer()
+    """Handle back to help callback with optimal performance."""
+    try:
+        # Получаем контент один раз
+        help_text = get_help_text()
+        help_keyboard = get_help_keyboard(i18n)
+        
+        # Редактируем сообщение
+        await callback.message.edit_text(
+            text=help_text,
+            reply_markup=help_keyboard,
+            parse_mode="HTML"
+        )
+        await callback.answer()
+        
+    except TelegramBadRequest as e:
+        if "message is not modified" in str(e).lower():
+            await callback.answer()
+        elif "message to edit not found" in str(e).lower():
+            await callback.answer("Сообщение устарело", show_alert=True)
+        else:
+            logging.error(f"Back to help error: {e}")
+            await callback.answer("❌ Ошибка обновления", show_alert=True)
 
 
 @router.message(Command(commands=["status"]))
@@ -538,8 +576,19 @@ async def cmd_reset_daily_metrics(message: Message):
 
 @router.callback_query(F.data == "choose_gender_help")
 async def gender_help(callback: CallbackQuery, i18n: I18nMiddleware):
-    """Handle gender help callback."""
-    await callback.message.edit_text(
-        i18n.t("buttons.choose_gender_help"), reply_markup=get_gender_keyboard(i18n)
-    )
-    await callback.answer()
+    """Handle gender help callback with optimal performance."""
+    try:
+        await callback.message.edit_text(
+            text=i18n.t("buttons.choose_gender_help"),
+            reply_markup=get_gender_keyboard(i18n)
+        )
+        await callback.answer()
+        
+    except TelegramBadRequest as e:
+        if "message is not modified" in str(e).lower():
+            await callback.answer()
+        elif "message to edit not found" in str(e).lower():
+            await callback.answer("Сообщение устарело", show_alert=True)
+        else:
+            logging.error(f"Gender help error: {e}")
+            await callback.answer("❌ Ошибка обновления", show_alert=True)

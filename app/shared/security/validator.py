@@ -246,7 +246,33 @@ class SecurityValidator:
             f"🚨 SECURITY: User {user_id} has multiple suspicious flags: {flags}"
         )
 
-    def get_user_security_score(self, user_id: int) -> Dict[str, Any]:
+    def is_safe_text(self, text: str) -> bool:
+        """
+        Simple method to check if text is safe.
+        
+        Args:
+            text: Text to check
+            
+        Returns:
+            True if text is safe, False otherwise
+        """
+        if not text:
+            return False
+        
+        # Check length
+        if len(text) > 2500:
+            return False
+        
+        # Check for suspicious patterns
+        suspicious_patterns = self._detect_suspicious_patterns(text)
+        if suspicious_patterns:
+            return False
+        
+        # Check for spam
+        if self._is_potential_spam(text):
+            return False
+        
+        return True
         """
         Get security score for user.
         

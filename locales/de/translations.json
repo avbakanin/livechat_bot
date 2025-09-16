@@ -1,0 +1,183 @@
+{
+  "commands": {
+    "start": {
+      "welcome": "Hallo! Du hast {free_limit} kostenlose Nachrichten pro Tag. Wähle das Geschlecht deines Begleiters:",
+      "already_started": "Bot läuft bereits - sende einfach eine Nachricht 😊"
+    },
+    "status": {
+      "title": "📊 Kontostatus",
+      "remaining_free": "Du hast {remaining} von {total} kostenlosen Nachrichten für heute übrig",
+      "unlimited": "Du hast ein Premium-Abonnement - unbegrenzte Kommunikation! 💎",
+      "used_all": "Du hast alle kostenlosen Nachrichten für heute verwendet ({total}/{total})",
+      "reset_info": "Das Limit wird morgen um Mitternacht zurückgesetzt",
+      "premium_days": "⏰ Premium-Abonnement läuft in {days} Tagen ab",
+      "premium_hours": "⏰ Premium-Abonnement läuft in {hours} Stunden ab",
+      "premium_expiring": "⚠️ Premium-Abonnement läuft heute ab!"
+    },
+    "help": {
+      "title": "🤖 Bot-Hilfe",
+      "commands_title": "Verfügbare Befehle:",
+      "start_command": "/start - Mit dem Bot chatten beginnen",
+      "help_command": "/help - Diese Hilfe anzeigen",
+      "gender_command": "/choose_gender - Geschlecht des Begleiters wählen",
+      "status_command": "/status - Kontostatus und Abonnement-Info anzeigen",
+      "communication_title": "💬 Kommunikation:",
+      "free_limit": "• Kostenlos: {free_limit} Nachrichten pro Tag",
+      "premium_unlimited": "• Premium: unbegrenzte Kommunikation",
+      "companion_title": "🎭 Begleiter-Auswahl:",
+      "female_description": "• Mädchen - süß und einfühlsam",
+      "male_description": "• Junge - selbstbewusst und verspielt",
+      "premium_title": "💎 Premium-Abonnement:",
+      "premium_description": "Ermöglicht unbegrenzte Kommunikation und zusätzliche Funktionen",
+      "faq_title": "❓ Häufig gestellte Fragen:",
+      "context_memory": "• Bot merkt sich Gesprächskontext",
+      "gender_change": "• Du kannst das Geschlecht des Begleiters jederzeit ändern",
+      "limit_reset": "• Nachrichtenlimit wird täglich zurückgesetzt",
+      "start_instruction": "Um zu chatten zu beginnen, verwende {start_command}"
+    }
+  },
+  "consent": {
+    "request": "Bitte stimme der Datenschutzrichtlinie zu:",
+    "agreed": "Danke für deine Zustimmung! Du hast {free_limit} kostenlose Nachrichten pro Tag. Wähle das Geschlecht deines Begleiters:",
+    "privacy_title": "🔐 Datenschutzrichtlinie",
+    "privacy_text": "Hier ist Ihr Datenschutzrichtlinien-Text...\n\nVollversion: https://yourwebsite.com/privacy"
+  },
+  "gender": {
+    "choose": "Wähle das Geschlecht deines Begleiters:",
+    "toggle_gender": "Geschlecht des Begleiters geändert zu {gender} 😊",
+    "change_warning": "⚠️ Bist du sicher, dass du das Geschlecht des Begleiters ändern möchtest?\n\nDie gesamte Chat-Historie wird gelöscht!",
+    "change_confirmed": "Chat-Historie gelöscht. Wähle das Geschlecht deines Begleiters:",
+    "change_cancelled": "Geschlechtsänderung abgebrochen. Du kannst weiter chatten."
+  },
+  "messages": {
+    "limit_exceeded": "Tägliches Limit für kostenlose Nachrichten überschritten. Willst du unbegrenzt? Kaufe Premium!",
+    "processing_error": "Entschuldigung, es ist ein Fehler bei der Nachrichtenverarbeitung aufgetreten. Versuche es später.",
+    "save_error": "Ein Fehler beim Speichern der Nachricht ist aufgetreten.",
+    "unexpected_error": "Ein unerwarteter Fehler ist aufgetreten. Versuche es später.",
+    "empty_response": "OpenAI hat eine leere Antwort zurückgegeben.",
+    "empty_message": "Bitte sende eine nicht-leere Nachricht.",
+    "message_too_long": "Nachricht ist zu lang. Maximum 2500 Zeichen."
+  },
+  "persons": {
+    "gender": {
+      "male": ["Du bist ein Mann"],
+      "female": ["Du bist eine Frau"]
+    },
+    "temperament": {
+      "sanguine": "Sanguiniker: energisch, optimistisch, freundlich.",
+      "choleric": "Choleriker: impulsiv, aktiv, leidenschaftlich.",
+      "phlegmatic": "Phlegmatiker: ruhig, besonnen, langsam.",
+      "melancholic": "Melancholiker: sensibel, nachdenklich, zur Selbstanalyse neigend."
+    },
+    "traits": {
+      "mood": {
+        "cheerful": "Füge leichten Humor hinzu und finde immer das Positive.",
+        "serious": "Sprich manchmal ernst, ohne überflüssige Emotionen."
+      },
+      "emotionality": {
+        "emotional": "Verstecke deine Emotionen nicht, antworte lebendig und lebhaft.",
+        "calm": "Antworte ruhig und gemessen."
+      },
+      "approach": {
+        "direct": "Sei direkt, streite manchmal.",
+        "gentle": "Sei sanft und fürsorglich in deinen Worten."
+      },
+      "style": {
+        "playful": "Füge spielerische Töne in die Kommunikation ein.",
+        "thoughtful": "Sei aufmerksam auf Details, füge philosophische Töne hinzu."
+      },
+      "focus": {
+        "analytical": "Analysiere Situationen logisch und strukturiert.",
+        "creative": "Nutze deine Fantasie und lebendige Vergleiche."
+      },
+      "social_orientation": {
+        "extroverted": "Sei gesellig, initiiere Dialoge, sprich über äußere Ereignisse.",
+        "introverted": "Sei etwas zurückhaltend, lege den Fokus auf innere Erlebnisse und tiefe Themen."
+      },
+      "time_orientation": {
+        "progressive": "Schaue öfter in die Zukunft, schlage neue Ideen und Möglichkeiten vor.",
+        "traditional": "Stütze dich auf vergangene Erfahrungen und zeitlich bewährte Werte."
+      },
+      "conflict_style": {
+        "assertive": "Vertrete deinen Standpunkt selbstbewusst und entschlossen.",
+        "accommodating": "Strebe nach Harmonie, gehe Kompromisse ein."
+      },
+      "communication_format": {
+        "detailed": "Gib ausführliche, umfassende Antworten mit Beispielen.",
+        "concise": "Antworte kurz und präzise, vermeide unnötige Details."
+      },
+      "values_focus": {
+        "pragmatic": "Konzentriere dich auf praktischen Nutzen und Ergebnisse.",
+        "idealistic": "Argumentiere aus moralischer Sicht, Idealen und höheren Werten."
+      },
+      "reaction_to_newness": {
+        "cautious": "Gehe vorsichtig mit Neuem um, bewerte Risiken.",
+        "enthusiastic": "Begrüße neue Ideen und Veränderungen mit Enthusiasmus und Neugier."
+      }
+    }
+  },
+  "premium": {
+    "info_title": "💎 Premium-Informationen",
+    "info_text": "Zahlungsinformationen werden später hinzugefügt.",
+    "unavailable": "Zahlungsfunktion ist vorübergehend nicht verfügbar. Versuche es später.",
+    "title": "💎 Premium-Abonnement",
+    "benefits_title": "Was Premium bietet:",
+    "benefits": {
+      "unlimited": "✅ Unbegrenzte Nachrichten",
+      "priority": "✅ Prioritätsverarbeitung von Anfragen",
+      "history": "✅ Erweiterte Dialog-Historie",
+      "modes": "✅ Spezielle Kommunikationsmodi"
+    },
+    "price_title": "Preis:",
+    "price": "500 Rubel / Monat",
+    "howto_title": "Wie kaufen:",
+    "howto": "Klicke auf 'Premium kaufen' im Hauptmenü (/start)"
+  },
+  "privacy": {
+    "title": "🔐 Datenschutzrichtlinie",
+    "text": "Hier ist Ihr Datenschutzrichtlinien-Text...",
+    "full": "Vollversion: %{url}"
+  },
+  "errors": {
+    "general": "Ein Fehler ist aufgetreten. Versuche es später.",
+    "database": "Datenbankfehler. Versuche es später.",
+    "openai": "Fehler bei der Nachrichtenverarbeitung. Versuche es später.",
+    "validation": "Ungültige Daten. Überprüfe die Eingabe.",
+    "permission": "Du hast keine Berechtigung für diese Aktion.",
+    "limit": "Limit überschritten. Versuche es später.",
+    "access_denied": "❌ Zugriff verweigert. Wende dich an den Administrator.",
+    "access_denied_alert": "❌ Zugriff verweigert.",
+    "private_bot": "Bot ist privat. Zugriff ist eingeschränkt.",
+    "try_again": "Ein Fehler ist aufgetreten. Versuche es erneut."
+  },
+  "success": {
+    "general": "Operation erfolgreich ausgeführt!",
+    "saved": "Daten gespeichert!",
+    "updated": "Daten aktualisiert!",
+    "deleted": "Daten gelöscht!",
+    "sent": "Nachricht gesendet!"
+  },
+  "buttons": {
+    "agree_privacy": "Datenschutzrichtlinie zustimmen",
+    "read_privacy": "Richtlinie lesen",
+    "choose_female": "Mädchen wählen 😊",
+    "choose_male": "Jungen wählen 😉",
+    "female": "Mädchen 😊",
+    "male": "Junge 😉",
+    "buy_premium": "Premium kaufen 💳",
+    "pay": "💳 Bezahlen",
+    "yes_change": "Ja, Geschlecht ändern",
+    "cancel": "Abbrechen",
+    "back": "↩️ Zurück",
+    "yes": "✅ Ja",
+    "no": "❌ Nein",
+    "choose_gender_help": "🎭 Geschlecht des Begleiters wählen",
+    "premium_info_help": "💎 Premium-Informationen",
+    "privacy_info_help": "📝 Datenschutzrichtlinie",
+    "back_to_help": "↩️ Zurück zur Hilfe"
+  },
+  "ai_prompts": {
+    "female": "Du bist ein KI-Mädchen, das flirtet und einsame Menschen unterstützt. Sei süß, einfühlsam und verspielt.",
+    "male": "Du bist ein KI-Junge, der flirtet und einsame Menschen unterstützt. Sei selbstbewusst, einfühlsam und verspielt."
+  }
+}

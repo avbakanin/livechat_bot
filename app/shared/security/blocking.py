@@ -1,342 +1,138 @@
 """
-Advanced user blocking and security enforcement system.
+Blocking service for user management.
 """
 
-import time
-from typing import Dict, List, Optional, Set
+import logging
+from typing import Set, Dict, Any
 from datetime import datetime, timedelta
-from dataclasses import dataclass
-from enum import Enum
-
-
-class BlockReason(Enum):
-    """Reasons for blocking users."""
-    SUSPICIOUS_ACTIVITY = "suspicious_activity"
-    MULTIPLE_VIOLATIONS = "multiple_violations"
-    SPAM_DETECTED = "spam_detected"
-    ATTACK_ATTEMPT = "attack_attempt"
-    RATE_LIMIT_EXCEEDED = "rate_limit_exceeded"
-    MANUAL_BLOCK = "manual_block"
-    SECURITY_THREAT = "security_threat"
-
-
-class BlockType(Enum):
-    """Types of blocks."""
-    TEMPORARY = "temporary"
-    PERMANENT = "permanent"
-    IP_BLOCK = "ip_block"
-    USER_BLOCK = "user_block"
-
-
-@dataclass
-class BlockRecord:
-    """Block record data."""
-    user_id: Optional[int]
-    ip_address: Optional[str]
-    block_type: BlockType
-    reason: BlockReason
-    blocked_at: datetime
-    expires_at: Optional[datetime]
-    blocked_by: Optional[int]  # Admin who blocked
-    description: str
-    is_active: bool = True
 
 
 class BlockingService:
-    """Advanced blocking service."""
+    """Service for blocking and unblocking users."""
     
     def __init__(self):
+        """Initialize blocking service."""
         self.blocked_users: Set[int] = set()
-        self.blocked_ips: Set[str] = set()
-        self.block_records: List[BlockRecord] = []
-        self.violation_counts: Dict[int, int] = {}
-        self.auto_block_threshold = 5
-        
-    def block_user(
-        self,
-        user_id: int,
-        reason: BlockReason,
-        block_type: BlockType = BlockType.TEMPORARY,
-        duration_hours: Optional[int] = None,
-        blocked_by: Optional[int] = None,
-        description: str = ""
-    ) -> BlockRecord:
-        """Block user."""
-        now = datetime.utcnow()
-        expires_at = None
-        
-        if block_type == BlockType.TEMPORARY and duration_hours:
-            expires_at = now + timedelta(hours=duration_hours)
-            
-        block_record = BlockRecord(
-            user_id=user_id,
-            ip_address=None,
-            block_type=block_type,
-            reason=reason,
-            blocked_at=now,
-            expires_at=expires_at,
-            blocked_by=blocked_by,
-            description=description
-        )
-        
-        self.block_records.append(block_record)
-        self.blocked_users.add(user_id)
-        
-        return block_record
-        
-    def block_ip(
-        self,
-        ip_address: str,
-        reason: BlockReason,
-        block_type: BlockType = BlockType.TEMPORARY,
-        duration_hours: Optional[int] = None,
-        blocked_by: Optional[int] = None,
-        description: str = ""
-    ) -> BlockRecord:
-        """Block IP address."""
-        now = datetime.utcnow()
-        expires_at = None
-        
-        if block_type == BlockType.TEMPORARY and duration_hours:
-            expires_at = now + timedelta(hours=duration_hours)
-            
-        block_record = BlockRecord(
-            user_id=None,
-            ip_address=ip_address,
-            block_type=block_type,
-            reason=reason,
-            blocked_at=now,
-            expires_at=expires_at,
-            blocked_by=blocked_by,
-            description=description
-        )
-        
-        self.block_records.append(block_record)
-        self.blocked_ips.add(ip_address)
-        
-        return block_record
-        
-    def is_user_blocked(self, user_id: int) -> bool:
-        """Check if user is blocked."""
-        if user_id not in self.blocked_users:
-            return False
-            
-        # Check if block has expired
-        for record in reversed(self.block_records):
-            if (record.user_id == user_id and 
-                record.is_active and 
-                record.block_type == BlockType.USER_BLOCK):
-                
-                if record.expires_at and datetime.utcnow() > record.expires_at:
-                    self.unblock_user(user_id)
-                    return False
-                    
-                return True
-                
-        return False
-        
-    def is_ip_blocked(self, ip_address: str) -> bool:
-        """Check if IP is blocked."""
-        if ip_address not in self.blocked_ips:
-            return False
-            
-        # Check if block has expired
-        for record in reversed(self.block_records):
-            if (record.ip_address == ip_address and 
-                record.is_active and 
-                record.block_type == BlockType.IP_BLOCK):
-                
-                if record.expires_at and datetime.utcnow() > record.expires_at:
-                    self.unblock_ip(ip_address)
-                    return False
-                    
-                return True
-                
-        return False
-        
-    def unblock_user(self, user_id: int) -> bool:
-        """Unblock user."""
-        if user_id in self.blocked_users:
-            self.blocked_users.remove(user_id)
-            
-            # Mark records as inactive
-            for record in self.block_records:
-                if record.user_id == user_id and record.is_active:
-                    record.is_active = False
-                    
-            return True
-        return False
-        
-    def unblock_ip(self, ip_address: str) -> bool:
-        """Unblock IP address."""
-        if ip_address in self.blocked_ips:
-            self.blocked_ips.remove(ip_address)
-            
-            # Mark records as inactive
-            for record in self.block_records:
-                if record.ip_address == ip_address and record.is_active:
-                    record.is_active = False
-                    
-            return True
-        return False
-        
-    def record_violation(self, user_id: int, violation_type: str) -> None:
-        """Record user violation."""
-        self.violation_counts[user_id] = self.violation_counts.get(user_id, 0) + 1
-        
-        # Auto-block if threshold exceeded
-        if self.violation_counts[user_id] >= self.auto_block_threshold:
-            self.block_user(
-                user_id=user_id,
-                reason=BlockReason.MULTIPLE_VIOLATIONS,
-                block_type=BlockType.TEMPORARY,
-                duration_hours=24,
-                description=f"Auto-blocked after {self.violation_counts[user_id]} violations"
-            )
-            
-    def get_user_violations(self, user_id: int) -> int:
-        """Get user violation count."""
-        return self.violation_counts.get(user_id, 0)
-        
-    def clear_violations(self, user_id: int) -> None:
-        """Clear user violations."""
-        self.violation_counts.pop(user_id, None)
-        
-    def get_blocked_users(self) -> List[BlockRecord]:
-        """Get all blocked users."""
-        return [
-            record for record in self.block_records
-            if record.user_id is not None and record.is_active
-        ]
-        
-    def get_blocked_ips(self) -> List[BlockRecord]:
-        """Get all blocked IPs."""
-        return [
-            record for record in self.block_records
-            if record.ip_address is not None and record.is_active
-        ]
-        
-    def get_block_statistics(self) -> Dict[str, int]:
-        """Get blocking statistics."""
-        return {
-            'total_blocks': len(self.block_records),
-            'active_user_blocks': len(self.blocked_users),
-            'active_ip_blocks': len(self.blocked_ips),
-            'total_violations': sum(self.violation_counts.values()),
-            'users_with_violations': len(self.violation_counts)
-        }
-
-
-class SecurityEnforcer:
-    """Security enforcement service."""
+        self.block_reasons: Dict[int, str] = {}
+        self.block_timestamps: Dict[int, datetime] = {}
+        self.temporary_blocks: Dict[int, datetime] = {}
     
-    def __init__(self, blocking_service: BlockingService):
-        self.blocking_service = blocking_service
-        self.enforcement_rules = {
-            'max_violations_per_hour': 10,
-            'max_failed_logins': 5,
-            'max_suspicious_activities': 3,
-            'auto_block_duration_hours': 24,
+    def block_user(self, user_id: int, reason: str = "Manual block") -> None:
+        """
+        Block a user.
+        
+        Args:
+            user_id: User ID to block
+            reason: Reason for blocking
+        """
+        self.blocked_users.add(user_id)
+        self.block_reasons[user_id] = reason
+        self.block_timestamps[user_id] = datetime.utcnow()
+        
+        logging.warning(f"🚫 User {user_id} blocked. Reason: {reason}")
+    
+    def unblock_user(self, user_id: int) -> None:
+        """
+        Unblock a user.
+        
+        Args:
+            user_id: User ID to unblock
+        """
+        self.blocked_users.discard(user_id)
+        self.block_reasons.pop(user_id, None)
+        self.block_timestamps.pop(user_id, None)
+        self.temporary_blocks.pop(user_id, None)
+        
+        logging.info(f"✅ User {user_id} unblocked")
+    
+    def is_user_blocked(self, user_id: int) -> bool:
+        """
+        Check if user is blocked.
+        
+        Args:
+            user_id: User ID to check
+            
+        Returns:
+            True if user is blocked, False otherwise
+        """
+        # Check permanent blocks
+        if user_id in self.blocked_users:
+            return True
+        
+        # Check temporary blocks
+        if user_id in self.temporary_blocks:
+            if datetime.utcnow() < self.temporary_blocks[user_id]:
+                return True
+            else:
+                # Temporary block expired
+                del self.temporary_blocks[user_id]
+                return False
+        
+        return False
+    
+    def temporary_block_user(self, user_id: int, duration_minutes: int, reason: str = "Temporary block") -> None:
+        """
+        Temporarily block a user.
+        
+        Args:
+            user_id: User ID to block
+            duration_minutes: Block duration in minutes
+            reason: Reason for blocking
+        """
+        block_until = datetime.utcnow() + timedelta(minutes=duration_minutes)
+        self.temporary_blocks[user_id] = block_until
+        self.block_reasons[user_id] = reason
+        
+        logging.warning(f"⏰ User {user_id} temporarily blocked for {duration_minutes} minutes. Reason: {reason}")
+    
+    def get_block_info(self, user_id: int) -> Dict[str, Any]:
+        """
+        Get blocking information for user.
+        
+        Args:
+            user_id: User ID
+            
+        Returns:
+            Block information dictionary
+        """
+        if user_id not in self.blocked_users and user_id not in self.temporary_blocks:
+            return {"is_blocked": False}
+        
+        info = {
+            "is_blocked": True,
+            "reason": self.block_reasons.get(user_id, "Unknown"),
+            "blocked_at": self.block_timestamps.get(user_id),
+            "is_temporary": user_id in self.temporary_blocks
         }
         
-    def enforce_security_policy(
-        self,
-        user_id: Optional[int],
-        ip_address: Optional[str],
-        action: str,
-        context: Dict[str, Any]
-    ) -> bool:
-        """Enforce security policy."""
-        # Check if user/IP is already blocked
-        if user_id and self.blocking_service.is_user_blocked(user_id):
-            return False
-            
-        if ip_address and self.blocking_service.is_ip_blocked(ip_address):
-            return False
-            
-        # Apply enforcement rules
-        if action == 'failed_login':
-            return self._handle_failed_login(user_id, ip_address)
-        elif action == 'suspicious_activity':
-            return self._handle_suspicious_activity(user_id, ip_address)
-        elif action == 'attack_attempt':
-            return self._handle_attack_attempt(user_id, ip_address)
-        elif action == 'spam_detected':
-            return self._handle_spam(user_id, ip_address)
-            
-        return True
+        if user_id in self.temporary_blocks:
+            info["blocked_until"] = self.temporary_blocks[user_id]
+            info["remaining_minutes"] = max(0, int((self.temporary_blocks[user_id] - datetime.utcnow()).total_seconds() / 60))
         
-    def _handle_failed_login(
-        self, 
-        user_id: Optional[int], 
-        ip_address: Optional[str]
-    ) -> bool:
-        """Handle failed login attempts."""
-        if user_id:
-            violations = self.blocking_service.get_user_violations(user_id)
-            if violations >= self.enforcement_rules['max_failed_logins']:
-                self.blocking_service.block_user(
-                    user_id=user_id,
-                    reason=BlockReason.SECURITY_THREAT,
-                    block_type=BlockType.TEMPORARY,
-                    duration_hours=self.enforcement_rules['auto_block_duration_hours']
-                )
-                return False
-                
-        return True
+        return info
+    
+    def get_blocked_users_count(self) -> int:
+        """
+        Get count of blocked users.
         
-    def _handle_suspicious_activity(
-        self, 
-        user_id: Optional[int], 
-        ip_address: Optional[str]
-    ) -> bool:
-        """Handle suspicious activity."""
-        if user_id:
-            self.blocking_service.record_violation(user_id, 'suspicious_activity')
-            
-        return True
+        Returns:
+            Number of blocked users
+        """
+        return len(self.blocked_users) + len(self.temporary_blocks)
+    
+    def cleanup_expired_blocks(self) -> None:
+        """Clean up expired temporary blocks."""
+        current_time = datetime.utcnow()
+        expired_users = [
+            user_id for user_id, block_until in self.temporary_blocks.items()
+            if current_time >= block_until
+        ]
         
-    def _handle_attack_attempt(
-        self, 
-        user_id: Optional[int], 
-        ip_address: Optional[str]
-    ) -> bool:
-        """Handle attack attempts."""
-        if user_id:
-            self.blocking_service.block_user(
-                user_id=user_id,
-                reason=BlockReason.ATTACK_ATTEMPT,
-                block_type=BlockType.TEMPORARY,
-                duration_hours=self.enforcement_rules['auto_block_duration_hours']
-            )
-            
-        if ip_address:
-            self.blocking_service.block_ip(
-                ip_address=ip_address,
-                reason=BlockReason.ATTACK_ATTEMPT,
-                block_type=BlockType.TEMPORARY,
-                duration_hours=self.enforcement_rules['auto_block_duration_hours']
-            )
-            
-        return False
-        
-    def _handle_spam(
-        self, 
-        user_id: Optional[int], 
-        ip_address: Optional[str]
-    ) -> bool:
-        """Handle spam detection."""
-        if user_id:
-            self.blocking_service.block_user(
-                user_id=user_id,
-                reason=BlockReason.SPAM_DETECTED,
-                block_type=BlockType.TEMPORARY,
-                duration_hours=12
-            )
-            
-        return False
+        for user_id in expired_users:
+            del self.temporary_blocks[user_id]
+            self.block_reasons.pop(user_id, None)
+            logging.info(f"🕒 Temporary block expired for user {user_id}")
 
 
-# Global instances
+# Глобальный экземпляр сервиса блокировки
 blocking_service = BlockingService()
-security_enforcer = SecurityEnforcer(blocking_service)

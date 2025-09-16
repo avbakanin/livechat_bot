@@ -133,9 +133,20 @@ class I18nManager:
         language_mapping = {
             "ru": "ru",
             "en": "en",
+            "sr": "sr",  # Serbian
+            "de": "de",  # German
+            "es": "es",  # Spanish
             "uk": "ru",  # Ukrainian -> Russian (closest)
             "be": "ru",  # Belarusian -> Russian (closest)
             "kk": "ru",  # Kazakh -> Russian (closest)
+            "hr": "sr",  # Croatian -> Serbian (closest)
+            "bs": "sr",  # Bosnian -> Serbian (closest)
+            "me": "sr",  # Montenegrin -> Serbian (closest)
+            "at": "de",  # Austrian German -> German
+            "ch": "de",  # Swiss German -> German
+            "mx": "es",  # Mexican Spanish -> Spanish
+            "ar": "es",  # Argentine Spanish -> Spanish
+            "co": "es",  # Colombian Spanish -> Spanish
         }
 
         return language_mapping.get(base_language, self.default_language)

@@ -1,4 +1,4 @@
-from .helpers import destructure_user
+from shared.utils.helpers import destructure_user
 from .openai_helpers import get_openapi_response
 from .typingIndicator import TypingIndicator
 

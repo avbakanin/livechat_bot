@@ -28,3 +28,32 @@ OPENAI_CONFIG: OpenAIConfig = {
     "base_url": None,  # Use default OpenAI API URL
     "FREE_MESSAGE_LIMIT": 50,
 }
+
+# OpenAI client instance
+openai_client = None
+
+def initialize_openai_client():
+    """Initialize OpenAI client."""
+    global openai_client
+    
+    try:
+        from openai import OpenAI
+        
+        if OPENAI_CONFIG["api_key"]:
+            openai_client = OpenAI(
+                api_key=OPENAI_CONFIG["api_key"],
+                base_url=OPENAI_CONFIG["base_url"]
+            )
+            print("✅ OpenAI client initialized successfully")
+        else:
+            print("⚠️ OpenAI API key not found, client not initialized")
+            openai_client = None
+    except ImportError:
+        print("❌ OpenAI library not installed")
+        openai_client = None
+    except Exception as e:
+        print(f"❌ Error initializing OpenAI client: {e}")
+        openai_client = None
+
+# Initialize client on import
+initialize_openai_client()

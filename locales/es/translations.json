@@ -1,0 +1,183 @@
+{
+  "commands": {
+    "start": {
+      "welcome": "¡Hola! Tienes {free_limit} mensajes gratuitos por día. Elige el género de tu compañero:",
+      "already_started": "El bot ya está funcionando - solo envía un mensaje 😊"
+    },
+    "status": {
+      "title": "📊 Estado de la cuenta",
+      "remaining_free": "Te quedan {remaining} de {total} mensajes gratuitos para hoy",
+      "unlimited": "¡Tienes suscripción premium - comunicación ilimitada! 💎",
+      "used_all": "Has usado todos los mensajes gratuitos para hoy ({total}/{total})",
+      "reset_info": "El límite se restablecerá mañana a medianoche",
+      "premium_days": "⏰ La suscripción premium expira en {days} días",
+      "premium_hours": "⏰ La suscripción premium expira en {hours} horas",
+      "premium_expiring": "⚠️ ¡La suscripción premium expira hoy!"
+    },
+    "help": {
+      "title": "🤖 Ayuda del bot",
+      "commands_title": "Comandos disponibles:",
+      "start_command": "/start - Comenzar a chatear con el bot",
+      "help_command": "/help - Mostrar esta ayuda",
+      "gender_command": "/choose_gender - Elegir el género del compañero",
+      "status_command": "/status - Mostrar estado de la cuenta e información de suscripción",
+      "communication_title": "💬 Comunicación:",
+      "free_limit": "• Gratis: {free_limit} mensajes por día",
+      "premium_unlimited": "• Premium: comunicación ilimitada",
+      "companion_title": "🎭 Selección de compañero:",
+      "female_description": "• Chica - dulce y empática",
+      "male_description": "• Chico - seguro de sí mismo y juguetón",
+      "premium_title": "💎 Suscripción Premium:",
+      "premium_description": "Abre comunicación ilimitada y funciones adicionales",
+      "faq_title": "❓ Preguntas frecuentes:",
+      "context_memory": "• El bot recuerda el contexto de la conversación",
+      "gender_change": "• Puedes cambiar el género del compañero en cualquier momento",
+      "limit_reset": "• El límite de mensajes se restablece cada día",
+      "start_instruction": "Para comenzar a chatear usa {start_command}"
+    }
+  },
+  "consent": {
+    "request": "Por favor, acepta la política de privacidad:",
+    "agreed": "¡Gracias por aceptar! Tienes {free_limit} mensajes gratuitos por día. Elige el género de tu compañero:",
+    "privacy_title": "🔐 Política de privacidad",
+    "privacy_text": "Aquí está tu texto de política de privacidad...\n\nVersión completa: https://yourwebsite.com/privacy"
+  },
+  "gender": {
+    "choose": "Elige el género de tu compañero:",
+    "toggle_gender": "El género del compañero cambió a {gender} 😊",
+    "change_warning": "⚠️ ¿Estás seguro de que quieres cambiar el género del compañero?\n\n¡Toda la historia del chat será eliminada!",
+    "change_confirmed": "Historia del chat eliminada. Elige el género de tu compañero:",
+    "change_cancelled": "Cambio de género cancelado. Puedes continuar chateando."
+  },
+  "messages": {
+    "limit_exceeded": "Límite diario de mensajes gratuitos excedido. ¿Quieres ilimitado? ¡Compra premium!",
+    "processing_error": "Lo siento, ocurrió un error al procesar el mensaje. Inténtalo más tarde.",
+    "save_error": "Ocurrió un error al guardar el mensaje.",
+    "unexpected_error": "Ocurrió un error inesperado. Inténtalo más tarde.",
+    "empty_response": "OpenAI devolvió una respuesta vacía.",
+    "empty_message": "Por favor envía un mensaje no vacío.",
+    "message_too_long": "El mensaje es demasiado largo. Máximo 2500 caracteres."
+  },
+  "persons": {
+    "gender": {
+      "male": ["Eres un hombre"],
+      "female": ["Eres una mujer"]
+    },
+    "temperament": {
+      "sanguine": "Sanguíneo: enérgico, optimista, amigable.",
+      "choleric": "Colérico: impulsivo, activo, apasionado.",
+      "phlegmatic": "Flemático: tranquilo, sensato, lento.",
+      "melancholic": "Melancólico: sensible, reflexivo, propenso al autoanálisis."
+    },
+    "traits": {
+      "mood": {
+        "cheerful": "Añade humor ligero y siempre encuentra lo positivo.",
+        "serious": "A veces habla seriamente, sin emociones innecesarias."
+      },
+      "emotionality": {
+        "emotional": "No ocultes las emociones, responde de manera viva y brillante.",
+        "calm": "Responde de manera tranquila y mesurada."
+      },
+      "approach": {
+        "direct": "Sé directo, a veces discute.",
+        "gentle": "Sé suave y cariñoso en tus palabras."
+      },
+      "style": {
+        "playful": "Añade toques juguetones a la comunicación.",
+        "thoughtful": "Sé atento a los detalles, añade toques filosóficos."
+      },
+      "focus": {
+        "analytical": "Analiza situaciones de manera lógica y estructurada.",
+        "creative": "Usa la imaginación y comparaciones vívidas."
+      },
+      "social_orientation": {
+        "extroverted": "Sé sociable, inicia diálogos, habla sobre eventos externos.",
+        "introverted": "Sé un poco reservado, enfócate en experiencias internas y temas profundos."
+      },
+      "time_orientation": {
+        "progressive": "Mira más hacia el futuro, propón nuevas ideas y posibilidades.",
+        "traditional": "Apóyate en experiencias pasadas y valores probados por el tiempo."
+      },
+      "conflict_style": {
+        "assertive": "Defiende tu punto de vista con confianza y determinación.",
+        "accommodating": "Busca la armonía, haz compromisos."
+      },
+      "communication_format": {
+        "detailed": "Da respuestas detalladas y completas con ejemplos.",
+        "concise": "Responde de manera breve y al grano, evita detalles innecesarios."
+      },
+      "values_focus": {
+        "pragmatic": "Concéntrate en el beneficio práctico y los resultados.",
+        "idealistic": "Razona desde el punto de vista moral, ideales y valores superiores."
+      },
+      "reaction_to_newness": {
+        "cautious": "Trata lo nuevo con cautela, evalúa los riesgos.",
+        "enthusiastic": "Recibe nuevas ideas y cambios con entusiasmo y curiosidad."
+      }
+    }
+  },
+  "premium": {
+    "info_title": "💎 Información premium",
+    "info_text": "La información de pago se añadirá más tarde.",
+    "unavailable": "La función de pago no está disponible temporalmente. Inténtalo más tarde.",
+    "title": "💎 Suscripción Premium",
+    "benefits_title": "Lo que ofrece premium:",
+    "benefits": {
+      "unlimited": "✅ Mensajes ilimitados",
+      "priority": "✅ Procesamiento prioritario de solicitudes",
+      "history": "✅ Historial de diálogo extendido",
+      "modes": "✅ Modos de comunicación especiales"
+    },
+    "price_title": "Precio:",
+    "price": "500 rublos / mes",
+    "howto_title": "Cómo comprar:",
+    "howto": "Haz clic en 'Comprar premium' en el menú principal (/start)"
+  },
+  "privacy": {
+    "title": "🔐 Política de privacidad",
+    "text": "Aquí está tu texto de política de privacidad...",
+    "full": "Versión completa: %{url}"
+  },
+  "errors": {
+    "general": "Ocurrió un error. Inténtalo más tarde.",
+    "database": "Error de base de datos. Inténtalo más tarde.",
+    "openai": "Error al procesar el mensaje. Inténtalo más tarde.",
+    "validation": "Datos incorrectos. Verifica la entrada.",
+    "permission": "No tienes permisos para realizar esta acción.",
+    "limit": "Límite excedido. Inténtalo más tarde.",
+    "access_denied": "❌ Acceso denegado. Contacta al administrador.",
+    "access_denied_alert": "❌ Acceso denegado.",
+    "private_bot": "El bot es privado. El acceso está restringido.",
+    "try_again": "Ocurrió un error. Inténtalo de nuevo."
+  },
+  "success": {
+    "general": "¡Operación ejecutada exitosamente!",
+    "saved": "¡Datos guardados!",
+    "updated": "¡Datos actualizados!",
+    "deleted": "¡Datos eliminados!",
+    "sent": "¡Mensaje enviado!"
+  },
+  "buttons": {
+    "agree_privacy": "Aceptar política de privacidad",
+    "read_privacy": "Leer política",
+    "choose_female": "Elegir chica 😊",
+    "choose_male": "Elegir chico 😉",
+    "female": "Chica 😊",
+    "male": "Chico 😉",
+    "buy_premium": "Comprar premium 💳",
+    "pay": "💳 Pagar",
+    "yes_change": "Sí, cambiar género",
+    "cancel": "Cancelar",
+    "back": "↩️ Atrás",
+    "yes": "✅ Sí",
+    "no": "❌ No",
+    "choose_gender_help": "🎭 Elegir género del compañero",
+    "premium_info_help": "💎 Información premium",
+    "privacy_info_help": "📝 Política de privacidad",
+    "back_to_help": "↩️ Volver a la ayuda"
+  },
+  "ai_prompts": {
+    "female": "Eres una chica IA que coquetea y apoya a personas solitarias. Sé dulce, empática y juguetona.",
+    "male": "Eres un chico IA que coquetea y apoya a personas solitarias. Sé seguro de ti mismo, empático y juguetón."
+  }
+}

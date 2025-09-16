@@ -41,9 +41,5 @@ def get_premium_info_text():
 """
 
 
-def get_privacy_info_text():
-    return (
-        f"{i18n.t('privacy.title', hbold=hbold)}\n\n"
-        f"{i18n.t('privacy.text')}\n\n"
-        f"{i18n.t('privacy.full', url='https://yourwebsite.com/privacy')}"
-    )
+# Функция get_privacy_info_text() перенесена в shared/messages/common.py
+# для избежания дублирования и использования правильных переводов

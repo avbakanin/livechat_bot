@@ -1,8 +1,8 @@
 # Добавьте в файл c:\Users\User\Desktop\livechat_bot\app\domain\__init__.py
 from aiogram import Dispatcher
-from domain.message.handlers import router as message_router
-from domain.payment.handlers import router as payment_router
-from domain.user.handlers import router as user_router
+from .message.handlers import router as message_router
+from .payment.handlers import router as payment_router
+from .user.handlers import router as user_router
 
 
 def setup_routers(dp: Dispatcher) -> None:

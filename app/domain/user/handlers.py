@@ -442,6 +442,100 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     await message.answer(response)
 
 
+@router.message(F.text == "/clean_metrics")
+async def cmd_clean_metrics(message: Message, user_service: UserService):
+    """Clean test data from metrics and sync with real users."""
+    try:
+        # Get metrics_collector dynamically
+        from shared.metrics.metrics import metrics_collector
+        
+        # Check if metrics_collector is initialized
+        if metrics_collector is None:
+            await message.answer("❌ Metrics system not initialized yet. Please try again later.")
+            return
+            
+        # Get real user IDs from database
+        async with user_service.pool.acquire() as conn:
+            rows = await conn.fetch("SELECT id FROM users")
+            real_user_ids = {row['id'] for row in rows}
+            
+        if not real_user_ids:
+            await message.answer("❌ No real users found in database!")
+            return
+            
+        # Get current daily user IDs from metrics
+        current_daily_ids = metrics_collector.metrics.daily_user_ids.copy()
+        
+        # Filter to only real users
+        cleaned_ids = current_daily_ids.intersection(real_user_ids)
+        removed_count = len(current_daily_ids) - len(cleaned_ids)
+        
+        if removed_count > 0:
+            # Update metrics with cleaned data
+            metrics_collector.metrics.daily_user_ids = cleaned_ids
+            metrics_collector.metrics.unique_active_users_today = len(cleaned_ids)
+            
+            # Save to database
+            await metrics_collector.save_to_database()
+            
+            response = f"🧹 **METRICS CLEANED**\n\n"
+            response += f"✅ Removed {removed_count} test/fake user IDs\n"
+            response += f"✅ Kept {len(cleaned_ids)} real user IDs\n\n"
+            response += f"**Real users:** {sorted(real_user_ids)}\n"
+            response += f"**Cleaned daily IDs:** {sorted(cleaned_ids) if cleaned_ids else 'None'}"
+            
+        else:
+            response = f"✅ **NO TEST DATA FOUND**\n\n"
+            response += f"All {len(current_daily_ids)} daily user IDs are real users\n"
+            response += f"**Daily IDs:** {sorted(current_daily_ids) if current_daily_ids else 'None'}"
+            
+        await message.answer(response)
+        
+    except Exception as e:
+        logging.error(f"Error cleaning metrics: {e}")
+        await message.answer(f"❌ Error cleaning metrics: {str(e)}")
+
+
+@router.message(F.text == "/reset_daily_metrics")
+async def cmd_reset_daily_metrics(message: Message):
+    """Reset all daily metrics to start fresh."""
+    try:
+        # Get metrics_collector dynamically
+        from shared.metrics.metrics import metrics_collector
+        
+        # Check if metrics_collector is initialized
+        if metrics_collector is None:
+            await message.answer("❌ Metrics system not initialized yet. Please try again later.")
+            return
+            
+        # Reset daily counters
+        metrics_collector.metrics.total_interactions_today = 0
+        metrics_collector.metrics.unique_active_users_today = 0
+        metrics_collector.metrics.new_users_today = 0
+        metrics_collector.metrics.messages_sent_today = 0
+        metrics_collector.metrics.commands_used_today = 0
+        metrics_collector.metrics.ai_responses_sent_today = 0
+        metrics_collector.metrics.callback_queries_today = 0
+        metrics_collector.metrics.premium_users_active_today = 0
+        
+        # Clear daily user IDs
+        metrics_collector.metrics.daily_user_ids.clear()
+        
+        # Save to database
+        await metrics_collector.save_to_database()
+        
+        response = "🔄 **DAILY METRICS RESET**\n\n"
+        response += "✅ All daily counters reset to 0\n"
+        response += "✅ Daily user IDs cleared\n"
+        response += "✅ Fresh start for today's metrics"
+        
+        await message.answer(response)
+        
+    except Exception as e:
+        logging.error(f"Error resetting daily metrics: {e}")
+        await message.answer(f"❌ Error resetting metrics: {str(e)}")
+
+
 @router.callback_query(F.data == "choose_gender_help")
 async def gender_help(callback: CallbackQuery, i18n: I18nMiddleware):
     """Handle gender help callback."""

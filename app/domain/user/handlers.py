@@ -207,7 +207,7 @@ async def cmd_help(message: Message, user_service: UserService, i18n: I18nMiddle
     await user_service.add_user(user_id, username, first_name, last_name)
 
     await message.answer(
-        get_help_text(), reply_markup=get_help_keyboard(i18n), parse_mode="HTML"
+        get_help_text(i18n_instance=i18n), reply_markup=get_help_keyboard(i18n), parse_mode="HTML"
     )
 
 
@@ -264,7 +264,7 @@ async def back_to_help(callback: CallbackQuery, i18n: I18nMiddleware):
     """Handle back to help callback with optimal performance."""
     try:
         # Получаем контент один раз
-        help_text = get_help_text()
+        help_text = get_help_text(i18n_instance=i18n)
         help_keyboard = get_help_keyboard(i18n)
         
         # Редактируем сообщение
@@ -846,7 +846,7 @@ async def restart_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
     """Cancel restart - return to help."""
     try:
         await callback.message.edit_text(
-            text=get_help_text(),
+            text=get_help_text(i18n_instance=i18n),
             reply_markup=get_help_keyboard(i18n),
             parse_mode="HTML"
         )
@@ -888,7 +888,7 @@ async def stop_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
     """Cancel stop - return to help."""
     try:
         await callback.message.edit_text(
-            text=get_help_text(),
+            text=get_help_text(i18n_instance=i18n),
             reply_markup=get_help_keyboard(i18n),
             parse_mode="HTML"
         )

@@ -232,6 +232,27 @@ class UserService:
                 logging.error(f"Error getting premium users count: {e}")
                 return 0
     
+    async def get_user_language(self, pool, user_id: int) -> str:
+        """
+        Get user language preference.
+        
+        Args:
+            pool: Database connection pool
+            user_id: User ID
+            
+        Returns:
+            User language code or None if not set (use Telegram language)
+        """
+        async with pool.acquire() as conn:
+            try:
+                language = await conn.fetchval(
+                    "SELECT language FROM users WHERE id = $1", user_id
+                )
+                return language  # Return None if not set, meaning use Telegram language
+            except Exception as e:
+                logging.error(f"Error getting language for user {user_id}: {e}")
+                return None  # Return None to use Telegram language as fallback
+    
     def clear_cache(self, user_id: int = None) -> None:
         """
         Clear cache.

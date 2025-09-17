@@ -21,6 +21,7 @@
       "help_command": "/help - Mostrar esta ayuda",
       "gender_command": "/choose_gender - Elegir el género del compañero",
       "status_command": "/status - Mostrar estado de la cuenta e información de suscripción",
+      "language_command": "/language - Elegir idioma de la interfaz",
       "communication_title": "💬 Comunicación:",
       "free_limit": "• Gratis: {free_limit} mensajes por día",
       "premium_unlimited": "• Premium: comunicación ilimitada",
@@ -34,6 +35,13 @@
       "gender_change": "• Puedes cambiar el género del compañero en cualquier momento",
       "limit_reset": "• El límite de mensajes se restablece cada día",
       "start_instruction": "Para comenzar a chatear usa {start_command}"
+    },
+    "language": {
+      "title": "🌍 Selección de idioma",
+      "description": "Elige el idioma de la interfaz:",
+      "changed": "✅ Idioma cambiado a {language}",
+      "current": "Idioma actual: {language}",
+      "available_languages": "Idiomas disponibles:"
     }
   },
   "consent": {
@@ -174,7 +182,13 @@
     "choose_gender_help": "🎭 Elegir género del compañero",
     "premium_info_help": "💎 Información premium",
     "privacy_info_help": "📝 Política de privacidad",
-    "back_to_help": "↩️ Volver a la ayuda"
+    "back_to_help": "↩️ Volver a la ayuda",
+    "language_ru": "🇷🇺 Русский",
+    "language_en": "🇬🇧 English",
+    "language_sr": "🇷🇸 Српски",
+    "language_de": "🇩🇪 Deutsch",
+    "language_es": "🇪🇸 Español",
+    "choose_language": "🌍 Elegir idioma"
   },
   "ai_prompts": {
     "female": "Eres una chica IA que coquetea y apoya a personas solitarias. Sé dulce, empática y juguetona.",

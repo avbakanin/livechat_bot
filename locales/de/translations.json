@@ -21,6 +21,7 @@
       "help_command": "/help - Diese Hilfe anzeigen",
       "gender_command": "/choose_gender - Geschlecht des Begleiters wählen",
       "status_command": "/status - Kontostatus und Abonnement-Info anzeigen",
+      "language_command": "/language - Interface-Sprache wählen",
       "communication_title": "💬 Kommunikation:",
       "free_limit": "• Kostenlos: {free_limit} Nachrichten pro Tag",
       "premium_unlimited": "• Premium: unbegrenzte Kommunikation",
@@ -34,6 +35,13 @@
       "gender_change": "• Du kannst das Geschlecht des Begleiters jederzeit ändern",
       "limit_reset": "• Nachrichtenlimit wird täglich zurückgesetzt",
       "start_instruction": "Um zu chatten zu beginnen, verwende {start_command}"
+    },
+    "language": {
+      "title": "🌍 Sprachauswahl",
+      "description": "Interface-Sprache wählen:",
+      "changed": "✅ Sprache geändert zu {language}",
+      "current": "Aktuelle Sprache: {language}",
+      "available_languages": "Verfügbare Sprachen:"
     }
   },
   "consent": {
@@ -174,7 +182,13 @@
     "choose_gender_help": "🎭 Geschlecht des Begleiters wählen",
     "premium_info_help": "💎 Premium-Informationen",
     "privacy_info_help": "📝 Datenschutzrichtlinie",
-    "back_to_help": "↩️ Zurück zur Hilfe"
+    "back_to_help": "↩️ Zurück zur Hilfe",
+    "language_ru": "🇷🇺 Русский",
+    "language_en": "🇬🇧 English",
+    "language_sr": "🇷🇸 Српски",
+    "language_de": "🇩🇪 Deutsch",
+    "language_es": "🇪🇸 Español",
+    "choose_language": "🌍 Sprache wählen"
   },
   "ai_prompts": {
     "female": "Du bist ein KI-Mädchen, das flirtet und einsame Menschen unterstützt. Sei süß, einfühlsam und verspielt.",

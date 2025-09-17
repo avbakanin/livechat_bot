@@ -66,9 +66,10 @@ class LoggingMiddleware(BaseMiddleware):
 class ServiceMiddleware(BaseMiddleware):
     """Middleware to inject services into handlers."""
 
-    def __init__(self, user_service, message_service):
+    def __init__(self, user_service, message_service, pool=None):
         self.user_service = user_service
         self.message_service = message_service
+        self.pool = pool
 
     async def __call__(
         self,
@@ -79,4 +80,6 @@ class ServiceMiddleware(BaseMiddleware):
         """Inject services into handler data."""
         data["user_service"] = self.user_service
         data["message_service"] = self.message_service
+        if self.pool:
+            data["pool"] = self.pool
         return await handler(event, data)

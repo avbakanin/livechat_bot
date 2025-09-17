@@ -18,13 +18,13 @@ from domain.user.keyboards import (
 from domain.user.messages import get_consent_given_text
 from domain.user.services_cached import UserService
 from shared.fsm.user_cache import UserCacheData
-from shared.messages.common import get_help_text, get_privacy_info_text
-from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction, safe_record_security_metric
+from shared.keyboards.language import get_language_keyboard, get_language_keyboard_with_current
+from shared.i18n import i18n as global_i18n
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.middlewares.middlewares import AccessMiddleware
 from shared.utils.helpers import destructure_user
-
-from core.exceptions import UserException
+from shared.messages.common import get_help_text, get_privacy_info_text
+from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction, safe_record_security_metric
 
 router = Router()
 
@@ -265,6 +265,124 @@ async def back_to_help(callback: CallbackQuery, i18n: I18nMiddleware):
         else:
             logging.error(f"Back to help error: {e}")
             await callback.answer("❌ Ошибка обновления", show_alert=True)
+
+
+@router.message(Command(commands=["language"]))
+async def cmd_language(message: Message, i18n: I18nMiddleware):
+    """Handle /language command to change interface language."""
+    try:
+        # Get current language
+        current_language = i18n.get_language()
+        
+        # Get language selection text
+        title = i18n.t("commands.language.title")
+        description = i18n.t("commands.language.description")
+        current_text = i18n.t("commands.language.current", language=current_language.upper())
+        
+        # Create message text
+        text = f"{title}\n\n{description}\n{current_text}"
+        
+        # Create keyboard with current language marked
+        keyboard = get_language_keyboard_with_current(current_language)
+        
+        # Send message
+        await message.answer(
+            text=text,
+            reply_markup=keyboard,
+            parse_mode="HTML"
+        )
+        
+        # Record command usage
+        safe_record_user_interaction(message.from_user.id, "language_command")
+        
+    except Exception as e:
+        logging.error(f"Error in language command: {e}")
+        await message.answer(i18n.t("errors.general"))
+
+
+@router.callback_query(F.data.startswith("lang_"))
+async def handle_language_selection(callback: CallbackQuery, i18n: I18nMiddleware, **kwargs):
+    """Handle language selection callback."""
+    try:
+        # Extract language code from callback data
+        language_code = callback.data.split("_")[1]  # "lang_ru" -> "ru"
+        
+        # Validate language code
+        available_languages = global_i18n.get_available_languages()
+        if language_code not in available_languages:
+            await callback.answer("❌ Неподдерживаемый язык", show_alert=True)
+            return
+        
+        # Set new language
+        global_i18n.set_language(language_code)
+        i18n.set_language(language_code)
+        
+        # Save user language preference to database
+        user_id = callback.from_user.id
+        try:
+            from services.user.user import user_service
+            # Get pool from dependency injection
+            pool = kwargs.get('pool')
+            if pool:
+                await user_service.update_user(
+                    pool=pool,
+                    user_id=user_id,
+                    language=language_code
+                )
+                logging.info(f"Saved language preference '{language_code}' for user {user_id}")
+            else:
+                logging.warning(f"No database pool available to save language for user {user_id}")
+        except Exception as e:
+            logging.warning(f"Failed to save language preference for user {user_id}: {e}")
+        
+        # Get language name for display
+        language_names = {
+            "ru": "Русский",
+            "en": "English",
+            "sr": "Српски", 
+            "de": "Deutsch",
+            "es": "Español"
+        }
+        
+        language_name = language_names.get(language_code, language_code.upper())
+        
+        # Send success message that will auto-delete
+        success_text = i18n.t("commands.language.changed", language=language_name)
+        await callback.message.edit_text(
+            text=success_text,
+            reply_markup=get_language_keyboard_with_current(language_code),
+            parse_mode="HTML"
+        )
+        
+        # Show checkmark with language info and schedule message deletion
+        await callback.answer(f"✅ {language_name}")
+        
+        # Schedule message deletion after 1 second
+        import asyncio
+        async def delete_message():
+            await asyncio.sleep(1)
+            try:
+                await callback.message.delete()
+            except Exception as e:
+                logging.warning(f"Failed to delete language change message: {e}")
+        
+        # Start deletion task
+        asyncio.create_task(delete_message())
+        
+        # Record language change
+        safe_record_user_interaction(callback.from_user.id, f"language_changed_{language_code}")
+        
+    except TelegramBadRequest as e:
+        if "message is not modified" in str(e).lower():
+            await callback.answer()
+        elif "message to edit not found" in str(e).lower():
+            await callback.answer("Сообщение устарело", show_alert=True)
+        else:
+            logging.error(f"Language selection error: {e}")
+            await callback.answer("❌ Ошибка обновления", show_alert=True)
+    except Exception as e:
+        logging.error(f"Language selection error: {e}")
+        await callback.answer("❌ Ошибка обновления", show_alert=True)
 
 
 @router.message(Command(commands=["status"]))
@@ -572,6 +690,45 @@ async def cmd_reset_daily_metrics(message: Message):
     except Exception as e:
         logging.error(f"Error resetting daily metrics: {e}")
         await message.answer(f"❌ Error resetting metrics: {str(e)}")
+
+
+@router.callback_query(F.data == "choose_language")
+async def choose_language_help(callback: CallbackQuery, i18n: I18nMiddleware):
+    """Handle choose language help callback."""
+    try:
+        # Get current language
+        current_language = i18n.get_language()
+        
+        # Get language selection text
+        title = i18n.t("commands.language.title")
+        description = i18n.t("commands.language.description")
+        current_text = i18n.t("commands.language.current", language=current_language.upper())
+        
+        # Create message text
+        text = f"{title}\n\n{description}\n{current_text}"
+        
+        # Create keyboard with current language marked
+        keyboard = get_language_keyboard_with_current(current_language)
+        
+        # Edit message
+        await callback.message.edit_text(
+            text=text,
+            reply_markup=keyboard,
+            parse_mode="HTML"
+        )
+        await callback.answer()
+        
+    except TelegramBadRequest as e:
+        if "message is not modified" in str(e).lower():
+            await callback.answer()
+        elif "message to edit not found" in str(e).lower():
+            await callback.answer("Сообщение устарело", show_alert=True)
+        else:
+            logging.error(f"Choose language help error: {e}")
+            await callback.answer("❌ Ошибка обновления", show_alert=True)
+    except Exception as e:
+        logging.error(f"Choose language help error: {e}")
+        await callback.answer("❌ Ошибка обновления", show_alert=True)
 
 
 @router.callback_query(F.data == "choose_gender_help")

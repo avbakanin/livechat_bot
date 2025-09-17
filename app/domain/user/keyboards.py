@@ -95,6 +95,12 @@ def get_help_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
                     callback_data="privacy_info_help",
                 )
             ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.choose_language"),
+                    callback_data="choose_language",
+                )
+            ],
         ]
     )
 

@@ -88,7 +88,7 @@ async def main():
                 FSMMiddleware(),  # Add FSM middleware for caching
                 AccessMiddleware(TELEGRAM_CONFIG["allowed_user_ids"]),
                 LoggingMiddleware(),
-                ServiceMiddleware(user_service, message_service),
+                ServiceMiddleware(user_service, message_service, pool),
             ],
         )
 

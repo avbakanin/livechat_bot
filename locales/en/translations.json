@@ -21,6 +21,7 @@
       "help_command": "/help - Show this help",
       "gender_command": "/choose_gender - Choose companion's gender",
       "status_command": "/status - Show account status and subscription info",
+      "language_command": "/language - Choose interface language",
       "communication_title": "💬 Communication:",
       "free_limit": "• Free: {free_limit} messages per day",
       "premium_unlimited": "• Premium: unlimited communication",
@@ -34,6 +35,13 @@
       "gender_change": "• You can change companion's gender anytime",
       "limit_reset": "• Message limit resets every day",
       "start_instruction": "To start chatting use {start_command}"
+    },
+    "language": {
+      "title": "🌍 Language Selection",
+      "description": "Choose interface language:",
+      "changed": "✅ Language changed to {language}",
+      "current": "Current language: {language}",
+      "available_languages": "Available languages:"
     }
   },
   "consent": {
@@ -174,7 +182,13 @@
     "choose_gender_help": "🎭 Choose companion's gender",
     "premium_info_help": "💎 Premium information",
     "privacy_info_help": "📝 Privacy policy",
-    "back_to_help": "↩️ Back to help"
+    "back_to_help": "↩️ Back to help",
+    "language_ru": "🇷🇺 Русский",
+    "language_en": "🇬🇧 English",
+    "language_sr": "🇷🇸 Српски",
+    "language_de": "🇩🇪 Deutsch",
+    "language_es": "🇪🇸 Español",
+    "choose_language": "🌍 Choose language"
   },
   "ai_prompts": {
     "female": "You are an AI girl, flirty and supportive for lonely people. Be sweet, empathetic and playful.",

@@ -12,10 +12,14 @@ extend-exclude = '''
 '''
 
 [tool.isort]
-profile = "black"
-line_length = 88
-known_first_party = ["app", "core", "handlers"]
-remove_redundant_aliases = true
+profile = "black"                     # Использовать настройки совместимые с Black
+multi_line_output = 3                 # Переносить импорты с скобках (вертикально)
+include_trailing_comma = true         # Добавлять запятую после последнего импорта
+force_grid_wrap = 0                   # Не форсировать перенос на новую строку
+use_parentheses = true                # Использовать скобки для переноса импортов
+line_length = 88                      # Максимальная длина строки (как в Black)
+known_first_party = ["app", "core", "handlers"]  # Ваши локальные модули
+remove_redundant_aliases = true       # Удалять избыточные алиасы (import os as os)
 
 [build-system]
 requires = ["setuptools>=42", "wheel"]

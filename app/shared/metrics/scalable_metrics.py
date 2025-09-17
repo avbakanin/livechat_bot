@@ -8,13 +8,9 @@ import time
 import threading
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, Set, Callable
-import json
-import heapq
-from concurrent.futures import ThreadPoolExecutor
-import weakref
+from typing import Any, Dict, List, Optional, Callable
 
 
 class MetricType(Enum):

@@ -3,7 +3,7 @@ Factory patterns for object creation and configuration.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional, Type, TypeVar
+from typing import Any, Dict, Optional, TypeVar
 
 from core.interfaces.service import (
     IMessageService,
@@ -27,7 +27,6 @@ class AbstractFactory(ABC):
     @abstractmethod
     def create(self, *args, **kwargs) -> Any:
         """Create object."""
-        pass
 
 
 class ServiceFactory(AbstractFactory):

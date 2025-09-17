@@ -11,12 +11,10 @@ T = TypeVar('T')
 
 class Command(ABC):
     """Base class for commands."""
-    pass
 
 
 class Query(ABC):
     """Base class for queries."""
-    pass
 
 
 class CommandHandler(ABC, Generic[T]):
@@ -25,7 +23,6 @@ class CommandHandler(ABC, Generic[T]):
     @abstractmethod
     async def handle(self, command: Command) -> T:
         """Handle command."""
-        pass
 
 
 class QueryHandler(ABC, Generic[T]):
@@ -34,7 +31,6 @@ class QueryHandler(ABC, Generic[T]):
     @abstractmethod
     async def handle(self, query: Query) -> T:
         """Handle query."""
-        pass
 
 
 # Commands

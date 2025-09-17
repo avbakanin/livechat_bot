@@ -4,15 +4,13 @@ Architectural tests to enforce design patterns and constraints.
 
 import pytest
 from pathlib import Path
-from typing import List, Type
+from typing import List
 
 # Import architectural components
 from core.interfaces.repository import IRepository
-from core.interfaces.service import IService
 from core.interfaces.unit_of_work import IUnitOfWork
 from core.interfaces.event_bus import IEventBus
 from core.events import DomainEvent
-from core.cqrs import Command, Query, CommandHandler, QueryHandler
 from core.specifications import Specification
 
 
@@ -114,14 +112,12 @@ class TestSingleResponsibility:
         """Event handlers should have single responsibility."""
         # This would check that each handler only handles one type of event
         # Implementation depends on actual handler classes
-        pass
         
     def test_services_have_single_responsibility(self):
         """Services should have single responsibility."""
         # Check that services are focused on one domain
         # UserService should only handle user operations
         # MessageService should only handle message operations
-        pass
 
 
 class TestOpenClosedPrinciple:
@@ -140,7 +136,6 @@ class TestOpenClosedPrinciple:
     def test_event_handlers_can_be_added(self):
         """Event handlers should be open for extension."""
         # Check that new event handlers can be added without modifying existing code
-        from core.events import UserCreatedEvent
         from core.interfaces.event_bus import IEventHandler
         
         # Should be able to create new handlers
@@ -158,12 +153,10 @@ class TestLiskovSubstitution:
     def test_repository_implementations_are_substitutable(self):
         """Repository implementations should be substitutable."""
         # Check that all repository implementations implement the interface correctly
-        pass
         
     def test_service_implementations_are_substitutable(self):
         """Service implementations should be substitutable."""
         # Check that all service implementations implement the interface correctly
-        pass
 
 
 class TestCommandQuerySeparation:
@@ -171,7 +164,7 @@ class TestCommandQuerySeparation:
     
     def test_commands_do_not_return_data(self):
         """Commands should not return data (except confirmation)."""
-        from core.cqrs import CreateUserCommand, SendMessageCommand
+        from core.cqrs import CreateUserCommand
         
         # Commands should be data containers, not return data
         command = CreateUserCommand(123, "test")

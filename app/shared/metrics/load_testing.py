@@ -5,13 +5,10 @@ Load testing and performance benchmarking for metrics system.
 import asyncio
 import time
 import statistics
-import threading
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 import logging
 import random
-import json
 
 
 @dataclass

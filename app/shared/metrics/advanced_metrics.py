@@ -2,14 +2,10 @@
 Advanced metrics and monitoring system with comprehensive categorization.
 """
 
-import asyncio
-import logging
-import time
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Dict, List, Optional, Set
-import json
+from typing import Any, Dict, List, Optional
 
 
 class MetricType(Enum):

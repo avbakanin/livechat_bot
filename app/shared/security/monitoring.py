@@ -2,8 +2,6 @@
 Real-time security monitoring system.
 """
 
-import asyncio
-import json
 import logging
 from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta

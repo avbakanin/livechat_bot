@@ -5,12 +5,8 @@ Advanced encryption and data protection system.
 import base64
 import hashlib
 import secrets
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional
 from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
 import json
 
 
@@ -228,7 +224,6 @@ class KeyManager:
 
 class EncryptionException(Exception):
     """Encryption-related exception."""
-    pass
 
 
 # Global instances

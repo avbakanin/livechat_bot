@@ -421,7 +421,7 @@ async def cmd_status(
 
     # Check if premium subscription is active
     if subscription_status == "premium" and subscription_expires_at:
-        from datetime import datetime, timedelta
+        from datetime import datetime
 
         if subscription_expires_at > datetime.utcnow():
             # User has active premium - calculate days remaining

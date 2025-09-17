@@ -5,7 +5,7 @@
 
 import logging
 from functools import wraps
-from typing import Callable, Any, Awaitable
+from typing import Callable
 
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import CallbackQuery, Message

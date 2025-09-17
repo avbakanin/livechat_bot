@@ -5,11 +5,10 @@ Advanced metrics export system for external monitoring tools.
 import csv
 import json
 import xml.etree.ElementTree as ET
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional
-from dataclasses import asdict
+from datetime import datetime
+from typing import List, Optional
 
-from .advanced_metrics import metrics_manager, MetricCategory, TimeWindow
+from .advanced_metrics import metrics_manager
 
 
 class MetricsExporter:

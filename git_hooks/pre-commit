@@ -1,0 +1,20 @@
+@echo off
+echo Running code formatting and import sorting...
+
+where poe >nul 2>&1
+if %errorlevel% neq 0 (
+    echo poe not found. Activate virtual environment or install poethepoet.
+    exit /b 1
+)
+
+echo Running poe format...
+poe format
+
+where isort >nul 2>&1
+if %errorlevel% equ 0 (
+    echo Sorting imports with isort...
+    isort .
+)
+
+git add -A
+echo Formatting and import sorting completed

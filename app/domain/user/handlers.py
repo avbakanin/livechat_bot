@@ -222,12 +222,12 @@ async def premium_info(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "privacy_info_help")
-async def privacy_info(callback: CallbackQuery):
+async def privacy_info(callback: CallbackQuery, i18n: I18nMiddleware):
     """Handle privacy info callback with optimal performance."""
     try:
         await callback.message.edit_text(
             text=get_privacy_info_text(),
-            reply_markup=get_privacy_info_keyboard(),
+            reply_markup=get_privacy_info_keyboard(i18n),
             parse_mode="HTML",
         )
         await callback.answer()

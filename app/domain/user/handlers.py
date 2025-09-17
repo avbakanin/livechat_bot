@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from aiogram import F, Router
@@ -18,7 +19,7 @@ from domain.user.keyboards import (
 from domain.user.messages import get_consent_given_text
 from domain.user.services_cached import UserService
 from shared.fsm.user_cache import UserCacheData
-from shared.keyboards.language import get_language_keyboard, get_language_keyboard_with_current
+from shared.keyboards.language import get_language_keyboard_with_current
 from shared.i18n import i18n as global_i18n
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.middlewares.middlewares import AccessMiddleware
@@ -274,10 +275,21 @@ async def cmd_language(message: Message, i18n: I18nMiddleware):
         # Get current language
         current_language = i18n.get_language()
         
+        # Get language names for display
+        language_names = {
+            "ru": "Русский",
+            "en": "English",
+            "sr": "Српски", 
+            "de": "Deutsch",
+            "es": "Español"
+        }
+        
+        current_language_name = language_names.get(current_language, current_language.upper())
+        
         # Get language selection text
         title = i18n.t("commands.language.title")
         description = i18n.t("commands.language.description")
-        current_text = i18n.t("commands.language.current", language=current_language.upper())
+        current_text = i18n.t("commands.language.current", language=current_language_name)
         
         # Create message text
         text = f"{title}\n\n{description}\n{current_text}"
@@ -354,13 +366,12 @@ async def handle_language_selection(callback: CallbackQuery, i18n: I18nMiddlewar
             parse_mode="HTML"
         )
         
-        # Show checkmark with language info and schedule message deletion
-        await callback.answer(f"✅ {language_name}")
+        # Show checkmark with language change info and schedule message deletion
+        await callback.answer(i18n.t('commands.language.changed', language=language_name))
         
-        # Schedule message deletion after 1 second
-        import asyncio
+        # Schedule message deletion after 2 seconds
         async def delete_message():
-            await asyncio.sleep(1)
+            await asyncio.sleep(2)
             try:
                 await callback.message.delete()
             except Exception as e:
@@ -699,10 +710,21 @@ async def choose_language_help(callback: CallbackQuery, i18n: I18nMiddleware):
         # Get current language
         current_language = i18n.get_language()
         
+        # Get language names for display
+        language_names = {
+            "ru": "Русский",
+            "en": "English",
+            "sr": "Српски", 
+            "de": "Deutsch",
+            "es": "Español"
+        }
+        
+        current_language_name = language_names.get(current_language, current_language.upper())
+        
         # Get language selection text
         title = i18n.t("commands.language.title")
         description = i18n.t("commands.language.description")
-        current_text = i18n.t("commands.language.current", language=current_language.upper())
+        current_text = i18n.t("commands.language.current", language=current_language_name)
         
         # Create message text
         text = f"{title}\n\n{description}\n{current_text}"

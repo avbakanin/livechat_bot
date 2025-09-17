@@ -1,23 +1,19 @@
 from aiogram.utils.markdown import hbold
+from shared.i18n import i18n
 
 
 def get_error_message(error_type: str = "general") -> str:
     """Get error message based on error type."""
-    from shared.i18n import i18n
-
     return i18n.t(f"errors.{error_type}")
 
 
 def get_success_message(action: str = "general") -> str:
     """Get success message based on action."""
-    from shared.i18n import i18n
-
     return i18n.t(f"success.{action}")
 
 
 def get_help_text(free_limit: int = None) -> str:
     from config.openai import OPENAI_CONFIG
-    from shared.i18n import i18n
 
     # Use provided limit or get from config
     if free_limit is None:
@@ -31,6 +27,7 @@ def get_help_text(free_limit: int = None) -> str:
         {i18n.t('commands.help.help_command')}
         {i18n.t('commands.help.gender_command')}
         {i18n.t('commands.help.status_command')}
+        {i18n.t('commands.help.language_command')}
 
         {hbold(i18n.t('commands.help.communication_title'))}
         {i18n.t('commands.help.free_limit', free_limit=free_limit)}

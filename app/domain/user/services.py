@@ -68,6 +68,10 @@ class UserService:
 
         await db_set_gender_preference(self.pool, user_id, preference)
 
+    async def clear_gender_preference(self, user_id: int) -> None:
+        """Clear user gender preference (set to None)."""
+        await db_set_gender_preference(self.pool, user_id, None)
+
     async def can_send_message(self, user_id: int) -> bool:
         """Check if user can send messages (not exceeded daily limit)."""
         # This would need to be implemented with message counting
@@ -94,5 +98,12 @@ class UserService:
         # Reset consent status to False
         await self.set_consent_status(user_id, False)
         
-        # Reset gender preference to default
-        await self.set_gender_preference(user_id, "female")
+        # Clear gender preference (set to None so next selection is treated as first)
+        await self.clear_gender_preference(user_id)
+
+    async def restart_user_state(self, user_id: int) -> None:
+        """Restart user state - clear messages but keep consent and go to gender selection."""
+        await self.delete_user_messages(user_id)
+        # Keep consent as True (user already agreed)
+        # Clear gender preference so next selection is treated as first choice
+        await self.clear_gender_preference(user_id)

@@ -28,6 +28,7 @@ from shared.middlewares.middlewares import AccessMiddleware
 from shared.utils.helpers import destructure_user
 from shared.messages.common import get_help_text, get_privacy_info_text
 from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction, safe_record_security_metric
+from shared.decorators import optimize_callback_edit
 
 router = Router()
 
@@ -113,6 +114,11 @@ async def gender_choice(
     safe_record_security_metric("record_callback_query")
 
     try:
+        # Check if user already had a gender preference set
+        current_gender = await user_service.get_gender_preference(user.id)
+        # Consider it first selection if user hasn't made a choice yet (None) or if it's the default
+        is_first_selection = current_gender is None
+        
         # change translation to dynamic i18n translations
         await user_service.set_gender_preference(user.id, preference)
 
@@ -122,9 +128,14 @@ async def gender_choice(
             if preference == "female"
             else i18n.t("buttons.male")
         )
-        await callback.message.edit_text(
-            i18n.t("gender.toggle_gender", gender=gender_name)
-        )
+        
+        # Choose appropriate message based on whether this is first selection or change
+        if is_first_selection:
+            message_text = i18n.t("gender.gender_selected", gender=gender_name)
+        else:
+            message_text = i18n.t("gender.toggle_gender", gender=gender_name)
+            
+        await callback.message.edit_text(message_text)
     except UserException as e:
         logging.error(f"Error setting gender preference: {e}")
         await callback.message.edit_text(i18n.t("error.try_again"))
@@ -796,41 +807,29 @@ async def gender_help(callback: CallbackQuery, i18n: I18nMiddleware):
 
 
 @router.callback_query(F.data == "restart_confirm")
+@optimize_callback_edit
 async def restart_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
-    """Confirm restart - clear all data and go to /start."""
-    try:
-        user_id = callback.from_user.id
-        
-        # Reset user state completely (messages, consent, gender preference)
-        await user_service.reset_user_state(user_id)
-        
-        # Send restart message
-        await callback.message.edit_text(
-            i18n.t("commands.restart.success"),
-            parse_mode="HTML"
-        )
-        
-        # Redirect to start after delay
-        await asyncio.sleep(2)
-        await callback.message.answer(
-            i18n.t("consent.request"),
-            reply_markup=get_consent_keyboard(i18n),
-            parse_mode="HTML"
-        )
-        
-        await callback.answer()
-        
-    except TelegramBadRequest as e:
-        if "message is not modified" in str(e).lower():
-            await callback.answer()
-        elif "message to edit not found" in str(e).lower():
-            await callback.answer("Сообщение устарело", show_alert=True)
-        else:
-            logging.error(f"Restart confirm error: {e}")
-            await callback.answer("❌ Ошибка обновления", show_alert=True)
-    except Exception as e:
-        logging.error(f"Restart confirm error: {e}")
-        await callback.answer("❌ Ошибка обновления", show_alert=True)
+    """Confirm restart - clear messages and show gender selection."""
+    user_id = callback.from_user.id
+    
+    # Restart user state (clear messages but keep consent)
+    await user_service.restart_user_state(user_id)
+    
+    # Send restart message
+    await callback.message.edit_text(
+        i18n.t("commands.restart.success"),
+        parse_mode="HTML"
+    )
+    
+    # Show gender selection after delay
+    await asyncio.sleep(2)
+    await callback.message.answer(
+        i18n.t("gender.choose_gender"),
+        reply_markup=get_gender_keyboard(i18n),
+        parse_mode="HTML"
+    )
+    
+    await callback.answer()
 
 
 @router.callback_query(F.data == "restart_cancel")
@@ -858,33 +857,21 @@ async def restart_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
 
 
 @router.callback_query(F.data == "stop_confirm")
+@optimize_callback_edit
 async def stop_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
     """Confirm stop - clear all data and deactivate."""
-    try:
-        user_id = callback.from_user.id
-        
-        # Reset user state completely (messages, consent, gender preference)
-        await user_service.reset_user_state(user_id)
-        
-        # Send goodbye message
-        await callback.message.edit_text(
-            i18n.t("commands.stop.success"),
-            parse_mode="HTML"
-        )
-        
-        await callback.answer()
-        
-    except TelegramBadRequest as e:
-        if "message is not modified" in str(e).lower():
-            await callback.answer()
-        elif "message to edit not found" in str(e).lower():
-            await callback.answer("Сообщение устарело", show_alert=True)
-        else:
-            logging.error(f"Stop confirm error: {e}")
-            await callback.answer("❌ Ошибка обновления", show_alert=True)
-    except Exception as e:
-        logging.error(f"Stop confirm error: {e}")
-        await callback.answer("❌ Ошибка обновления", show_alert=True)
+    user_id = callback.from_user.id
+    
+    # Reset user state completely (messages, consent, gender preference)
+    await user_service.reset_user_state(user_id)
+    
+    # Send goodbye message
+    await callback.message.edit_text(
+        i18n.t("commands.stop.success"),
+        parse_mode="HTML"
+    )
+    
+    await callback.answer()
 
 
 @router.callback_query(F.data == "stop_cancel")

@@ -6,7 +6,7 @@ import logging
 from functools import wraps
 from typing import Callable, Any
 from aiogram.types import CallbackQuery
-from aiogram.exceptions import MessageNotModified, MessageToEditNotFound
+from aiogram.exceptions import TelegramBadRequest
 
 
 def optimize_callback_edit(func: Callable) -> Callable:
@@ -30,13 +30,18 @@ def optimize_callback_edit(func: Callable) -> Callable:
         try:
             return await func(callback, *args, **kwargs)
             
-        except MessageNotModified:
-            # Контент не изменился - просто подтверждаем
-            await callback.answer()
-            
-        except MessageToEditNotFound:
-            # Сообщение удалено - показываем alert
-            await callback.answer("Сообщение устарело", show_alert=True)
+        except TelegramBadRequest as e:
+            error_message = str(e).lower()
+            if "message is not modified" in error_message:
+                # Контент не изменился - просто подтверждаем
+                await callback.answer()
+            elif "message to edit not found" in error_message:
+                # Сообщение удалено - показываем alert
+                await callback.answer("Сообщение устарело", show_alert=True)
+            else:
+                # Другие ошибки Telegram API
+                logging.error(f"TelegramBadRequest in {func.__name__}: {e}")
+                await callback.answer("❌ Ошибка обновления", show_alert=True)
             
         except Exception as e:
             # Логируем ошибку и показываем пользователю
@@ -57,13 +62,17 @@ def optimize_callback_edit_detailed(func: Callable) -> Callable:
         try:
             return await func(callback, *args, **kwargs)
             
-        except MessageNotModified:
-            logging.debug(f"Message not modified in {func.__name__} for user {callback.from_user.id}")
-            await callback.answer()
-            
-        except MessageToEditNotFound:
-            logging.warning(f"Message to edit not found in {func.__name__} for user {callback.from_user.id}")
-            await callback.answer("Сообщение устарело", show_alert=True)
+        except TelegramBadRequest as e:
+            error_message = str(e).lower()
+            if "message is not modified" in error_message:
+                logging.debug(f"Message not modified in {func.__name__} for user {callback.from_user.id}")
+                await callback.answer()
+            elif "message to edit not found" in error_message:
+                logging.warning(f"Message to edit not found in {func.__name__} for user {callback.from_user.id}")
+                await callback.answer("Сообщение устарело", show_alert=True)
+            else:
+                logging.error(f"TelegramBadRequest in {func.__name__} for user {callback.from_user.id}: {e}")
+                await callback.answer("❌ Ошибка обновления", show_alert=True)
             
         except Exception as e:
             logging.error(f"Callback error in {func.__name__} for user {callback.from_user.id}: {e}")

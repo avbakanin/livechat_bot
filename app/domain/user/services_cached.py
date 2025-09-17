@@ -123,6 +123,13 @@ class UserService:
         # Update cache
         await user_cache.update_field(user_id, "gender_preference", preference)
 
+    async def clear_gender_preference(self, user_id: int) -> None:
+        """Clear user gender preference (set to None)."""
+        await db_set_gender_preference(self.pool, user_id, None)
+
+        # Update cache
+        await user_cache.update_field(user_id, "gender_preference", None)
+
     async def get_subscription_status(self, user_id: int) -> str:
         """Get user subscription status with caching."""
         cached_data = await user_cache.get(user_id)
@@ -163,8 +170,20 @@ class UserService:
         # Reset consent status to False
         await self.set_consent_status(user_id, False)
         
-        # Reset gender preference to default
-        await self.set_gender_preference(user_id, "female")
+        # Clear gender preference (set to None so next selection is treated as first)
+        await self.clear_gender_preference(user_id)
+        
+        # Invalidate cache to ensure fresh data on next access
+        await self.invalidate_cache(user_id)
+
+    async def restart_user_state(self, user_id: int) -> None:
+        """Restart user state - clear messages but keep consent and go to gender selection."""
+        # Delete all user messages
+        await self.delete_user_messages(user_id)
+        
+        # Keep consent as True (user already agreed)
+        # Clear gender preference so next selection is treated as first choice
+        await self.clear_gender_preference(user_id)
         
         # Invalidate cache to ensure fresh data on next access
         await self.invalidate_cache(user_id)

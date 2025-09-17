@@ -63,6 +63,8 @@
   },
   "gender": {
     "choose": "Choose companion's gender:",
+    "choose_gender": "Choose companion's gender:",
+    "gender_selected": "Gender selected: {gender} 😊",
     "toggle_gender": "Companion's gender changed to {gender} 😊",
     "change_warning": "⚠️ Are you sure you want to change companion's gender?\n\nAll chat history will be deleted!",
     "change_confirmed": "Chat history deleted. Choose companion's gender:",

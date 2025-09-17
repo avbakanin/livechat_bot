@@ -7,9 +7,9 @@ from typing import Any, AsyncContextManager, Generic, TypeVar
 
 from .repository import (
     IMessageRepository,
-    IPaymentRepository, 
+    IPaymentRepository,
     ISubscriptionRepository,
-    IUserRepository
+    IUserRepository,
 )
 
 T = TypeVar('T')

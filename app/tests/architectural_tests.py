@@ -2,15 +2,17 @@
 Architectural tests to enforce design patterns and constraints.
 """
 
-import pytest
 from pathlib import Path
 from typing import List
+
+import pytest
+
+from core.events import DomainEvent
+from core.interfaces.event_bus import IEventBus
 
 # Import architectural components
 from core.interfaces.repository import IRepository
 from core.interfaces.unit_of_work import IUnitOfWork
-from core.interfaces.event_bus import IEventBus
-from core.events import DomainEvent
 from core.specifications import Specification
 
 
@@ -126,8 +128,8 @@ class TestOpenClosedPrinciple:
     def test_specifications_can_be_extended(self):
         """Specifications should be open for extension."""
         # Check that specifications can be combined
-        from core.specifications import UserByIdSpecification, ActiveUserSpecification
-        
+        from core.specifications import ActiveUserSpecification, UserByIdSpecification
+
         # Should be able to combine specifications
         combined = UserByIdSpecification(123).and_specification(ActiveUserSpecification())
         assert hasattr(combined, 'is_satisfied_by')
@@ -137,7 +139,7 @@ class TestOpenClosedPrinciple:
         """Event handlers should be open for extension."""
         # Check that new event handlers can be added without modifying existing code
         from core.interfaces.event_bus import IEventHandler
-        
+
         # Should be able to create new handlers
         class TestHandler(IEventHandler):
             async def handle(self, event: DomainEvent) -> None:
@@ -165,7 +167,7 @@ class TestCommandQuerySeparation:
     def test_commands_do_not_return_data(self):
         """Commands should not return data (except confirmation)."""
         from core.cqrs import CreateUserCommand
-        
+
         # Commands should be data containers, not return data
         command = CreateUserCommand(123, "test")
         assert hasattr(command, 'telegram_id')
@@ -173,8 +175,8 @@ class TestCommandQuerySeparation:
         
     def test_queries_do_not_modify_state(self):
         """Queries should not modify state."""
-        from core.cqrs import GetUserQuery, GetUserMessagesQuery
-        
+        from core.cqrs import GetUserMessagesQuery, GetUserQuery
+
         # Queries should be read-only
         query = GetUserQuery(123)
         assert hasattr(query, 'telegram_id')
@@ -201,7 +203,7 @@ class TestEventDrivenArchitecture:
     def test_events_have_required_properties(self):
         """Domain events should have required properties."""
         from core.events import DomainEvent
-        
+
         # All events should inherit from DomainEvent
         assert hasattr(DomainEvent, 'event_id')
         assert hasattr(DomainEvent, 'occurred_at')

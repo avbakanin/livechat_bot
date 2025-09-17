@@ -4,9 +4,9 @@
 
 from aiogram import F, Router
 from aiogram.types import CallbackQuery
+from domain.user.keyboards import get_help_keyboard
 from shared.decorators import optimize_callback_edit
 from shared.messages.common import get_help_text
-from domain.user.keyboards import get_help_keyboard
 
 router = Router()
 

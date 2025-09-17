@@ -4,8 +4,10 @@
 """
 
 import asyncio
-import asyncpg
 from datetime import datetime
+
+import asyncpg
+
 
 async def check_user_status():
     """Проверить статус пользователя в базе данных."""

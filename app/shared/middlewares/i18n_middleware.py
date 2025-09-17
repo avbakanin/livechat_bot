@@ -1,5 +1,5 @@
-from typing import Any, Awaitable, Callable, Dict
 import logging
+from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message, TelegramObject
@@ -25,6 +25,7 @@ class I18nMiddleware(BaseMiddleware):
                 # First try to get user's saved language preference from database
                 try:
                     from services.user.user import user_service
+
                     # Get database pool from data if available
                     pool = data.get('pool')
                     if pool:

@@ -1,6 +1,6 @@
 import logging
-from typing import Optional, Dict, Any
 from datetime import datetime, timedelta
+from typing import Any, Dict, Optional
 
 
 class UserService:

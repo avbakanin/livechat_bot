@@ -4,10 +4,11 @@ Advanced encryption and data protection system.
 
 import base64
 import hashlib
+import json
 import secrets
 from typing import Any, Dict, Optional
+
 from cryptography.fernet import Fernet
-import json
 
 
 class EncryptionService:

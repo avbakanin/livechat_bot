@@ -4,7 +4,6 @@ venv/
 .venv/
 env/
 venv*
-1
 
 # Python cache and compiled files
 __pycache__/

@@ -4,9 +4,9 @@
 """
 
 import time
-from typing import Dict
-from dataclasses import dataclass
 from collections import defaultdict, deque
+from dataclasses import dataclass
+from typing import Dict
 
 
 @dataclass

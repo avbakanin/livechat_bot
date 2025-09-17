@@ -3,12 +3,12 @@ Load testing and performance benchmarking for metrics system.
 """
 
 import asyncio
-import time
-import statistics
-from dataclasses import dataclass
-from typing import List, Dict, Any
 import logging
 import random
+import statistics
+import time
+from dataclasses import dataclass
+from typing import Any, Dict, List
 
 
 @dataclass

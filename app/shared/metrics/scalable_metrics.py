@@ -4,13 +4,13 @@ High-performance scalable metrics system optimized for massive user loads.
 
 import asyncio
 import logging
-import time
 import threading
+import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, Callable
+from typing import Any, Callable, Dict, List, Optional
 
 
 class MetricType(Enum):

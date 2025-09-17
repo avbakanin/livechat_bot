@@ -3,10 +3,10 @@ Advanced attack protection system.
 """
 
 import re
-from typing import Dict, List, Optional
-from datetime import datetime, timedelta
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from enum import Enum
+from typing import Dict, List, Optional
 
 
 class AttackType(Enum):

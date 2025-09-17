@@ -3,10 +3,10 @@ Advanced authentication and authorization system.
 """
 
 import secrets
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Set
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from enum import Enum
+from typing import Dict, List, Optional, Set
 
 import jwt
 

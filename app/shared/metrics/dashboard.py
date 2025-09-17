@@ -3,11 +3,9 @@ Advanced metrics dashboard with real-time visualization.
 """
 
 import json
-from typing import Dict, Any
+from typing import Any, Dict
 
-from .advanced_metrics import (
-    metrics_manager
-)
+from .advanced_metrics import metrics_manager
 
 
 class MetricsDashboard:

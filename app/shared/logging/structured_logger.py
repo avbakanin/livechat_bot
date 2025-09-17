@@ -7,8 +7,8 @@ import json
 import logging
 import time
 from datetime import datetime
-from typing import Dict, Any, Optional
 from functools import wraps
+from typing import Any, Dict, Optional
 
 
 class StructuredLogger:

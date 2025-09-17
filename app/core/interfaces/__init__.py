@@ -2,10 +2,10 @@
 Core interfaces for dependency inversion and abstraction.
 """
 
-from .repository import IRepository
-from .unit_of_work import IUnitOfWork
 from .event_bus import IEventBus
+from .repository import IRepository
 from .service import IService
+from .unit_of_work import IUnitOfWork
 
 __all__ = [
     "IRepository",

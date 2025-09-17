@@ -4,9 +4,10 @@
 
 import logging
 from functools import wraps
-from typing import Callable, Any
-from aiogram.types import CallbackQuery
+from typing import Any, Callable
+
 from aiogram.exceptions import TelegramBadRequest
+from aiogram.types import CallbackQuery
 
 
 def optimize_callback_edit(func: Callable) -> Callable:

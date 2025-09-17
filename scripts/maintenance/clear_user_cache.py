@@ -4,8 +4,10 @@
 """
 
 import asyncio
-import asyncpg
 from datetime import datetime, timedelta
+
+import asyncpg
+
 
 async def clear_user_cache():
     """Очистить кэш пользователя и обновить данные."""

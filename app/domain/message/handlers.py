@@ -13,8 +13,12 @@ from domain.user.services_cached import UserService
 from shared.fsm.user_cache import UserCacheData
 from shared.helpers.typingIndicator import TypingIndicator
 from shared.keyboards.common import get_limit_exceeded_keyboard
-from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction, safe_record_security_metric
-from shared.security import TextSanitizer, SecurityValidator, SecurityLogger
+from shared.metrics.metrics import (
+    safe_record_metric,
+    safe_record_security_metric,
+    safe_record_user_interaction,
+)
+from shared.security import SecurityLogger, SecurityValidator, TextSanitizer
 from shared.utils.helpers import destructure_user
 
 from core.exceptions import MessageException, OpenAIException

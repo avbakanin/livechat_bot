@@ -2,9 +2,9 @@ import asyncio
 import logging
 
 from aiogram import F, Router
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
 from aiogram.types import CallbackQuery, Message
-from aiogram.exceptions import TelegramBadRequest
 from domain.message.services import MessageService
 from domain.subscription.keyboards import get_premium_info_keyboard
 from domain.subscription.messages import get_premium_info_text
@@ -20,15 +20,19 @@ from domain.user.keyboards import (
 )
 from domain.user.messages import get_consent_given_text
 from domain.user.services_cached import UserService
+from shared.decorators import optimize_callback_edit
 from shared.fsm.user_cache import UserCacheData
-from shared.keyboards.language import get_language_keyboard_with_current
 from shared.i18n import i18n as global_i18n
+from shared.keyboards.language import get_language_keyboard_with_current
+from shared.messages.common import get_help_text, get_privacy_info_text
+from shared.metrics.metrics import (
+    safe_record_metric,
+    safe_record_security_metric,
+    safe_record_user_interaction,
+)
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.middlewares.middlewares import AccessMiddleware
 from shared.utils.helpers import destructure_user
-from shared.messages.common import get_help_text, get_privacy_info_text
-from shared.metrics.metrics import safe_record_metric, safe_record_user_interaction, safe_record_security_metric
-from shared.decorators import optimize_callback_edit
 
 router = Router()
 
@@ -346,6 +350,7 @@ async def handle_language_selection(callback: CallbackQuery, i18n: I18nMiddlewar
         user_id = callback.from_user.id
         try:
             from services.user.user import user_service
+
             # Get pool from dependency injection
             pool = kwargs.get('pool')
             if pool:
@@ -648,7 +653,7 @@ async def cmd_clean_metrics(message: Message, user_service: UserService):
     try:
         # Get metrics_collector dynamically
         from shared.metrics.metrics import metrics_collector
-        
+
         # Check if metrics_collector is initialized
         if metrics_collector is None:
             await message.answer("❌ Metrics system not initialized yet. Please try again later.")
@@ -702,7 +707,7 @@ async def cmd_reset_daily_metrics(message: Message):
     try:
         # Get metrics_collector dynamically
         from shared.metrics.metrics import metrics_collector
-        
+
         # Check if metrics_collector is initialized
         if metrics_collector is None:
             await message.answer("❌ Metrics system not initialized yet. Please try again later.")

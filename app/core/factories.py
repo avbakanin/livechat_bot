@@ -5,17 +5,17 @@ Factory patterns for object creation and configuration.
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional, TypeVar
 
-from core.interfaces.service import (
-    IMessageService,
-    IPaymentService,
-    ISubscriptionService,
-    IUserService
-)
 from core.interfaces.repository import (
     IMessageRepository,
     IPaymentRepository,
     ISubscriptionRepository,
-    IUserRepository
+    IUserRepository,
+)
+from core.interfaces.service import (
+    IMessageService,
+    IPaymentService,
+    ISubscriptionService,
+    IUserService,
 )
 
 T = TypeVar('T')
@@ -70,7 +70,9 @@ class RepositoryFactory(AbstractFactory):
         
     def create_subscription_repository(self) -> ISubscriptionRepository:
         """Create subscription repository."""
-        from infrastructure.repositories.subscription_repository import SubscriptionRepository
+        from infrastructure.repositories.subscription_repository import (
+            SubscriptionRepository,
+        )
         return SubscriptionRepository(self.connection)
         
     def create_payment_repository(self) -> IPaymentRepository:
@@ -124,6 +126,7 @@ class DomainObjectFactory(AbstractFactory):
     ) -> 'Subscription':
         """Create subscription domain object."""
         from datetime import datetime, timedelta
+
         from shared.models.subscription import SubscriptionCreate
         
         expires_at = datetime.utcnow() + timedelta(days=duration_days)
@@ -261,7 +264,9 @@ class EventHandlerFactory(AbstractFactory):
         handlers.append(MessageSentHandler(self.container))
         
         # Add limit exceeded handler
-        from application.event_handlers.message_event_handlers import MessageLimitExceededHandler
+        from application.event_handlers.message_event_handlers import (
+            MessageLimitExceededHandler,
+        )
         handlers.append(MessageLimitExceededHandler(self.container))
         
         return handlers

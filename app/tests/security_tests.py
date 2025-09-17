@@ -2,19 +2,19 @@
 Comprehensive security testing suite.
 """
 
-import pytest
 import time
 
-from shared.security.authentication import (
-    AuthenticationService, 
-    AuthorizationService, 
-    Permission, 
-    Role
-)
-from shared.security.encryption import EncryptionService, PasswordHasher
+import pytest
 from shared.security.attack_protection import AttackDetector, AttackType
-from shared.security.monitoring import SecurityMonitor, SecurityLevel
+from shared.security.authentication import (
+    AuthenticationService,
+    AuthorizationService,
+    Permission,
+    Role,
+)
 from shared.security.blocking import BlockingService, BlockReason, BlockType
+from shared.security.encryption import EncryptionService, PasswordHasher
+from shared.security.monitoring import SecurityLevel, SecurityMonitor
 
 
 class TestAuthenticationSecurity:

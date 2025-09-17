@@ -3,8 +3,8 @@ Blocking service for user management.
 """
 
 import logging
-from typing import Set, Dict, Any
 from datetime import datetime, timedelta
+from typing import Any, Dict, Set
 
 
 class BlockingService:

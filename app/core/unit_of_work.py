@@ -7,13 +7,13 @@ from typing import Any, AsyncContextManager, Optional
 
 import asyncpg
 
-from core.interfaces.unit_of_work import IUnitOfWork, IUnitOfWorkFactory
 from core.interfaces.repository import (
     IMessageRepository,
     IPaymentRepository,
-    ISubscriptionRepository, 
-    IUserRepository
+    ISubscriptionRepository,
+    IUserRepository,
 )
+from core.interfaces.unit_of_work import IUnitOfWork, IUnitOfWorkFactory
 
 
 class UnitOfWork(IUnitOfWork[Any]):
@@ -89,7 +89,9 @@ class UnitOfWork(IUnitOfWork[Any]):
     def subscriptions(self) -> ISubscriptionRepository[Any]:
         """Get subscription repository."""
         if 'subscriptions' not in self._repositories:
-            from infrastructure.repositories.subscription_repository import SubscriptionRepository
+            from infrastructure.repositories.subscription_repository import (
+                SubscriptionRepository,
+            )
             self._repositories['subscriptions'] = SubscriptionRepository(self._connection)
         return self._repositories['subscriptions']
 

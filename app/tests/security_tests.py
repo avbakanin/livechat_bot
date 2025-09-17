@@ -4,8 +4,6 @@ Comprehensive security testing suite.
 
 import pytest
 import time
-from datetime import datetime, timedelta
-from unittest.mock import Mock, patch
 
 from shared.security.authentication import (
     AuthenticationService, 

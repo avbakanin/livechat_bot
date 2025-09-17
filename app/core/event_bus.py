@@ -8,7 +8,7 @@ from collections import defaultdict
 from typing import Any, Callable, Dict, List, Type, TypeVar
 
 from core.events import DomainEvent
-from core.interfaces.event_bus import IEventBus, IEventHandler
+from core.interfaces.event_bus import IEventBus
 
 T = TypeVar('T', bound=DomainEvent)
 

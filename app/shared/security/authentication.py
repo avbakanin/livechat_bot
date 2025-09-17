@@ -2,17 +2,13 @@
 Advanced authentication and authorization system.
 """
 
-import hashlib
-import hmac
 import secrets
-import time
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Set
 from dataclasses import dataclass
 from enum import Enum
 
 import jwt
-from cryptography.fernet import Fernet
 
 
 class Permission(Enum):
@@ -283,17 +279,14 @@ class AuthorizationService:
 
 class SecurityException(Exception):
     """Security-related exception."""
-    pass
 
 
 class AuthenticationException(SecurityException):
     """Authentication exception."""
-    pass
 
 
 class AuthorizationException(SecurityException):
     """Authorization exception."""
-    pass
 
 
 # Global instances

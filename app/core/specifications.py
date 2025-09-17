@@ -14,17 +14,14 @@ class Specification(ABC):
     @abstractmethod
     def is_satisfied_by(self, entity: Any) -> bool:
         """Check if entity satisfies specification."""
-        pass
         
     @abstractmethod
     def to_sql_where(self) -> str:
         """Convert to SQL WHERE clause."""
-        pass
         
     @abstractmethod
     def get_parameters(self) -> Dict[str, Any]:
         """Get SQL parameters."""
-        pass
         
     def and_specification(self, other: 'Specification') -> 'AndSpecification':
         """Combine with AND."""
@@ -263,4 +260,3 @@ class SpecificationRepository:
         """Find entities by specification."""
         # This would be implemented by the concrete repository
         # using the specification's SQL and parameters
-        pass

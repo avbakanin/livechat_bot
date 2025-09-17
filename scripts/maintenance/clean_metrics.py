@@ -4,7 +4,6 @@ Script to clean up test data from metrics and sync with real users.
 
 import asyncio
 import logging
-import sys
 from typing import Set
 
 import asyncpg

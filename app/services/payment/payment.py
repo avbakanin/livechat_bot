@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Dict, Any
+from typing import Optional
 from datetime import datetime
 
 # from yookassa import Configuration, Payment  # Закомментировано, раскомментируйте после установки yookassa

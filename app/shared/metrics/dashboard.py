@@ -3,15 +3,10 @@ Advanced metrics dashboard with real-time visualization.
 """
 
 import json
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional
-from dataclasses import asdict
+from typing import Dict, Any
 
 from .advanced_metrics import (
-    metrics_manager, 
-    MetricCategory, 
-    TimeWindow,
-    MetricType
+    metrics_manager
 )
 
 

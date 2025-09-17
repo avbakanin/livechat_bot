@@ -4,7 +4,7 @@ Dependency Injection Container for managing dependencies.
 
 import inspect
 import logging
-from typing import Any, Callable, Dict, Optional, Type, TypeVar, Union
+from typing import Any, Callable, Dict, Optional, Type, TypeVar
 
 T = TypeVar('T')
 

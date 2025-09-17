@@ -36,8 +36,8 @@ from shared.utils.helpers import destructure_user
 
 router = Router()
 
-router.message.middleware(AccessMiddleware(allowed_ids={627875032, 1512454100}))
-router.callback_query.middleware(AccessMiddleware(allowed_ids={627875032, 1512454100}))
+router.message.middleware(AccessMiddleware(allowed_ids={627875032, 1512454100, 826795306}))
+router.callback_query.middleware(AccessMiddleware(allowed_ids={627875032, 1512454100, 826795306}))
 
 
 @router.message(Command(commands=["start"]))
@@ -493,7 +493,7 @@ async def cmd_security(message: Message, i18n: I18nMiddleware):
     user_id = message.from_user.id
 
     # Check if user is admin (hardcoded for now)
-    if user_id not in {627875032, 1512454100}:
+    if user_id not in {627875032, 1512454100, 826795306}:
         await message.answer("Access denied.")
         return
 
@@ -527,7 +527,7 @@ async def cmd_reset_metrics(message: Message, i18n: I18nMiddleware):
     user_id = message.from_user.id
 
     # Check if user is admin (hardcoded for now)
-    if user_id not in {627875032, 1512454100}:
+    if user_id not in {627875032, 1512454100, 826795306}:
         await message.answer("Access denied.")
         return
 
@@ -573,7 +573,7 @@ async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     user_id = message.from_user.id
 
     # Check if user is admin (hardcoded for now)
-    if user_id not in {627875032, 1512454100}:
+    if user_id not in {627875032, 1512454100, 826795306}:
         await message.answer("Access denied.")
         return
 

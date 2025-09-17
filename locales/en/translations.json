@@ -22,6 +22,8 @@
       "gender_command": "/choose_gender - Choose companion's gender",
       "status_command": "/status - Show account status and subscription info",
       "language_command": "/language - Choose interface language",
+      "restart_command": "/restart - Restart the bot and clear all data",
+      "stop_command": "/stop - Stop interaction and clear all data",
       "communication_title": "💬 Communication:",
       "free_limit": "• Free: {free_limit} messages per day",
       "premium_unlimited": "• Premium: unlimited communication",
@@ -33,8 +35,7 @@
       "faq_title": "❓ Frequently Asked Questions:",
       "context_memory": "• Bot remembers conversation context",
       "gender_change": "• You can change companion's gender anytime",
-      "limit_reset": "• Message limit resets every day",
-      "start_instruction": "To start chatting use {start_command}"
+      "limit_reset": "• Message limit resets every day"
     },
     "language": {
       "title": "🌍 Language Selection",
@@ -42,6 +43,16 @@
       "changed": "✅ Language changed to {language}",
       "current": "Current language: {language}",
       "available_languages": "Available languages:"
+    },
+    "restart": {
+      "confirmation": "⚠️ <b>Bot Restart</b>\n\nAre you sure you want to restart the bot?\n\n<b>All your data will be deleted:</b>\n• Chat history\n• Settings\n• Cache\n\nThis action cannot be undone!",
+      "success": "✅ <b>Bot restarted!</b>\n\nAll data cleared. Starting fresh...",
+      "cancelled": "❌ Restart cancelled"
+    },
+    "stop": {
+      "confirmation": "⚠️ <b>Stop Bot</b>\n\nAre you sure you want to stop the bot?\n\n<b>All your data will be deleted:</b>\n• Chat history\n• Settings\n• Cache\n\nThis action cannot be undone!",
+      "success": "👋 <b>Bot stopped</b>\n\nAll data deleted. Goodbye!",
+      "cancelled": "❌ Stop cancelled"
     }
   },
   "consent": {
@@ -137,9 +148,7 @@
       "modes": "✅ Special communication modes"
     },
     "price_title": "Price:",
-    "price": "500 RUB / month",
-    "howto_title": "How to purchase:",
-    "howto": "Click 'Buy Premium' button in the main menu (/start)"
+    "price": "500 RUB / month"
   },
   "privacy": {
     "title": "🔐 Privacy Policy",

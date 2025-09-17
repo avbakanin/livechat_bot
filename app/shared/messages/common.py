@@ -28,6 +28,8 @@ def get_help_text(free_limit: int = None) -> str:
         {i18n.t('commands.help.gender_command')}
         {i18n.t('commands.help.status_command')}
         {i18n.t('commands.help.language_command')}
+        {i18n.t('commands.help.restart_command')}
+        {i18n.t('commands.help.stop_command')}
 
         {hbold(i18n.t('commands.help.communication_title'))}
         {i18n.t('commands.help.free_limit', free_limit=free_limit)}
@@ -44,8 +46,6 @@ def get_help_text(free_limit: int = None) -> str:
         {i18n.t('commands.help.context_memory')}
         {i18n.t('commands.help.gender_change')}
         {i18n.t('commands.help.limit_reset')}
-
-        {i18n.t('commands.help.start_instruction', start_command=hbold('/start'))}
 """
 
 

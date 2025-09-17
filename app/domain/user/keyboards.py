@@ -115,3 +115,39 @@ def get_privacy_info_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
             ]
         ]
     )
+
+
+def get_restart_confirmation_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
+    """Keyboard for restart confirmation."""
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.yes"), 
+                    callback_data="restart_confirm"
+                ),
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.no"), 
+                    callback_data="restart_cancel"
+                )
+            ]
+        ]
+    )
+
+
+def get_stop_confirmation_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
+    """Keyboard for stop confirmation."""
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.yes"), 
+                    callback_data="stop_confirm"
+                ),
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.no"), 
+                    callback_data="stop_cancel"
+                )
+            ]
+        ]
+    )

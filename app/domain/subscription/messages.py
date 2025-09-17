@@ -35,9 +35,6 @@ def get_premium_info_text():
 
 {hbold(i18n.t("premium.price_title"))}
 • {i18n.t("premium.price")}
-
-{hbold(i18n.t("premium.howto_title"))}
-{i18n.t("premium.howto")}
 """
 
 

@@ -15,6 +15,8 @@ from domain.user.keyboards import (
     get_gender_keyboard,
     get_help_keyboard,
     get_privacy_info_keyboard,
+    get_restart_confirmation_keyboard,
+    get_stop_confirmation_keyboard,
 )
 from domain.user.messages import get_consent_given_text
 from domain.user.services_cached import UserService
@@ -525,6 +527,26 @@ async def cmd_reset_metrics(message: Message, i18n: I18nMiddleware):
     await message.answer("✅ Daily metrics reset successfully!")
 
 
+@router.message(Command(commands=["restart"]))
+async def cmd_restart(message: Message, i18n: I18nMiddleware):
+    """Restart command with confirmation."""
+    await message.answer(
+        i18n.t("commands.restart.confirmation"),
+        reply_markup=get_restart_confirmation_keyboard(i18n),
+        parse_mode="HTML"
+    )
+
+
+@router.message(Command(commands=["stop"]))
+async def cmd_stop(message: Message, i18n: I18nMiddleware):
+    """Stop command with confirmation."""
+    await message.answer(
+        i18n.t("commands.stop.confirmation"),
+        reply_markup=get_stop_confirmation_keyboard(i18n),
+        parse_mode="HTML"
+    )
+
+
 @router.message(Command(commands=["metrics"]))
 async def cmd_metrics(message: Message, i18n: I18nMiddleware):
     """Show bot metrics (admin only) with caching for scalability."""
@@ -771,3 +793,119 @@ async def gender_help(callback: CallbackQuery, i18n: I18nMiddleware):
         else:
             logging.error(f"Gender help error: {e}")
             await callback.answer("❌ Ошибка обновления", show_alert=True)
+
+
+@router.callback_query(F.data == "restart_confirm")
+async def restart_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
+    """Confirm restart - clear all data and go to /start."""
+    try:
+        user_id = callback.from_user.id
+        
+        # Reset user state completely (messages, consent, gender preference)
+        await user_service.reset_user_state(user_id)
+        
+        # Send restart message
+        await callback.message.edit_text(
+            i18n.t("commands.restart.success"),
+            parse_mode="HTML"
+        )
+        
+        # Redirect to start after delay
+        await asyncio.sleep(2)
+        await callback.message.answer(
+            i18n.t("consent.request"),
+            reply_markup=get_consent_keyboard(i18n),
+            parse_mode="HTML"
+        )
+        
+        await callback.answer()
+        
+    except TelegramBadRequest as e:
+        if "message is not modified" in str(e).lower():
+            await callback.answer()
+        elif "message to edit not found" in str(e).lower():
+            await callback.answer("Сообщение устарело", show_alert=True)
+        else:
+            logging.error(f"Restart confirm error: {e}")
+            await callback.answer("❌ Ошибка обновления", show_alert=True)
+    except Exception as e:
+        logging.error(f"Restart confirm error: {e}")
+        await callback.answer("❌ Ошибка обновления", show_alert=True)
+
+
+@router.callback_query(F.data == "restart_cancel")
+async def restart_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
+    """Cancel restart - return to help."""
+    try:
+        await callback.message.edit_text(
+            text=get_help_text(),
+            reply_markup=get_help_keyboard(i18n),
+            parse_mode="HTML"
+        )
+        await callback.answer(i18n.t("commands.restart.cancelled"))
+        
+    except TelegramBadRequest as e:
+        if "message is not modified" in str(e).lower():
+            await callback.answer()
+        elif "message to edit not found" in str(e).lower():
+            await callback.answer("Сообщение устарело", show_alert=True)
+        else:
+            logging.error(f"Restart cancel error: {e}")
+            await callback.answer("❌ Ошибка обновления", show_alert=True)
+    except Exception as e:
+        logging.error(f"Restart cancel error: {e}")
+        await callback.answer("❌ Ошибка обновления", show_alert=True)
+
+
+@router.callback_query(F.data == "stop_confirm")
+async def stop_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
+    """Confirm stop - clear all data and deactivate."""
+    try:
+        user_id = callback.from_user.id
+        
+        # Reset user state completely (messages, consent, gender preference)
+        await user_service.reset_user_state(user_id)
+        
+        # Send goodbye message
+        await callback.message.edit_text(
+            i18n.t("commands.stop.success"),
+            parse_mode="HTML"
+        )
+        
+        await callback.answer()
+        
+    except TelegramBadRequest as e:
+        if "message is not modified" in str(e).lower():
+            await callback.answer()
+        elif "message to edit not found" in str(e).lower():
+            await callback.answer("Сообщение устарело", show_alert=True)
+        else:
+            logging.error(f"Stop confirm error: {e}")
+            await callback.answer("❌ Ошибка обновления", show_alert=True)
+    except Exception as e:
+        logging.error(f"Stop confirm error: {e}")
+        await callback.answer("❌ Ошибка обновления", show_alert=True)
+
+
+@router.callback_query(F.data == "stop_cancel")
+async def stop_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
+    """Cancel stop - return to help."""
+    try:
+        await callback.message.edit_text(
+            text=get_help_text(),
+            reply_markup=get_help_keyboard(i18n),
+            parse_mode="HTML"
+        )
+        await callback.answer(i18n.t("commands.stop.cancelled"))
+        
+    except TelegramBadRequest as e:
+        if "message is not modified" in str(e).lower():
+            await callback.answer()
+        elif "message to edit not found" in str(e).lower():
+            await callback.answer("Сообщение устарело", show_alert=True)
+        else:
+            logging.error(f"Stop cancel error: {e}")
+            await callback.answer("❌ Ошибка обновления", show_alert=True)
+    except Exception as e:
+        logging.error(f"Stop cancel error: {e}")
+        await callback.answer("❌ Ошибка обновления", show_alert=True)

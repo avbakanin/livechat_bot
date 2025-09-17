@@ -22,6 +22,8 @@
       "gender_command": "/choose_gender - Geschlecht des Begleiters wählen",
       "status_command": "/status - Kontostatus und Abonnement-Info anzeigen",
       "language_command": "/language - Interface-Sprache wählen",
+      "restart_command": "/restart - Bot neu starten und alle Daten löschen",
+      "stop_command": "/stop - Interaktion stoppen und alle Daten löschen",
       "communication_title": "💬 Kommunikation:",
       "free_limit": "• Kostenlos: {free_limit} Nachrichten pro Tag",
       "premium_unlimited": "• Premium: unbegrenzte Kommunikation",
@@ -33,8 +35,7 @@
       "faq_title": "❓ Häufig gestellte Fragen:",
       "context_memory": "• Bot merkt sich Gesprächskontext",
       "gender_change": "• Du kannst das Geschlecht des Begleiters jederzeit ändern",
-      "limit_reset": "• Nachrichtenlimit wird täglich zurückgesetzt",
-      "start_instruction": "Um zu chatten zu beginnen, verwende {start_command}"
+      "limit_reset": "• Nachrichtenlimit wird täglich zurückgesetzt"
     },
     "language": {
       "title": "🌍 Sprachauswahl",
@@ -42,6 +43,16 @@
       "changed": "✅ Sprache geändert zu {language}",
       "current": "Aktuelle Sprache: {language}",
       "available_languages": "Verfügbare Sprachen:"
+    },
+    "restart": {
+      "confirmation": "⚠️ <b>Bot-Neustart</b>\n\nBist du sicher, dass du den Bot neu starten möchtest?\n\n<b>Alle deine Daten werden gelöscht:</b>\n• Chat-Historie\n• Einstellungen\n• Cache\n\nDiese Aktion kann nicht rückgängig gemacht werden!",
+      "success": "✅ <b>Bot neu gestartet!</b>\n\nAlle Daten gelöscht. Neuer Start...",
+      "cancelled": "❌ Neustart abgebrochen"
+    },
+    "stop": {
+      "confirmation": "⚠️ <b>Bot stoppen</b>\n\nBist du sicher, dass du den Bot stoppen möchtest?\n\n<b>Alle deine Daten werden gelöscht:</b>\n• Chat-Historie\n• Einstellungen\n• Cache\n\nDiese Aktion kann nicht rückgängig gemacht werden!",
+      "success": "👋 <b>Bot gestoppt</b>\n\nAlle Daten gelöscht. Auf Wiedersehen!",
+      "cancelled": "❌ Stoppen abgebrochen"
     }
   },
   "consent": {
@@ -137,9 +148,7 @@
       "modes": "✅ Spezielle Kommunikationsmodi"
     },
     "price_title": "Preis:",
-    "price": "500 Rubel / Monat",
-    "howto_title": "Wie kaufen:",
-    "howto": "Klicke auf 'Premium kaufen' im Hauptmenü (/start)"
+    "price": "500 Rubel / Monat"
   },
   "privacy": {
     "title": "🔐 Datenschutzrichtlinie",

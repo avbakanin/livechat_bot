@@ -154,3 +154,17 @@ class UserService:
     async def invalidate_cache(self, user_id: int) -> None:
         """Invalidate user cache."""
         await user_cache.invalidate(user_id)
+
+    async def reset_user_state(self, user_id: int) -> None:
+        """Reset user state completely - clear consent, gender preference, and messages."""
+        # Delete all user messages
+        await self.delete_user_messages(user_id)
+        
+        # Reset consent status to False
+        await self.set_consent_status(user_id, False)
+        
+        # Reset gender preference to default
+        await self.set_gender_preference(user_id, "female")
+        
+        # Invalidate cache to ensure fresh data on next access
+        await self.invalidate_cache(user_id)

@@ -85,3 +85,14 @@ class UserService:
         from domain.user.queries import get_user_subscription_expires_at
 
         return await get_user_subscription_expires_at(self.pool, user_id)
+
+    async def reset_user_state(self, user_id: int) -> None:
+        """Reset user state completely - clear consent, gender preference, and messages."""
+        # Delete all user messages
+        await self.delete_user_messages(user_id)
+        
+        # Reset consent status to False
+        await self.set_consent_status(user_id, False)
+        
+        # Reset gender preference to default
+        await self.set_gender_preference(user_id, "female")

@@ -13,7 +13,7 @@ class I18nManager:
 
         self.locales_dir = Path(locales_dir)
         self.translations: Dict[str, Dict[str, Any]] = {}
-        self.default_language = "ru"
+        self.default_language = "en"
         self.current_language = self.default_language
 
         self._load_translations()
@@ -136,6 +136,10 @@ class I18nManager:
             "sr": "sr",  # Serbian
             "de": "de",  # German
             "es": "es",  # Spanish
+            "fr": "fr",  # French
+            "it": "it",  # Italian
+            "tr": "tr",  # Turkish
+            "pl": "pl",  # Polish
             "uk": "ru",  # Ukrainian -> Russian (closest)
             "be": "ru",  # Belarusian -> Russian (closest)
             "kk": "ru",  # Kazakh -> Russian (closest)
@@ -147,6 +151,12 @@ class I18nManager:
             "mx": "es",  # Mexican Spanish -> Spanish
             "ar": "es",  # Argentine Spanish -> Spanish
             "co": "es",  # Colombian Spanish -> Spanish
+            "ca": "es",  # Catalan -> Spanish (closest)
+            "pt": "es",  # Portuguese -> Spanish (closest)
+            "nl": "de",  # Dutch -> German (closest)
+            "sv": "de",  # Swedish -> German (closest)
+            "no": "de",  # Norwegian -> German (closest)
+            "da": "de",  # Danish -> German (closest)
         }
 
         return language_mapping.get(base_language, self.default_language)

@@ -16,28 +16,48 @@ def get_language_keyboard() -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(
-                text=i18n.t("buttons.language_ru"),
+                text="🇷🇺 Русский",
                 callback_data="lang_ru"
             ),
             InlineKeyboardButton(
-                text=i18n.t("buttons.language_en"),
+                text="🇬🇧 English",
                 callback_data="lang_en"
             )
         ],
         [
             InlineKeyboardButton(
-                text=i18n.t("buttons.language_sr"),
-                callback_data="lang_sr"
+                text="🇩🇪 Deutsch",
+                callback_data="lang_de"
             ),
             InlineKeyboardButton(
-                text=i18n.t("buttons.language_de"),
-                callback_data="lang_de"
+                text="🇪🇸 Español",
+                callback_data="lang_es"
             )
         ],
         [
             InlineKeyboardButton(
-                text=i18n.t("buttons.language_es"),
-                callback_data="lang_es"
+                text="🇷🇸 Српски",
+                callback_data="lang_sr"
+            ),
+            InlineKeyboardButton(
+                text="🇫🇷 Français",
+                callback_data="lang_fr"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="🇮🇹 Italiano",
+                callback_data="lang_it"
+            ),
+            InlineKeyboardButton(
+                text="🇹🇷 Türkçe",
+                callback_data="lang_tr"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="🇵🇱 Polski",
+                callback_data="lang_pl"
             )
         ],
         [
@@ -65,9 +85,13 @@ def get_language_keyboard_with_current(current_language: str) -> InlineKeyboardM
     language_names = {
         "ru": "🇷🇺 Русский",
         "en": "🇬🇧 English", 
-        "sr": "🇷🇸 Српски",
         "de": "🇩🇪 Deutsch",
-        "es": "🇪🇸 Español"
+        "es": "🇪🇸 Español",
+        "sr": "🇷🇸 Српски",
+        "fr": "🇫🇷 Français",
+        "it": "🇮🇹 Italiano",
+        "tr": "🇹🇷 Türkçe",
+        "pl": "🇵🇱 Polski"
     }
     
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -83,18 +107,38 @@ def get_language_keyboard_with_current(current_language: str) -> InlineKeyboardM
         ],
         [
             InlineKeyboardButton(
-                text=f"{language_names['sr']} {'✅' if current_language == 'sr' else ''}",
-                callback_data="lang_sr"
-            ),
-            InlineKeyboardButton(
                 text=f"{language_names['de']} {'✅' if current_language == 'de' else ''}",
                 callback_data="lang_de"
+            ),
+            InlineKeyboardButton(
+                text=f"{language_names['es']} {'✅' if current_language == 'es' else ''}",
+                callback_data="lang_es"
             )
         ],
         [
             InlineKeyboardButton(
-                text=f"{language_names['es']} {'✅' if current_language == 'es' else ''}",
-                callback_data="lang_es"
+                text=f"{language_names['sr']} {'✅' if current_language == 'sr' else ''}",
+                callback_data="lang_sr"
+            ),
+            InlineKeyboardButton(
+                text=f"{language_names['fr']} {'✅' if current_language == 'fr' else ''}",
+                callback_data="lang_fr"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=f"{language_names['it']} {'✅' if current_language == 'it' else ''}",
+                callback_data="lang_it"
+            ),
+            InlineKeyboardButton(
+                text=f"{language_names['tr']} {'✅' if current_language == 'tr' else ''}",
+                callback_data="lang_tr"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=f"{language_names['pl']} {'✅' if current_language == 'pl' else ''}",
+                callback_data="lang_pl"
             )
         ],
         [

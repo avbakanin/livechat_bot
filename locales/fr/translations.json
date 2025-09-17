@@ -1,0 +1,128 @@
+{
+  "commands": {
+    "start": {
+      "welcome": "Salut ! Tu as {free_limit} messages gratuits par jour. Choisis le genre de ton compagnon :",
+      "already_started": "Le bot est déjà démarré - écris simplement un message 😊"
+    },
+    "status": {
+      "title": "📊 Statut du compte",
+      "remaining_free": "Il te reste {remaining} sur {total} messages gratuits aujourd'hui",
+      "unlimited": "Tu as un abonnement premium - communication illimitée ! 💎",
+      "used_all": "Tu as utilisé tous tes messages gratuits aujourd'hui ({total}/{total})",
+      "reset_info": "La limite sera réinitialisée demain à minuit",
+      "premium_days": "⏰ L'abonnement premium expire dans {days} jours",
+      "premium_hours": "⏰ L'abonnement premium expire dans {hours} heures",
+      "premium_expiring": "⚠️ L'abonnement premium expire aujourd'hui !"
+    },
+    "help": {
+      "title": "🤖 Aide du bot",
+      "commands_title": "Commandes disponibles :",
+      "start_command": "/start - Commencer à discuter avec le bot",
+      "help_command": "/help - Afficher cette aide",
+      "gender_command": "/choose_gender - Choisir le genre du compagnon",
+      "status_command": "/status - Afficher le statut du compte et l'abonnement",
+      "language_command": "/language - Choisir la langue de l'interface",
+      "restart_command": "/restart - Redémarrer le bot et effacer toutes les données",
+      "stop_command": "/stop - Arrêter l'interaction et effacer toutes les données",
+      "communication_title": "💬 Communication :",
+      "free_limit": "• Gratuit : {free_limit} messages par jour",
+      "premium_unlimited": "• Premium : communication illimitée",
+      "companion_title": "🎭 Choix du compagnon :",
+      "female_description": "• Fille - mignonne et empathique",
+      "male_description": "• Garçon - confiant et joueur",
+      "premium_title": "💎 Abonnement premium :",
+      "premium_description": "Ouvre une communication illimitée et des fonctionnalités supplémentaires",
+      "faq_title": "❓ Questions fréquentes :",
+      "context_memory": "• Le bot se souvient du contexte de la conversation",
+      "gender_change": "• Tu peux changer le genre du compagnon à tout moment",
+      "limit_reset": "• La limite de messages est réinitialisée chaque jour"
+    },
+    "language": {
+      "title": "🌍 Choix de la langue",
+      "description": "Choisissez la langue de l'interface :",
+      "changed": "✅ Langue changée en {language}",
+      "current": "Langue actuelle : {language}",
+      "available_languages": "Langues disponibles :"
+    },
+    "restart": {
+      "confirmation": "⚠️ <b>Redémarrage du bot</b>\n\nÊtes-vous sûr de vouloir redémarrer le bot ?\n\n<b>Toutes vos données seront supprimées :</b>\n• Historique des conversations\n• Paramètres\n• Cache\n\nCette action ne peut pas être annulée !",
+      "success": "✅ <b>Bot redémarré !</b>\n\nToutes les données ont été effacées. Recommençons...",
+      "cancelled": "❌ Redémarrage annulé"
+    },
+    "stop": {
+      "confirmation": "⚠️ <b>Arrêt du bot</b>\n\nÊtes-vous sûr de vouloir arrêter le bot ?\n\n<b>Toutes vos données seront supprimées :</b>\n• Historique des conversations\n• Paramètres\n• Cache\n\nCette action ne peut pas être annulée !",
+      "success": "👋 <b>Bot arrêté</b>\n\nToutes les données ont été supprimées. Au revoir !",
+      "cancelled": "❌ Arrêt annulé"
+    }
+  },
+  "consent": {
+    "request": "Veuillez accepter la politique de confidentialité :",
+    "agreed": "Merci pour votre accord ! Tu as {free_limit} messages gratuits par jour. Choisis le genre de ton compagnon :",
+    "privacy_title": "🔐 Politique de confidentialité",
+    "privacy_text": "Votre texte de politique de confidentialité ici...\n\nVersion complète : https://yourwebsite.com/privacy"
+  },
+  "gender": {
+    "choose": "Choisis le genre de ton compagnon :",
+    "choose_gender": "Choisis le genre de ton compagnon :",
+    "gender_selected": "Genre sélectionné : {gender} 😊",
+    "toggle_gender": "Genre du compagnon changé en {gender} 😊",
+    "change_warning": "⚠️ Êtes-vous sûr de vouloir changer le genre du compagnon ?\n\nTout l'historique des conversations sera supprimé !",
+    "change_confirmed": "L'historique des conversations a été supprimé. Choisis le genre de ton compagnon :",
+    "change_cancelled": "Changement de genre annulé. Tu peux continuer à discuter."
+  },
+  "messages": {
+    "limit_exceeded": "Limite quotidienne de messages gratuits dépassée. Tu veux de l'illimité ? Achète le premium !",
+    "processing_error": "Désolé, une erreur s'est produite lors du traitement de votre message. Réessayez plus tard.",
+    "save_error": "Une erreur s'est produite lors de la sauvegarde du message.",
+    "unexpected_error": "Une erreur inattendue s'est produite. Réessayez plus tard.",
+    "empty_message": "Le message ne peut pas être vide."
+  },
+  "buttons": {
+    "agree_privacy": "J'accepte la politique de confidentialité",
+    "read_privacy": "Lire la politique de confidentialité",
+    "choose_female": "👩 Choisir une fille",
+    "choose_male": "👨 Choisir un garçon",
+    "buy_premium": "💎 Acheter Premium",
+    "yes": "Oui",
+    "no": "Non",
+    "female": "Fille",
+    "male": "Garçon",
+    "back_to_help": "Retour à l'aide"
+  },
+  "persons": {
+    "gender": {
+      "male": ["Tu es un homme"],
+      "female": ["Tu es une femme"]
+    },
+    "temperament": {
+      "sanguine": "Sanguin : énergique, optimiste, amical.",
+      "choleric": "Colérique : impulsif, actif, passionné.",
+      "phlegmatic": "Flegmatique : calme, réfléchi, lent.",
+      "melancholic": "Mélancolique : sensible, pensif, enclin à l'introspection."
+    },
+    "traits": {
+      "extroverted": "Extraverti",
+      "introverted": "Introverti",
+      "analytical": "Analytique",
+      "creative": "Créatif",
+      "empathetic": "Empathique",
+      "logical": "Logique"
+    }
+  },
+  "premium": {
+    "title": "💎 Abonnement Premium",
+    "benefits_title": "Avantages Premium :",
+    "benefits": {
+      "unlimited": "Messages illimités par jour",
+      "priority": "Traitement prioritaire des messages",
+      "history": "Accès à l'historique complet",
+      "modes": "Modes de conversation avancés"
+    },
+    "price_title": "Tarifs :",
+    "price": "À partir de 299 RUB/mois"
+  },
+  "error": {
+    "try_again": "❌ Erreur. Réessayez plus tard.",
+    "unsupported_language": "❌ Langue non supportée"
+  }
+}

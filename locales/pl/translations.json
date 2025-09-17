@@ -1,0 +1,128 @@
+{
+  "commands": {
+    "start": {
+      "welcome": "Cześć! Masz {free_limit} darmowych wiadomości dziennie. Wybierz płeć swojego towarzysza:",
+      "already_started": "Bot jest już uruchomiony - po prostu napisz wiadomość 😊"
+    },
+    "status": {
+      "title": "📊 Status konta",
+      "remaining_free": "Pozostało Ci {remaining} z {total} darmowych wiadomości dzisiaj",
+      "unlimited": "Masz subskrypcję premium - nieograniczona komunikacja! 💎",
+      "used_all": "Wykorzystałeś wszystkie darmowe wiadomości dzisiaj ({total}/{total})",
+      "reset_info": "Limit zostanie zresetowany jutro o północy",
+      "premium_days": "⏰ Subskrypcja premium wygasa za {days} dni",
+      "premium_hours": "⏰ Subskrypcja premium wygasa za {hours} godzin",
+      "premium_expiring": "⚠️ Subskrypcja premium wygasa dzisiaj!"
+    },
+    "help": {
+      "title": "🤖 Pomoc bota",
+      "commands_title": "Dostępne komendy:",
+      "start_command": "/start - Zacznij rozmowę z botem",
+      "help_command": "/help - Pokaż tę pomoc",
+      "gender_command": "/choose_gender - Wybierz płeć towarzysza",
+      "status_command": "/status - Pokaż status konta i subskrypcji",
+      "language_command": "/language - Wybierz język interfejsu",
+      "restart_command": "/restart - Uruchom ponownie bota i usuń wszystkie dane",
+      "stop_command": "/stop - Zatrzymaj interakcję i usuń wszystkie dane",
+      "communication_title": "💬 Komunikacja:",
+      "free_limit": "• Darmowe: {free_limit} wiadomości dziennie",
+      "premium_unlimited": "• Premium: nieograniczona komunikacja",
+      "companion_title": "🎭 Wybór towarzysza:",
+      "female_description": "• Dziewczyna - słodka i empatyczna",
+      "male_description": "• Chłopak - pewny siebie i zabawny",
+      "premium_title": "💎 Subskrypcja premium:",
+      "premium_description": "Otwiera nieograniczoną komunikację i dodatkowe funkcje",
+      "faq_title": "❓ Często zadawane pytania:",
+      "context_memory": "• Bot pamięta kontekst rozmowy",
+      "gender_change": "• Możesz zmienić płeć towarzysza w dowolnym momencie",
+      "limit_reset": "• Limit wiadomości resetuje się codziennie"
+    },
+    "language": {
+      "title": "🌍 Wybór języka",
+      "description": "Wybierz język interfejsu:",
+      "changed": "✅ Język zmieniony na {language}",
+      "current": "Aktualny język: {language}",
+      "available_languages": "Dostępne języki:"
+    },
+    "restart": {
+      "confirmation": "⚠️ <b>Ponowne uruchomienie bota</b>\n\nCzy na pewno chcesz ponownie uruchomić bota?\n\n<b>Wszystkie Twoje dane zostaną usunięte:</b>\n• Historia rozmów\n• Ustawienia\n• Cache\n\nTa akcja nie może być cofnięta!",
+      "success": "✅ <b>Bot ponownie uruchomiony!</b>\n\nWszystkie dane zostały wyczyszczone. Zaczynamy od nowa...",
+      "cancelled": "❌ Ponowne uruchomienie anulowane"
+    },
+    "stop": {
+      "confirmation": "⚠️ <b>Zatrzymanie bota</b>\n\nCzy na pewno chcesz zatrzymać bota?\n\n<b>Wszystkie Twoje dane zostaną usunięte:</b>\n• Historia rozmów\n• Ustawienia\n• Cache\n\nTa akcja nie może być cofnięta!",
+      "success": "👋 <b>Bot zatrzymany</b>\n\nWszystkie dane zostały usunięte. Do widzenia!",
+      "cancelled": "❌ Zatrzymanie anulowane"
+    }
+  },
+  "consent": {
+    "request": "Proszę zaakceptować politykę prywatności:",
+    "agreed": "Dziękuję za zgodę! Masz {free_limit} darmowych wiadomości dziennie. Wybierz płeć swojego towarzysza:",
+    "privacy_title": "🔐 Polityka Prywatności",
+    "privacy_text": "Twój tekst polityki prywatności tutaj...\n\nPełna wersja: https://yourwebsite.com/privacy"
+  },
+  "gender": {
+    "choose": "Wybierz płeć swojego towarzysza:",
+    "choose_gender": "Wybierz płeć swojego towarzysza:",
+    "gender_selected": "Wybrana płeć: {gender} 😊",
+    "toggle_gender": "Płeć towarzysza zmieniona na {gender} 😊",
+    "change_warning": "⚠️ Czy na pewno chcesz zmienić płeć towarzysza?\n\nCała historia rozmów zostanie usunięta!",
+    "change_confirmed": "Historia rozmów została usunięta. Wybierz płeć swojego towarzysza:",
+    "change_cancelled": "Zmiana płci anulowana. Możesz kontynuować rozmowę."
+  },
+  "messages": {
+    "limit_exceeded": "Dzienny limit darmowych wiadomości został przekroczony. Chcesz nieograniczone? Kup premium!",
+    "processing_error": "Przepraszamy, wystąpił błąd podczas przetwarzania Twojej wiadomości. Spróbuj ponownie później.",
+    "save_error": "Wystąpił błąd podczas zapisywania wiadomości.",
+    "unexpected_error": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie później.",
+    "empty_message": "Wiadomość nie może być pusta."
+  },
+  "buttons": {
+    "agree_privacy": "Akceptuję politykę prywatności",
+    "read_privacy": "Przeczytaj politykę prywatności",
+    "choose_female": "👩 Wybierz dziewczynę",
+    "choose_male": "👨 Wybierz chłopaka",
+    "buy_premium": "💎 Kup Premium",
+    "yes": "Tak",
+    "no": "Nie",
+    "female": "Dziewczyna",
+    "male": "Chłopak",
+    "back_to_help": "Powrót do pomocy"
+  },
+  "persons": {
+    "gender": {
+      "male": ["Jesteś mężczyzną"],
+      "female": ["Jesteś kobietą"]
+    },
+    "temperament": {
+      "sanguine": "Sangwinik: energiczny, optymistyczny, przyjazny.",
+      "choleric": "Choleryk: impulsywny, aktywny, namiętny.",
+      "phlegmatic": "Flegmatyk: spokojny, rozważny, powolny.",
+      "melancholic": "Melancholik: wrażliwy, zamyślony, skłonny do introspekcji."
+    },
+    "traits": {
+      "extroverted": "Ekstrawertyk",
+      "introverted": "Introwertyk",
+      "analytical": "Analityczny",
+      "creative": "Kreatywny",
+      "empathetic": "Empatyczny",
+      "logical": "Logiczny"
+    }
+  },
+  "premium": {
+    "title": "💎 Subskrypcja Premium",
+    "benefits_title": "Korzyści Premium:",
+    "benefits": {
+      "unlimited": "Nieograniczone wiadomości dziennie",
+      "priority": "Priorytetowe przetwarzanie wiadomości",
+      "history": "Dostęp do pełnej historii",
+      "modes": "Zaawansowane tryby rozmowy"
+    },
+    "price_title": "Ceny:",
+    "price": "Od 299 RUB/miesiąc"
+  },
+  "error": {
+    "try_again": "❌ Błąd. Spróbuj ponownie później.",
+    "unsupported_language": "❌ Nieobsługiwany język"
+  }
+}

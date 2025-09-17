@@ -10,6 +10,20 @@ locales/
 │   └── translations.json    # Русские переводы
 ├── en/
 │   └── translations.json    # Английские переводы
+├── de/
+│   └── translations.json    # Немецкие переводы
+├── es/
+│   └── translations.json    # Испанские переводы
+├── sr/
+│   └── translations.json    # Сербские переводы
+├── fr/
+│   └── translations.json    # Французские переводы
+├── it/
+│   └── translations.json    # Итальянские переводы
+├── tr/
+│   └── translations.json    # Турецкие переводы
+├── pl/
+│   └── translations.json    # Польские переводы
 └── README.md               # Этот файл
 ```
 

@@ -369,9 +369,13 @@ async def handle_language_selection(callback: CallbackQuery, i18n: I18nMiddlewar
         language_names = {
             "ru": "Русский",
             "en": "English",
-            "sr": "Српски", 
             "de": "Deutsch",
-            "es": "Español"
+            "es": "Español",
+            "sr": "Српски",
+            "fr": "Français",
+            "it": "Italiano",
+            "tr": "Türkçe",
+            "pl": "Polski"
         }
         
         language_name = language_names.get(language_code, language_code.upper())

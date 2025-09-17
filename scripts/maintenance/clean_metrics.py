@@ -180,7 +180,7 @@ async def main():
             port=5432,
             user="postgres", 
             password="postgres",
-            database="lifechat_db",
+            database="livechat_bot",
             min_size=1,
             max_size=5
         )

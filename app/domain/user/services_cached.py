@@ -179,7 +179,7 @@ class UserService:
                     user_id
                 )
                 # Remove from cache
-                self.cache.pop(user_id, None)
+                await user_cache.invalidate(user_id)
             except Exception as e:
                 raise UserException(f"Error deleting user {user_id}: {e}", e)
 

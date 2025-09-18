@@ -1,5 +1,5 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from domain.user.constants import Callbacks
+from shared.constants import Callbacks
 
 from shared.i18n import i18n
 
@@ -138,9 +138,7 @@ def get_restart_confirmation_keyboard() -> InlineKeyboardMarkup:
                 InlineKeyboardButton(
                     text=i18n.t("buttons.yes"), callback_data=Callbacks.RESTART_CONFIRM
                 ),
-                InlineKeyboardButton(
-                    text=i18n.t("buttons.no"), callback_data=Callbacks.RESTART_CANCEL
-                ),
+                InlineKeyboardButton(text=i18n.t("buttons.no"), callback_data=Callbacks.RESTART_CANCEL),
             ]
         ]
     )
@@ -151,12 +149,8 @@ def get_stop_confirmation_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(
-                    text=i18n.t("buttons.yes"), callback_data=Callbacks.STOP_CONFIRM
-                ),
-                InlineKeyboardButton(
-                    text=i18n.t("buttons.no"), callback_data=Callbacks.STOP_CANCEL
-                ),
+                InlineKeyboardButton(text=i18n.t("buttons.yes"), callback_data=Callbacks.STOP_CONFIRM),
+                InlineKeyboardButton(text=i18n.t("buttons.no"), callback_data=Callbacks.STOP_CANCEL),
             ]
         ]
     )

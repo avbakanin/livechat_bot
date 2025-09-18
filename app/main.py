@@ -10,7 +10,7 @@ from domain.user.services_cached import UserService
 from openai import AsyncOpenAI
 from services.counter import DailyCounterService
 from services.metrics import MetricsService
-from services.persona import PersonaService
+from services.persona import PersonService
 from shared.fsm.fsm_middleware import FSMMiddleware
 from shared.fsm.user_cache import user_cache
 from shared.middlewares.i18n_middleware import I18nMiddleware
@@ -63,9 +63,9 @@ async def main():
 
         metrics_module.metrics_collector = metrics_collector
 
-        # Create I18n middleware first to use in PersonaService
+        # Create I18n middleware first to use in PersonService
         i18n_middleware = I18nMiddleware()
-        persona_service = PersonaService()
+        persona_service = PersonService()
 
         # Create counter service for efficient message counting
         counter_service = DailyCounterService(pool)

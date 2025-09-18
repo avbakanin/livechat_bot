@@ -3,9 +3,9 @@ import logging
 
 from aiogram import F, Router
 from aiogram.types import CallbackQuery, Message
-from domain.user.constants import Callbacks
-from domain.user.decorators import error_decorator
-from shared.constants.config import LANGUAGE_NAMES
+
+from shared.constants import LANGUAGE_NAMES, Callbacks
+from shared.decorators import error_decorator
 from domain.user.keyboards import (
     get_consent_given_keyboard,
     get_gender_keyboard,
@@ -20,7 +20,6 @@ from domain.user.messages import (
 )
 from domain.subscription.messages import get_premium_info_text
 from domain.user.services_cached import UserService
-from shared.decorators import optimize_callback_edit
 from shared.i18n import i18n
 from shared.keyboards.language import get_language_keyboard_with_current
 from shared.messages.common import get_help_text, get_privacy_info_text
@@ -39,9 +38,7 @@ router.callback_query.middleware(AccessMiddleware(allowed_ids={627875032, 151245
 
 @router.callback_query(F.data.in_([Callbacks.GENDER_FEMALE, Callbacks.GENDER_MALE]))
 @error_decorator
-async def gender_choice(
-    callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware
-):
+async def gender_choice(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
     user = callback.from_user
     preference = "female" if callback.data == "gender_female" else "male"
 
@@ -52,9 +49,7 @@ async def gender_choice(
 
     await user_service.set_gender_preference(user.id, preference)
 
-    gender_name = (
-        i18n.t("buttons.female") if preference == "female" else i18n.t("buttons.male")
-    )
+    gender_name = i18n.t("buttons.female") if preference == "female" else i18n.t("buttons.male")
 
     if is_first_selection:
         message_text = i18n.t("gender.gender_selected", gender=gender_name)
@@ -89,9 +84,7 @@ async def gender_change_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
 
 @router.callback_query(F.data == "consent_agree")
 @error_decorator
-async def consent_agree(
-    callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware
-):
+async def consent_agree(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
     user = callback.from_user
 
     await user_service.add_user(user.id, user.username, user.first_name, user.last_name)
@@ -150,9 +143,7 @@ async def handle_language_selection(callback: CallbackQuery, **kwargs):
     try:
         # Language preference is not stored in database
         # It's handled by i18n middleware in memory
-        logging.info(
-            f"Language changed to '{language_code}' for user {user_id} (not persisted)"
-        )
+        logging.info(f"Language changed to '{language_code}' for user {user_id} (not persisted)")
     except Exception as e:
         logging.warning(f"Failed to save language preference for user {user_id}: {e}")
 
@@ -165,9 +156,7 @@ async def handle_language_selection(callback: CallbackQuery, **kwargs):
         parse_mode="HTML",
     )
 
-    await callback.answer(
-        text=i18n.t("commands.language.changed", language=language_name)
-    )
+    await callback.answer(text=i18n.t("commands.language.changed", language=language_name))
 
     async def delete_message():
         await asyncio.sleep(2)
@@ -178,9 +167,7 @@ async def handle_language_selection(callback: CallbackQuery, **kwargs):
 
     asyncio.create_task(delete_message())
 
-    safe_record_user_interaction(
-        callback.from_user.id, f"language_changed_{language_code}"
-    )
+    safe_record_user_interaction(callback.from_user.id, f"language_changed_{language_code}")
 
 
 @router.message(F.text == Callbacks.CLEAN_METRICS)
@@ -189,9 +176,7 @@ async def cmd_clean_metrics(message: Message, user_service: UserService):
     from shared.metrics.metrics import metrics_collector
 
     if metrics_collector is None:
-        await message.answer(
-            "❌ Metrics system not initialized yet. Please try again later."
-        )
+        await message.answer("❌ Metrics system not initialized yet. Please try again later.")
         return
 
     async with user_service.pool.acquire() as conn:
@@ -211,9 +196,7 @@ async def cmd_clean_metrics(message: Message, user_service: UserService):
         metrics_collector.metrics.unique_active_users_today = len(cleaned_ids)
         await metrics_collector.save_to_database()
 
-    response = get_format_clean_metrics_response(
-        removed_count, cleaned_ids, real_user_ids
-    )
+    response = get_format_clean_metrics_response(removed_count, cleaned_ids, real_user_ids)
     await message.answer(response)
 
 
@@ -223,9 +206,7 @@ async def cmd_reset_daily_metrics(message: Message):
     from shared.metrics.metrics import metrics_collector
 
     if metrics_collector is None:
-        await message.answer(
-            "❌ Metrics system not initialized yet. Please try again later."
-        )
+        await message.answer("❌ Metrics system not initialized yet. Please try again later.")
         return
 
     # Список полей метрик для обнуления
@@ -256,9 +237,7 @@ async def cmd_reset_daily_metrics(message: Message):
 async def choose_language_help(callback: CallbackQuery):
     current_language = i18n.get_language()
 
-    current_language_name = LANGUAGE_NAMES.get(
-        current_language, current_language.upper()
-    )
+    current_language_name = LANGUAGE_NAMES.get(current_language, current_language.upper())
 
     title = i18n.t("commands.language.title")
     description = i18n.t("commands.language.description")
@@ -268,9 +247,7 @@ async def choose_language_help(callback: CallbackQuery):
 
     keyboard = get_language_keyboard_with_current(current_language)
 
-    await callback.message.edit_text(
-        text=text, reply_markup=keyboard, parse_mode="HTML"
-    )
+    await callback.message.edit_text(text=text, reply_markup=keyboard, parse_mode="HTML")
     await callback.answer()
 
 
@@ -285,16 +262,13 @@ async def gender_help(callback: CallbackQuery, i18n: I18nMiddleware):
 
 
 @router.callback_query(F.data == Callbacks.RESTART_CONFIRM)
-@optimize_callback_edit
 @error_decorator
 async def restart_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
     user_id = callback.from_user.id
 
     await user_service.restart_user_state(user_id)
 
-    await callback.message.edit_text(
-        i18n.t("commands.restart.success"), parse_mode="HTML"
-    )
+    await callback.message.edit_text(i18n.t("commands.restart.success"), parse_mode="HTML")
 
     await asyncio.sleep(2)
     await callback.message.answer(
@@ -318,16 +292,13 @@ async def restart_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
 
 
 @router.callback_query(F.data == Callbacks.STOP_CONFIRM)
-@optimize_callback_edit
 @error_decorator
 async def stop_confirm(callback: CallbackQuery, user_service: UserService):
     user_id = callback.from_user.id
 
     await user_service.reset_user_state(user_id)
 
-    await callback.message.edit_text(
-        text=i18n.t("commands.stop.success"), parse_mode="HTML"
-    )
+    await callback.message.edit_text(text=i18n.t("commands.stop.success"), parse_mode="HTML")
 
     await callback.answer()
 

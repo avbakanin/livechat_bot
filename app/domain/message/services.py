@@ -15,7 +15,7 @@ from domain.message.queries import delete_user_messages as db_delete_user_messag
 from domain.message.queries import get_user_messages as db_get_user_messages
 from openai import AsyncOpenAI
 from services.counter import DailyCounterService
-from services.persona import PersonaService
+from services.persona import PersonService
 from shared.i18n import i18n
 from shared.models.message import MessageContext, MessageCreate
 
@@ -29,7 +29,7 @@ class MessageService:
         self,
         pool: asyncpg.Pool,
         openai_client: AsyncOpenAI,
-        persona_service: PersonaService = None,
+        persona_service: PersonService = None,
         counter_service: DailyCounterService = None,
     ):
         self.pool = pool
@@ -127,7 +127,7 @@ class MessageService:
 
     def _get_system_prompt(self, gender_preference: str) -> str:
         """Get system prompt based on gender preference (fallback method)."""
-        # Fallback prompts - should be replaced by PersonaService
+        # Fallback prompts - should be replaced by PersonService
         fallback_prompts = {
             "female": "You are an AI companion. Be friendly, empathetic and supportive.",
             "male": "You are an AI companion. Be friendly, empathetic and supportive.",

@@ -19,7 +19,7 @@ from shared.metrics.metrics import (
     safe_record_user_interaction,
 )
 from shared.security import SecurityLogger, SecurityValidator, TextSanitizer
-from shared.utils.helpers import destructure_user
+from shared.helpers import destructure_user
 
 from core.exceptions import MessageException, OpenAIException
 
@@ -54,18 +54,12 @@ async def handle_message(
     security_logger = SecurityLogger()
 
     # Validate user behavior first
-    behavior_validation = security_validator.validate_user_behavior(
-        user_id, "message"
-    )
-    
+    behavior_validation = security_validator.validate_user_behavior(user_id, "message")
+
     if not behavior_validation["is_valid"]:
         safe_record_metric("record_failed_response", "security")
         safe_record_security_metric("record_flood_blocked")
-        security_logger.log_flood_attempt(
-            user_id, 
-            behavior_validation.get("rapid_messages", 0), 
-            1.0
-        )
+        security_logger.log_flood_attempt(user_id, behavior_validation.get("rapid_messages", 0), 1.0)
         await message.answer("⚠️ Слишком много сообщений. Подождите немного.")
         return
 
@@ -76,10 +70,8 @@ async def handle_message(
         return
 
     # Enhanced content validation
-    content_validation = security_validator.validate_message_content(
-        message.text, user_id, 2500
-    )
-    
+    content_validation = security_validator.validate_message_content(message.text, user_id, 2500)
+
     if not content_validation["is_valid"]:
         safe_record_metric("record_failed_response", "validation")
         await message.answer(i18n.t("messages.message_too_long"))
@@ -98,7 +90,7 @@ async def handle_message(
 
     # Sanitize message text
     sanitized_text = text_sanitizer.sanitize_text(message.text, user_id)
-    
+
     # Check if text was significantly modified during sanitization
     if len(sanitized_text) < len(message.text) * 0.8:  # More than 20% removed
         security_logger.log_suspicious_content(
@@ -126,9 +118,7 @@ async def handle_message(
         safe_record_metric("record_cache_miss")
 
     if not consent_given:
-        await message.answer(
-            i18n.t("consent.request"), reply_markup=get_consent_keyboard()
-        )
+        await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard())
         return
 
     # Check message limit
@@ -154,9 +144,7 @@ async def handle_message(
 
             # Generate AI response with timing
             start_time = time.time()
-            answer = await message_service.generate_response(
-                user_id, message_text, gender
-            )
+            answer = await message_service.generate_response(user_id, message_text, gender)
             response_time = time.time() - start_time
 
             # Record successful response with timing
@@ -171,6 +159,7 @@ async def handle_message(
             # Send response
             await message.answer(answer)
 
+        # Вынести в функции или декораторы
         except OpenAIException as e:
             logging.error(f"OpenAI error: {e}")
             safe_record_metric("record_failed_response", "openai")

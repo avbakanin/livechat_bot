@@ -85,6 +85,7 @@ class BotCommands:
     RESTART = "restart"
     STOP = "stop"
     METRICS = "metrics"
+    QUIZ = "quiz"
 
     @classmethod
     def get_all_commands(cls):
@@ -101,6 +102,7 @@ class BotCommands:
             cls.RESTART,
             cls.STOP,
             cls.METRICS,
+            cls.QUIZ,
         ]
 
     @classmethod
@@ -118,4 +120,5 @@ class BotCommands:
             "RESTART": cls.RESTART,
             "STOP": cls.STOP,
             "METRICS": cls.METRICS,
+            "QUIZ": cls.QUIZ,
         }

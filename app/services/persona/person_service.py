@@ -1,16 +1,19 @@
 import random
-from typing import Any, Dict
+from typing import Any, Dict, Literal
 
 from shared.i18n import i18n
 
+# Alias literal gender type
+UserGender = Literal["male", "female"]
 
-class PersonaService:
+
+class PersonService:
     """Сервис для генерации динамических персонажей на основе переводов"""
 
     def __init__(self):
         pass
 
-    def generate_dynamic_persona(self, user_gender: str) -> Dict[str, str]:
+    def generate_dynamic_persona(self, user_gender: UserGender) -> Dict[str, str]:
         """
         Генерирует динамический персонаж на основе выбранного пола пользователя
 
@@ -49,7 +52,6 @@ class PersonaService:
             trait_key = random.choice(list(group.keys()))
             traits_texts.append(group[trait_key])
 
-        # Собираем системный промпт
         content = f"{gender_text}. {temperament_text} " + " ".join(traits_texts)
 
         return {
@@ -60,27 +62,21 @@ class PersonaService:
             "traits": [trait for trait in traits_texts],
         }
 
-    def get_persona_for_gender(self, user_gender: str) -> str:
+    def get_persona_for_gender(self, user_gender: UserGender) -> str:
         """
         Получает системный промпт персонажа для конкретного пола
 
-        Args:
-            user_gender: Пол пользователя ("male" или "female")
-
-        Returns:
+        Return:
             Системный промпт персонажа
         """
         persona = self.generate_dynamic_persona(user_gender)
         return persona["content"]
 
-    def get_persona_info(self, user_gender: str) -> Dict[str, Any]:
+    def get_persona_info(self, user_gender: UserGender) -> Dict[str, Any]:
         """
         Получает полную информацию о персонаже
 
-        Args:
-            user_gender: Пол пользователя ("male" или "female")
-
-        Returns:
+        Return:
             Словарь с информацией о персонаже
         """
         return self.generate_dynamic_persona(user_gender)

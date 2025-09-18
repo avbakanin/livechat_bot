@@ -4,7 +4,7 @@ Subscription domain keyboards - placeholder for future implementation.
 
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from shared.i18n import i18n
-from domain.user.constants import Callbacks
+from shared.constants import Callbacks
 
 
 def get_premium_info_keyboard() -> InlineKeyboardMarkup:
@@ -22,7 +22,7 @@ def get_premium_info_keyboard() -> InlineKeyboardMarkup:
                     text=i18n.t("buttons.back_to_help"),
                     callback_data=Callbacks.BACK_TO_HELP,
                 )
-            ]
+            ],
         ]
     )
 

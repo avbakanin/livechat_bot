@@ -1,9 +1,8 @@
 from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import Message
-from shared.constants import LANGUAGE_NAMES
-from domain.user.decorators import error_decorator
-from domain.user.constants import BotCommands
+from shared.constants import LANGUAGE_NAMES, BotCommands
+from shared.decorators import error_decorator
 
 
 from domain.message.services import MessageService
@@ -30,7 +29,7 @@ from shared.metrics.metrics import (
 )
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.middlewares.middlewares import AccessMiddleware
-from shared.utils.helpers import destructure_user
+from shared.helpers import destructure_user
 
 
 router = Router()
@@ -67,9 +66,7 @@ async def cmd_start(
         await message.answer(i18n.t("commands.start.already_started"))
         return
 
-    await message.answer(
-        i18n.t("consent.request"), reply_markup=get_consent_keyboard()
-    )
+    await message.answer(i18n.t("consent.request"), reply_markup=get_consent_keyboard())
 
 
 @router.message(Command(commands=[BotCommands.CHOOSE_GENDER]))
@@ -95,9 +92,7 @@ async def cmd_choose_gender(
             reply_markup=get_gender_change_confirmation_keyboard(),
         )
     else:
-        await message.answer(
-            i18n.t("gender.choose"), reply_markup=get_gender_keyboard()
-        )
+        await message.answer(i18n.t("gender.choose"), reply_markup=get_gender_keyboard())
 
 
 @router.message(Command(commands=[BotCommands.HELP]))
@@ -125,9 +120,7 @@ async def cmd_privacy(message: Message):
 async def cmd_language(message: Message):
     current_language = i18n.get_language()
 
-    current_language_name = LANGUAGE_NAMES.get(
-        current_language, current_language.upper()
-    )
+    current_language_name = LANGUAGE_NAMES.get(current_language, current_language.upper())
 
     title = i18n.t("commands.language.title")
     description = i18n.t("commands.language.description")
@@ -157,27 +150,19 @@ async def cmd_status(
         subscription_expires_at = cached_user.subscription_expires_at
     else:
         subscription_status = await user_service.get_subscription_status(user_id)
-        subscription_expires_at = await user_service.get_subscription_expires_at(
-            user_id
-        )
+        subscription_expires_at = await user_service.get_subscription_expires_at(user_id)
 
     if subscription_status == "premium" and subscription_expires_at:
         from datetime import datetime
 
         if subscription_expires_at > datetime.utcnow():
             days_remaining = (subscription_expires_at - datetime.utcnow()).days
-            hours_remaining = (
-                subscription_expires_at - datetime.utcnow()
-            ).seconds // 3600
+            hours_remaining = (subscription_expires_at - datetime.utcnow()).seconds // 3600
 
             if days_remaining > 0:
-                premium_info = i18n.t(
-                    "commands.status.premium_days", days=days_remaining
-                )
+                premium_info = i18n.t("commands.status.premium_days", days=days_remaining)
             elif hours_remaining > 0:
-                premium_info = i18n.t(
-                    "commands.status.premium_hours", hours=hours_remaining
-                )
+                premium_info = i18n.t("commands.status.premium_hours", hours=hours_remaining)
             else:
                 premium_info = i18n.t("commands.status.premium_expiring")
 

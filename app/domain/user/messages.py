@@ -2,7 +2,7 @@
 User domain messages - text templates and responses.
 """
 
-from config.openai import OPENAI_CONFIG
+from shared.constants import OPENAI_CONFIG
 from shared.i18n import i18n
 
 

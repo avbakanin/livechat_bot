@@ -91,15 +91,23 @@ class UserService:
         return await get_user_subscription_expires_at(self.pool, user_id)
 
     async def reset_user_state(self, user_id: int) -> None:
-        """Reset user state completely - clear consent, gender preference, and messages."""
-        # Delete all user messages
+        """Reset user state completely - delete user from database."""
+        # Delete all user messages first (due to foreign key constraint)
         await self.delete_user_messages(user_id)
         
-        # Reset consent status to False
-        await self.set_consent_status(user_id, False)
-        
-        # Clear gender preference (set to None so next selection is treated as first)
-        await self.clear_gender_preference(user_id)
+        # Delete user completely from database
+        await self.delete_user(user_id)
+
+    async def delete_user(self, user_id: int) -> None:
+        """Delete user completely from database."""
+        async with self.pool.acquire() as conn:
+            try:
+                await conn.execute(
+                    "DELETE FROM users WHERE id = $1",
+                    user_id
+                )
+            except Exception as e:
+                raise UserException(f"Error deleting user {user_id}: {e}", e)
 
     async def restart_user_state(self, user_id: int) -> None:
         """Restart user state - clear messages but keep consent and go to gender selection."""

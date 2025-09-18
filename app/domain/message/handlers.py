@@ -127,7 +127,7 @@ async def handle_message(
 
     if not consent_given:
         await message.answer(
-            i18n.t("consent.request"), reply_markup=get_consent_keyboard(i18n)
+            i18n.t("consent.request"), reply_markup=get_consent_keyboard()
         )
         return
 

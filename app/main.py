@@ -3,8 +3,7 @@ import logging
 from contextlib import suppress
 
 from aiogram import Bot, Dispatcher
-from config.openai import OPENAI_CONFIG
-from config.telegram import TELEGRAM_CONFIG
+from shared.constants import OPENAI_CONFIG, TELEGRAM_CONFIG
 from domain import setup_routers
 from domain.message.services import MessageService
 from domain.user.services_cached import UserService

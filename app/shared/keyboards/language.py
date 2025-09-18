@@ -62,7 +62,7 @@ def get_language_keyboard() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton(
-                text=i18n.t("buttons.back"),
+                text=i18n.t("buttons.back_to_help"),
                 callback_data="back_to_help"
             )
         ]
@@ -143,7 +143,7 @@ def get_language_keyboard_with_current(current_language: str) -> InlineKeyboardM
         ],
         [
             InlineKeyboardButton(
-                text=i18n.t("buttons.back"),
+                text=i18n.t("buttons.back_to_help"),
                 callback_data="back_to_help"
             )
         ]

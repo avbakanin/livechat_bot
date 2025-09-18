@@ -28,13 +28,13 @@ def get_premium_info_text():
 {hbold(i18n.t("premium.title"))}
 
 {hbold(i18n.t("premium.benefits_title"))}
-• {i18n.t("premium.benefits.unlimited")}
-• {i18n.t("premium.benefits.priority")}
-• {i18n.t("premium.benefits.history")}
-• {i18n.t("premium.benefits.modes")}
+{i18n.t("premium.benefits.unlimited")}
+{i18n.t("premium.benefits.priority")}
+{i18n.t("premium.benefits.history")}
+{i18n.t("premium.benefits.modes")}
 
 {hbold(i18n.t("premium.price_title"))}
-• {i18n.t("premium.price")}
+{i18n.t("premium.price")}
 """
 
 

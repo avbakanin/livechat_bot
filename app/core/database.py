@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from typing import Optional
 
 import asyncpg
-from config.database import DATABASE_CONFIG
+from shared.constants import DATABASE_CONFIG
 
 
 class DatabaseManager:

@@ -6,7 +6,7 @@ import logging
 from typing import List
 
 import asyncpg
-from config.openai import OPENAI_CONFIG
+from shared.constants import OPENAI_CONFIG
 from domain.message.queries import (
     count_user_messages_today as db_count_user_messages_today,
 )

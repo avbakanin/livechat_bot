@@ -97,6 +97,12 @@ def get_help_keyboard() -> InlineKeyboardMarkup:
             ],
             [
                 InlineKeyboardButton(
+                    text=i18n.t("buttons.buy_premium"),
+                    callback_data=Callbacks.SUBSCRIBE_PREMIUM,
+                )
+            ],
+            [
+                InlineKeyboardButton(
                     text=i18n.t("buttons.privacy_info_help"),
                     callback_data=Callbacks.PRIVACY_INFO_HELP,
                 )
@@ -116,7 +122,7 @@ def get_privacy_info_keyboard() -> InlineKeyboardMarkup:
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.buy_premium"),
+                    text=i18n.t("buttons.back_to_help"),
                     callback_data=Callbacks.BACK_TO_HELP,
                 )
             ]

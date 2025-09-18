@@ -68,7 +68,7 @@ async def cmd_start(
         return
 
     await message.answer(
-        i18n.t("consent.request"), reply_markup=get_consent_keyboard(i18n)
+        i18n.t("consent.request"), reply_markup=get_consent_keyboard()
     )
 
 
@@ -92,11 +92,11 @@ async def cmd_choose_gender(
     if current_gender:
         await message.answer(
             i18n.t("gender.change_warning"),
-            reply_markup=get_gender_change_confirmation_keyboard(i18n),
+            reply_markup=get_gender_change_confirmation_keyboard(),
         )
     else:
         await message.answer(
-            i18n.t("gender.choose"), reply_markup=get_gender_keyboard(i18n)
+            i18n.t("gender.choose"), reply_markup=get_gender_keyboard()
         )
 
 
@@ -188,7 +188,7 @@ async def cmd_status(
             )
             return
 
-    from config.openai import OPENAI_CONFIG
+    from shared.constants import OPENAI_CONFIG
 
     daily_limit = OPENAI_CONFIG.get("FREE_MESSAGE_LIMIT", 50)
 
@@ -254,7 +254,7 @@ async def cmd_reset_metrics(message: Message):
 
 @router.message(Command(commands=[BotCommands.RESTART]))
 @error_decorator
-async def cmd_restart(message: Message):
+async def cmd_restart(message: Message, i18n: I18nMiddleware):
     await message.answer(
         i18n.t("commands.restart.confirmation"),
         reply_markup=get_restart_confirmation_keyboard(),
@@ -264,7 +264,7 @@ async def cmd_restart(message: Message):
 
 @router.message(Command(commands=[BotCommands.STOP]))
 @error_decorator
-async def cmd_stop(message: Message):
+async def cmd_stop(message: Message, i18n: I18nMiddleware):
     await message.answer(
         i18n.t("commands.stop.confirmation"),
         reply_markup=get_stop_confirmation_keyboard(),

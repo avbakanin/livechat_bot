@@ -12,11 +12,13 @@ from domain.user.keyboards import (
     get_help_keyboard,
     get_privacy_info_keyboard,
 )
+from domain.subscription.keyboards import get_premium_info_keyboard
 from domain.user.messages import (
     get_consent_given_text,
     get_format_clean_metrics_response,
     get_format_reset_daily_metrics_response,
 )
+from domain.subscription.messages import get_premium_info_text
 from domain.user.services_cached import UserService
 from shared.decorators import optimize_callback_edit
 from shared.i18n import i18n
@@ -73,7 +75,7 @@ async def gender_change_confirm(
     await user_service.delete_user_messages(user.id)
 
     await callback.message.edit_text(
-        text=i18n.t("gender.change_confirmed"), reply_markup=get_gender_keyboard(i18n)
+        text=i18n.t("gender.change_confirmed"), reply_markup=get_gender_keyboard()
     )
     await callback.answer()
 
@@ -96,14 +98,14 @@ async def consent_agree(
 
     await user_service.set_consent_status(user.id, True)
     await callback.message.edit_text(
-        get_consent_given_text(), reply_markup=get_consent_given_keyboard(i18n)
+        get_consent_given_text(), reply_markup=get_consent_given_keyboard()
     )
     await callback.answer()
 
 
 @router.callback_query(F.data == Callbacks.PRIVACY_INFO_HELP)
 @error_decorator
-async def privacy_info(callback: CallbackQuery):
+async def privacy_info(callback: CallbackQuery, i18n: I18nMiddleware):
     await callback.message.edit_text(
         text=get_privacy_info_text(),
         reply_markup=get_privacy_info_keyboard(),
@@ -112,9 +114,20 @@ async def privacy_info(callback: CallbackQuery):
     await callback.answer()
 
 
+@router.callback_query(F.data == Callbacks.PREMIUM_INFO_HELP)
+@error_decorator
+async def premium_info(callback: CallbackQuery, i18n: I18nMiddleware):
+    await callback.message.edit_text(
+        text=get_premium_info_text(),
+        reply_markup=get_premium_info_keyboard(),
+        parse_mode="HTML",
+    )
+    await callback.answer()
+
+
 @router.callback_query(F.data == Callbacks.BACK_TO_HELP)
 @error_decorator
-async def back_to_help(callback: CallbackQuery):
+async def back_to_help(callback: CallbackQuery, i18n: I18nMiddleware):
     await callback.message.edit_text(
         text=get_help_text(), reply_markup=get_help_keyboard(), parse_mode="HTML"
     )
@@ -135,20 +148,11 @@ async def handle_language_selection(callback: CallbackQuery, **kwargs):
 
     user_id = callback.from_user.id
     try:
-        from services.user.user import user_service
-
-        pool = kwargs.get("pool")
-        if pool:
-            await user_service.update_user(
-                pool=pool, user_id=user_id, language=language_code
-            )
-            logging.info(
-                f"Saved language preference '{language_code}' for user {user_id}"
-            )
-        else:
-            logging.warning(
-                f"No database pool available to save language for user {user_id}"
-            )
+        # Language preference is not stored in database
+        # It's handled by i18n middleware in memory
+        logging.info(
+            f"Language changed to '{language_code}' for user {user_id} (not persisted)"
+        )
     except Exception as e:
         logging.warning(f"Failed to save language preference for user {user_id}: {e}")
 
@@ -272,7 +276,7 @@ async def choose_language_help(callback: CallbackQuery):
 
 @router.callback_query(F.data == Callbacks.CHOOSE_GENDER_HELP)
 @error_decorator
-async def gender_help(callback: CallbackQuery):
+async def gender_help(callback: CallbackQuery, i18n: I18nMiddleware):
     await callback.message.edit_text(
         text=i18n.t("buttons.choose_gender_help"),
         reply_markup=get_gender_keyboard(),
@@ -283,7 +287,7 @@ async def gender_help(callback: CallbackQuery):
 @router.callback_query(F.data == Callbacks.RESTART_CONFIRM)
 @optimize_callback_edit
 @error_decorator
-async def restart_confirm(callback: CallbackQuery, user_service: UserService):
+async def restart_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
     user_id = callback.from_user.id
 
     await user_service.restart_user_state(user_id)
@@ -304,7 +308,7 @@ async def restart_confirm(callback: CallbackQuery, user_service: UserService):
 
 @router.callback_query(F.data == Callbacks.RESTART_CANCEL)
 @error_decorator
-async def restart_cancel(callback: CallbackQuery):
+async def restart_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
     await callback.message.edit_text(
         text=get_help_text(),
         reply_markup=get_help_keyboard(),
@@ -330,7 +334,7 @@ async def stop_confirm(callback: CallbackQuery, user_service: UserService):
 
 @router.callback_query(F.data == Callbacks.STOP_CANCEL)
 @error_decorator
-async def stop_cancel(callback: CallbackQuery):
+async def stop_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
     await callback.message.edit_text(
         text=get_help_text(),
         reply_markup=get_help_keyboard(),

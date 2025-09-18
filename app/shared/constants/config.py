@@ -38,6 +38,18 @@ APP_CONFIG: AppConfig = {
     "FREE_MESSAGE_LIMIT": 50,
 }
 
+LANGUAGE_NAMES = {
+    "ru": "Русский",
+    "en": "English",
+    "de": "Deutsch",
+    "es": "Español",
+    "sr": "Српски",
+    "fr": "Français",
+    "it": "Italiano",
+    "tr": "Türkçe",
+    "pl": "Polski",
+}
+
 # ОТКЛЮЧИТЬ
 # Проверка обязательных переменных окружения
 # for key, value in DB_CONFIG.items():

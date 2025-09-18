@@ -1,13 +1,16 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from shared.middlewares.i18n_middleware import I18nMiddleware
+from domain.user.constants import Callbacks
+
+from shared.i18n import i18n
 
 
-def get_consent_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
+def get_consent_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.agree_privacy"), callback_data="consent_agree"
+                    text=i18n.t("buttons.agree_privacy"),
+                    callback_data=Callbacks.CONSENT_AGREE,
                 )
             ],
             [
@@ -20,134 +23,134 @@ def get_consent_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
     )
 
 
-def get_consent_given_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
+def get_consent_given_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.choose_female"), callback_data="gender_female"
+                    text=i18n.t("buttons.choose_female"),
+                    callback_data=Callbacks.GENDER_FEMALE,
                 ),
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.choose_male"), callback_data="gender_male"
+                    text=i18n.t("buttons.choose_male"),
+                    callback_data=Callbacks.GENDER_MALE,
                 ),
             ],
             [
                 InlineKeyboardButton(
                     text=i18n.t("buttons.buy_premium"),
-                    callback_data="subscribe_premium",
+                    callback_data=Callbacks.SUBSCRIBE_PREMIUM,
                 )
             ],
         ]
     )
 
 
-def get_gender_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
+def get_gender_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.choose_female"), callback_data="gender_female"
+                    text=i18n.t("buttons.choose_female"),
+                    callback_data=Callbacks.GENDER_FEMALE,
                 ),
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.choose_male"), callback_data="gender_male"
+                    text=i18n.t("buttons.choose_male"),
+                    callback_data=Callbacks.GENDER_MALE,
                 ),
             ]
         ]
     )
 
 
-def get_gender_change_confirmation_keyboard(
-    i18n: I18nMiddleware,
-) -> InlineKeyboardMarkup:
+def get_gender_change_confirmation_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
                     text=i18n.t("buttons.yes_change"),
-                    callback_data="gender_change_confirm",
+                    callback_data=Callbacks.GENDER_CHANGE_CONFIRM,
                 ),
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.cancel"), callback_data="gender_change_cancel"
+                    text=i18n.t("buttons.cancel"),
+                    callback_data=Callbacks.GENDER_CHANGE_CANCEL,
                 ),
             ]
         ]
     )
 
 
-def get_help_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
+def get_help_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
                     text=i18n.t("buttons.choose_gender_help"),
-                    callback_data="choose_gender_help",
+                    callback_data=Callbacks.CHOOSE_GENDER_HELP,
                 )
             ],
             [
                 InlineKeyboardButton(
                     text=i18n.t("buttons.premium_info_help"),
-                    callback_data="premium_info_help",
+                    callback_data=Callbacks.PREMIUM_INFO_HELP,
                 )
             ],
             [
                 InlineKeyboardButton(
                     text=i18n.t("buttons.privacy_info_help"),
-                    callback_data="privacy_info_help",
+                    callback_data=Callbacks.PRIVACY_INFO_HELP,
                 )
             ],
             [
                 InlineKeyboardButton(
                     text=i18n.t("buttons.choose_language"),
-                    callback_data="choose_language",
+                    callback_data=Callbacks.CHOOSE_LANGUAGE,
                 )
             ],
         ]
     )
 
 
-def get_privacy_info_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
+def get_privacy_info_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.buy_premium"), callback_data="back_to_help"
+                    text=i18n.t("buttons.buy_premium"),
+                    callback_data=Callbacks.BACK_TO_HELP,
                 )
             ]
         ]
     )
 
 
-def get_restart_confirmation_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
+def get_restart_confirmation_keyboard() -> InlineKeyboardMarkup:
     """Keyboard for restart confirmation."""
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.yes"), 
-                    callback_data="restart_confirm"
+                    text=i18n.t("buttons.yes"), callback_data=Callbacks.RESTART_CONFIRM
                 ),
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.no"), 
-                    callback_data="restart_cancel"
-                )
+                    text=i18n.t("buttons.no"), callback_data=Callbacks.RESTART_CANCEL
+                ),
             ]
         ]
     )
 
 
-def get_stop_confirmation_keyboard(i18n: I18nMiddleware) -> InlineKeyboardMarkup:
+def get_stop_confirmation_keyboard() -> InlineKeyboardMarkup:
     """Keyboard for stop confirmation."""
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.yes"), 
-                    callback_data="stop_confirm"
+                    text=i18n.t("buttons.yes"), callback_data=Callbacks.STOP_CONFIRM
                 ),
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.no"), 
-                    callback_data="stop_cancel"
-                )
+                    text=i18n.t("buttons.no"), callback_data=Callbacks.STOP_CANCEL
+                ),
             ]
         ]
     )

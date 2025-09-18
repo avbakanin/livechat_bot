@@ -1,5 +1,5 @@
 [tool.black]
-line-length = 88
+line-length = 104
 target-version = ['py310']
 include = '\.pyi?$'
 extend-exclude = '''
@@ -17,7 +17,7 @@ multi_line_output = 3                 # Переносить импорты с �
 include_trailing_comma = true         # Добавлять запятую после последнего импорта
 force_grid_wrap = 0                   # Не форсировать перенос на новую строку
 use_parentheses = true                # Использовать скобки для переноса импортов
-line_length = 88                      # Максимальная длина строки (как в Black)
+line_length = 104                      # Максимальная длина строки (как в Black)
 known_first_party = ["app", "core", "handlers"]  # Ваши локальные модули
 remove_redundant_aliases = true       # Удалять избыточные алиасы (import os as os)
 
@@ -39,7 +39,7 @@ black = "python -m black ."
 isort = "python -m isort ."
 
 # Линтинг
-lint = "python -m flake8 . --max-line-length=88 --ignore=E501"
+lint = "python -m flake8 . --max-line-length=104 --ignore=E501"
 quick-lint = "python -m flake8 . --select=E9,F63,F7,F82 --exit-zero"
 
 # Очистка

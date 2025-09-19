@@ -11,23 +11,31 @@ from .quiz.callbacks import router as quiz_callbacks
 
 
 def setup_routers(dp: Dispatcher) -> None:
-    # Add AccessMiddleware only to restricted routers (not quiz)
-    access_middleware = AccessMiddleware(TELEGRAM_CONFIG["allowed_user_ids"])
-    
-    # Restricted routers (require access control)
-    user_router.message.middleware(access_middleware)
-    user_router.callback_query.middleware(access_middleware)
-    user_callbacks.message.middleware(access_middleware)
-    user_callbacks.callback_query.middleware(access_middleware)
-    message_router.message.middleware(access_middleware)
-    payment_router.callback_query.middleware(access_middleware)
-    
-    # Quiz routers (no access restrictions)
-    # quiz_router and quiz_callbacks remain unrestricted
-    
+    setup_access_middleware()
+
+    dp.include_router(quiz_router)
+    dp.include_router(quiz_callbacks)
     dp.include_router(user_router)
     dp.include_router(user_callbacks)
     dp.include_router(message_router)
     dp.include_router(payment_router)
-    dp.include_router(quiz_router)
-    dp.include_router(quiz_callbacks)
+
+
+def setup_access_middleware() -> None:
+    """Setup access middleware for restricted routers."""
+    access_middleware = AccessMiddleware(TELEGRAM_CONFIG["allowed_user_ids"])
+
+    # Router to handler type mapping
+    router_config = {
+        quiz_router: ["message", "callback_query"],
+        quiz_callbacks: ["message", "callback_query"],
+        user_router: ["message", "callback_query"],
+        user_callbacks: ["message", "callback_query"],
+        message_router: ["message"],
+        payment_router: ["callback_query"],
+    }
+
+    # Apply middleware based on configuration
+    for router, handler_types in router_config.items():
+        for handler_type in handler_types:
+            getattr(router, handler_type).middleware(access_middleware)

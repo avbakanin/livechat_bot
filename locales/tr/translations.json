@@ -66,7 +66,7 @@
     "choose": "Arkadaşın cinsiyetini seç:",
     "choose_gender": "Arkadaşın cinsiyetini seç:",
     "gender_selected": "Seçilen cinsiyet: {gender} 😊",
-    "toggle_gender": "Arkadaşın cinsiyeti {gender} olarak değiştirildi 😊",
+    "toggle_gender": "Arkadaşın cinsiyeti seçildi: {gender} 😊",
     "change_warning": "🔄 Arkadaşın cinsiyetini değiştirmek istediğinizden emin misiniz?\n\nTüm sohbet geçmişi silinecek!",
     "change_confirmed": "Sohbet geçmişi silindi. Arkadaşın cinsiyetini seç:",
     "change_cancelled": "Cinsiyet değişikliği iptal edildi. Sohbete devam edebilirsin."
@@ -88,12 +88,18 @@
     "no": "Hayır",
     "female": "Kız",
     "male": "Erkek",
-    "back_to_help": "Yardıma dön"
+    "back_to_help": "Yardıma dön",
+    "read_terms": "Hizmet şartlarını oku",
+    "read_disclaimer": "Sorumluluk reddini oku"
   },
   "persons": {
     "gender": {
-      "male": ["Sen bir erkeksin"],
-      "female": ["Sen bir kadınsın"]
+      "male": [
+        "Sen bir erkeksin"
+      ],
+      "female": [
+        "Sen bir kadınsın"
+      ]
     },
     "temperament": {
       "sanguine": "Sanguin: enerjik, iyimser, arkadaş canlısı.",

@@ -3,8 +3,8 @@ CREATE TABLE public.users (
     username TEXT,
     first_name TEXT,
     last_name TEXT,
-    gender_preference TEXT DEFAULT 'female',
-    language TEXT DEFAULT 'ru',
+    gender_preference TEXT DEFAULT NULL,
+    language TEXT DEFAULT 'en',
     subscription_status TEXT DEFAULT 'free',
 	consent_given BOOLEAN DEFAULT FALSE,
 	subscription_expires_at TIMESTAMP,
@@ -304,7 +304,7 @@ ADD COLUMN IF NOT EXISTS personality_profile JSONB;
 
 -- Migration: Add language column to users table
 ALTER TABLE public.users 
-ADD COLUMN IF NOT EXISTS language TEXT DEFAULT 'ru';
+ADD COLUMN IF NOT EXISTS language TEXT DEFAULT 'en';
 
 -- Migration: Add index for personality profile queries
 CREATE INDEX IF NOT EXISTS idx_users_personality_profile ON public.users USING gin (personality_profile);

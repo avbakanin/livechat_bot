@@ -20,6 +20,7 @@ from shared.metrics.metrics import (
 )
 
 from .keyboards import (
+    get_command_already_executed_keyboard,
     get_consent_given_keyboard,
     get_gender_keyboard,
     get_help_keyboard,
@@ -269,7 +270,25 @@ async def gender_help(callback: CallbackQuery, i18n: I18nMiddleware):
 async def restart_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
     user_id = callback.from_user.id
 
+    # Check if bot is already restarted
+    from shared.fsm.user_cache import user_cache
+    cached_data = await user_cache.get(user_id)
+    if cached_data and cached_data.is_restarted:
+        await callback.message.edit_text(
+            i18n.t("commands.restart.already_restarted"),
+            reply_markup=get_command_already_executed_keyboard(),
+            parse_mode="HTML",
+        )
+        await callback.answer()
+        return
+
     await user_service.restart_user_state(user_id)
+
+    # Update cache to mark as restarted
+    if cached_data:
+        cached_data.is_restarted = True
+        cached_data.is_stopped = False  # Reset stop state
+        await user_cache.set(user_id, cached_data)
 
     await callback.message.edit_text(i18n.t("commands.restart.success"), parse_mode="HTML")
 
@@ -296,10 +315,28 @@ async def restart_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
 
 @router.callback_query(F.data == Callbacks.STOP_CONFIRM)
 @error_decorator
-async def stop_confirm(callback: CallbackQuery, user_service: UserService):
+async def stop_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
     user_id = callback.from_user.id
 
+    # Check if bot is already stopped
+    from shared.fsm.user_cache import user_cache
+    cached_data = await user_cache.get(user_id)
+    if cached_data and cached_data.is_stopped:
+        await callback.message.edit_text(
+            i18n.t("commands.stop.already_stopped"),
+            reply_markup=get_command_already_executed_keyboard(),
+            parse_mode="HTML",
+        )
+        await callback.answer()
+        return
+
     await user_service.reset_user_state(user_id)
+
+    # Update cache to mark as stopped
+    if cached_data:
+        cached_data.is_stopped = True
+        cached_data.is_restarted = False  # Reset restart state
+        await user_cache.set(user_id, cached_data)
 
     await callback.message.edit_text(text=i18n.t("commands.stop.success"), parse_mode="HTML")
 

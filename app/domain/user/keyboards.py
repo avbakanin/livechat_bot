@@ -70,6 +70,12 @@ def get_gender_keyboard() -> InlineKeyboardMarkup:
                     text=i18n.t("buttons.choose_male"),
                     callback_data=Callbacks.GENDER_MALE,
                 ),
+            ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.back_to_help"),
+                    callback_data=Callbacks.BACK_TO_HELP,
+                )
             ]
         ]
     )
@@ -87,6 +93,12 @@ def get_gender_change_confirmation_keyboard() -> InlineKeyboardMarkup:
                     text=i18n.t("buttons.cancel"),
                     callback_data=Callbacks.GENDER_CHANGE_CANCEL,
                 ),
+            ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.back_to_help"),
+                    callback_data=Callbacks.BACK_TO_HELP,
+                )
             ]
         ]
     )
@@ -151,6 +163,12 @@ def get_restart_confirmation_keyboard() -> InlineKeyboardMarkup:
                     text=i18n.t("buttons.yes"), callback_data=Callbacks.RESTART_CONFIRM
                 ),
                 InlineKeyboardButton(text=i18n.t("buttons.no"), callback_data=Callbacks.RESTART_CANCEL),
+            ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.back_to_help"),
+                    callback_data=Callbacks.BACK_TO_HELP,
+                )
             ]
         ]
     )
@@ -163,19 +181,45 @@ def get_stop_confirmation_keyboard() -> InlineKeyboardMarkup:
             [
                 InlineKeyboardButton(text=i18n.t("buttons.yes"), callback_data=Callbacks.STOP_CONFIRM),
                 InlineKeyboardButton(text=i18n.t("buttons.no"), callback_data=Callbacks.STOP_CANCEL),
+            ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.back_to_help"),
+                    callback_data=Callbacks.BACK_TO_HELP,
+                )
             ]
         ]
     )
 
 
 def get_status_keyboard() -> InlineKeyboardMarkup:
-    """Клавиатура для команды /status с кнопкой покупки премиума."""
+    """Клавиатура для команды /status с кнопкой покупки премиума и возврата к помощи."""
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
                     text=i18n.t("buttons.buy_premium"),
                     callback_data=Callbacks.BUY_PREMIUM,
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.back_to_help"),
+                    callback_data=Callbacks.BACK_TO_HELP,
+                )
+            ]
+        ]
+    )
+
+
+def get_command_already_executed_keyboard() -> InlineKeyboardMarkup:
+    """Клавиатура для сообщений о том, что команда уже выполнена."""
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.back_to_help"),
+                    callback_data=Callbacks.BACK_TO_HELP,
                 )
             ]
         ]

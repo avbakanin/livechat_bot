@@ -48,12 +48,14 @@
     "restart": {
       "confirmation": "🔄 <b>Bot Restart</b>\n\nAre you sure you want to restart the bot?\n\n<b>All your data will be deleted:</b>\n• Chat history\n• Settings\n• Cache\n\nPlease confirm this action.",
       "success": "✅ <b>Bot restarted!</b>\n\nAll data cleared. Starting fresh...",
-      "cancelled": "❌ Restart cancelled"
+      "cancelled": "❌ Restart cancelled",
+      "already_restarted": "⚠️ <b>Bot Already Restarted</b>\n\nThe bot has already been restarted. You don't need to restart it again.\n\nIf you want to start fresh, just send a message to begin a new conversation!"
     },
     "stop": {
       "confirmation": "🛑 <b>Stop Bot</b>\n\nAre you sure you want to stop the bot?\n\n<b>All your data will be deleted:</b>\n• Chat history\n• Settings\n• Cache\n\nThis action cannot be undone!",
       "success": "👋 <b>Bot stopped</b>\n\nAll data deleted. Goodbye!",
-      "cancelled": "❌ Stop cancelled"
+      "cancelled": "❌ Stop cancelled",
+      "already_stopped": "⚠️ <b>Bot Already Stopped</b>\n\nThe bot has already been stopped. You don't need to stop it again.\n\nIf you want to start using the bot, just send a message or use /start command!"
     }
   },
   "consent": {
@@ -66,7 +68,7 @@
     "choose": "Choose companion's gender:",
     "choose_gender": "Choose companion's gender:",
     "gender_selected": "Gender selected: {gender} 😊",
-    "toggle_gender": "Companion's gender changed to {gender} 😊",
+    "toggle_gender": "Companion's gender selected: {gender} 😊",
     "change_warning": "🔄 Are you sure you want to change companion's gender?\n\nAll chat history will be deleted!",
     "change_confirmed": "Chat history deleted. Choose companion's gender:",
     "change_cancelled": "Gender change cancelled. You can continue chatting."
@@ -82,8 +84,12 @@
   },
   "persons": {
     "gender": {
-      "male": ["You are a man"],
-      "female": ["You are a woman"]
+      "male": [
+        "You are a man"
+      ],
+      "female": [
+        "You are a woman"
+      ]
     },
     "temperament": {
       "sanguine": "Sanguine: energetic, optimistic, friendly.",
@@ -180,6 +186,8 @@
   "buttons": {
     "agree_privacy": "Agree to privacy policy",
     "read_privacy": "Read privacy policy",
+    "read_terms": "Read terms of service",
+    "read_disclaimer": "Read disclaimer",
     "choose_female": "Choose girl 😊",
     "choose_male": "Choose young man 😉",
     "female": "Girl 😊",

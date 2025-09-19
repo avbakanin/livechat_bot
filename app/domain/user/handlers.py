@@ -5,6 +5,7 @@ from aiogram.types import Message
 
 from domain.message.services import MessageService
 from .keyboards import (
+    get_command_already_executed_keyboard,
     get_consent_keyboard,
     get_gender_change_confirmation_keyboard,
     get_gender_keyboard,
@@ -58,6 +59,13 @@ async def cmd_start(
         safe_record_metric("record_new_user")
 
     safe_record_user_interaction(user_id, "command", user_service)
+
+    # Reset command states when user starts bot
+    if cached_user:
+        cached_user.is_restarted = False
+        cached_user.is_stopped = False
+        from shared.fsm.user_cache import user_cache
+        await user_cache.set(user_id, cached_user)
 
     if cached_user:
         consent = cached_user.consent_given
@@ -242,7 +250,18 @@ async def cmd_reset_metrics(message: Message):
 
 @router.message(Command(commands=[BotCommands.RESTART]))
 @error_decorator
-async def cmd_restart(message: Message, i18n: I18nMiddleware):
+async def cmd_restart(message: Message, i18n: I18nMiddleware, cached_user: UserCacheData = None):
+    user_id = message.from_user.id
+    
+    # Check if bot is already restarted
+    if cached_user and cached_user.is_restarted:
+        await message.answer(
+            i18n.t("commands.restart.already_restarted"),
+            reply_markup=get_command_already_executed_keyboard(),
+            parse_mode="HTML",
+        )
+        return
+    
     await message.answer(
         i18n.t("commands.restart.confirmation"),
         reply_markup=get_restart_confirmation_keyboard(),
@@ -252,7 +271,18 @@ async def cmd_restart(message: Message, i18n: I18nMiddleware):
 
 @router.message(Command(commands=[BotCommands.STOP]))
 @error_decorator
-async def cmd_stop(message: Message, i18n: I18nMiddleware):
+async def cmd_stop(message: Message, i18n: I18nMiddleware, cached_user: UserCacheData = None):
+    user_id = message.from_user.id
+    
+    # Check if bot is already stopped
+    if cached_user and cached_user.is_stopped:
+        await message.answer(
+            i18n.t("commands.stop.already_stopped"),
+            reply_markup=get_command_already_executed_keyboard(),
+            parse_mode="HTML",
+        )
+        return
+    
     await message.answer(
         i18n.t("commands.stop.confirmation"),
         reply_markup=get_stop_confirmation_keyboard(),

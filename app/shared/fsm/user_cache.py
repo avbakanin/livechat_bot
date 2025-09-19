@@ -30,6 +30,10 @@ class UserCacheData:
     # Daily message counter cache
     daily_message_count: int = 0
     last_message_date: str = ""
+    
+    # Command state tracking
+    is_restarted: bool = False
+    is_stopped: bool = False
 
     # Cache metadata
     cached_at: datetime = field(default_factory=datetime.utcnow)

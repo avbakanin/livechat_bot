@@ -66,7 +66,7 @@
     "choose": "Choisis le genre de ton compagnon :",
     "choose_gender": "Choisis le genre de ton compagnon :",
     "gender_selected": "Genre sélectionné : {gender} 😊",
-    "toggle_gender": "Genre du compagnon changé en {gender} 😊",
+    "toggle_gender": "Genre du compagnon sélectionné : {gender} 😊",
     "change_warning": "🔄 Êtes-vous sûr de vouloir changer le genre du compagnon ?\n\nTout l'historique des conversations sera supprimé !",
     "change_confirmed": "L'historique des conversations a été supprimé. Choisis le genre de ton compagnon :",
     "change_cancelled": "Changement de genre annulé. Tu peux continuer à discuter."
@@ -81,6 +81,8 @@
   "buttons": {
     "agree_privacy": "J'accepte la politique de confidentialité",
     "read_privacy": "Lire la politique de confidentialité",
+    "read_terms": "Lire les conditions d'utilisation",
+    "read_disclaimer": "Lire l'avis de non-responsabilité",
     "choose_female": "👩 Choisir une fille",
     "choose_male": "👨 Choisir un garçon",
     "buy_premium": "💎 Acheter Premium",
@@ -92,8 +94,12 @@
   },
   "persons": {
     "gender": {
-      "male": ["Tu es un homme"],
-      "female": ["Tu es une femme"]
+      "male": [
+        "Tu es un homme"
+      ],
+      "female": [
+        "Tu es une femme"
+      ]
     },
     "temperament": {
       "sanguine": "Sanguin : énergique, optimiste, amical.",

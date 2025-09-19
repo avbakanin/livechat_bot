@@ -64,10 +64,11 @@
   },
   "gender": {
     "choose": "Wähle das Geschlecht deines Begleiters:",
-    "toggle_gender": "Geschlecht des Begleiters geändert zu {gender} 😊",
+    "toggle_gender": "Geschlecht des Begleiters ausgewählt: {gender} 😊",
     "change_warning": "🔄 Bist du sicher, dass du das Geschlecht des Begleiters ändern möchtest?\n\nDie gesamte Chat-Historie wird gelöscht!",
     "change_confirmed": "Chat-Historie gelöscht. Wähle das Geschlecht deines Begleiters:",
-    "change_cancelled": "Geschlechtsänderung abgebrochen. Du kannst weiter chatten."
+    "change_cancelled": "Geschlechtsänderung abgebrochen. Du kannst weiter chatten.",
+    "gender_selected": "Geschlecht ausgewählt: {gender} 😊"
   },
   "messages": {
     "limit_exceeded": "Tägliches Limit für kostenlose Nachrichten überschritten. Willst du unbegrenzt? Kaufe Premium!",
@@ -80,8 +81,12 @@
   },
   "persons": {
     "gender": {
-      "male": ["Du bist ein Mann"],
-      "female": ["Du bist eine Frau"]
+      "male": [
+        "Du bist ein Mann"
+      ],
+      "female": [
+        "Du bist eine Frau"
+      ]
     },
     "temperament": {
       "sanguine": "Sanguiniker: energisch, optimistisch, freundlich.",
@@ -178,6 +183,8 @@
   "buttons": {
     "agree_privacy": "Datenschutzrichtlinie zustimmen",
     "read_privacy": "Richtlinie lesen",
+    "read_terms": "Nutzungsbedingungen lesen",
+    "read_disclaimer": "Haftungsausschluss lesen",
     "choose_female": "Mädchen wählen 😊",
     "choose_male": "Jungen wählen 😉",
     "female": "Mädchen 😊",

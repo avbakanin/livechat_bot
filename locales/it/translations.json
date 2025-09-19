@@ -66,7 +66,7 @@
     "choose": "Scegli il genere del tuo compagno:",
     "choose_gender": "Scegli il genere del tuo compagno:",
     "gender_selected": "Genere selezionato: {gender} 😊",
-    "toggle_gender": "Genere del compagno cambiato in {gender} 😊",
+    "toggle_gender": "Genere del compagno selezionato: {gender} 😊",
     "change_warning": "🔄 Sei sicuro di voler cambiare il genere del compagno?\n\nTutta la cronologia delle conversazioni sarà eliminata!",
     "change_confirmed": "La cronologia delle conversazioni è stata eliminata. Scegli il genere del tuo compagno:",
     "change_cancelled": "Cambio di genere annullato. Puoi continuare a chattare."
@@ -88,12 +88,18 @@
     "no": "No",
     "female": "Ragazza",
     "male": "Ragazzo",
-    "back_to_help": "Torna all'aiuto"
+    "back_to_help": "Torna all'aiuto",
+    "read_terms": "Leggi i termini di servizio",
+    "read_disclaimer": "Leggi il disclaimer"
   },
   "persons": {
     "gender": {
-      "male": ["Sei un uomo"],
-      "female": ["Sei una donna"]
+      "male": [
+        "Sei un uomo"
+      ],
+      "female": [
+        "Sei una donna"
+      ]
     },
     "temperament": {
       "sanguine": "Sanguigno: energico, ottimista, amichevole.",

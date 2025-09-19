@@ -84,10 +84,10 @@ async def main():
         apply_middlewares(
             dp,
             [
-                i18n_middleware,
                 FSMMiddleware(),  # Add FSM middleware for caching
                 LoggingMiddleware(),
                 ServiceMiddleware(user_service, message_service, pool),
+                i18n_middleware,  # I18n middleware should come after ServiceMiddleware
             ],
         )
 

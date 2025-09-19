@@ -128,7 +128,7 @@ async def back_to_help(callback: CallbackQuery, i18n: I18nMiddleware):
 
 @router.callback_query(F.data.startswith(Callbacks.LANG_PREFIX))
 @error_decorator
-async def handle_language_selection(callback: CallbackQuery, **kwargs):
+async def handle_language_selection(callback: CallbackQuery, user_service: UserService, **kwargs):
     language_code = callback.data.split("_")[1]
 
     available_languages = i18n.get_available_languages()
@@ -136,15 +136,19 @@ async def handle_language_selection(callback: CallbackQuery, **kwargs):
         await callback.answer("❌ Неподдерживаемый язык", show_alert=True)
         return
 
-    i18n.set_language(language_code)
-
     user_id = callback.from_user.id
+    
+    # Save language to database
     try:
-        # Language preference is not stored in database
-        # It's handled by i18n middleware in memory
-        logging.info(f"Language changed to '{language_code}' for user {user_id} (not persisted)")
+        await user_service.set_language(user_id, language_code)
+        logging.info(f"Language saved to database for user {user_id}: {language_code}")
     except Exception as e:
-        logging.warning(f"Failed to save language preference for user {user_id}: {e}")
+        logging.error(f"Failed to save language for user {user_id}: {e}")
+        await callback.answer("❌ Ошибка сохранения языка", show_alert=True)
+        return
+
+    # Set language for current session
+    i18n.set_language(language_code)
 
     language_name = LANGUAGE_NAMES.get(language_code, language_code.upper())
 

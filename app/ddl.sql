@@ -4,6 +4,7 @@ CREATE TABLE public.users (
     first_name TEXT,
     last_name TEXT,
     gender_preference TEXT DEFAULT 'female',
+    language TEXT DEFAULT 'ru',
     subscription_status TEXT DEFAULT 'free',
 	consent_given BOOLEAN DEFAULT FALSE,
 	subscription_expires_at TIMESTAMP,
@@ -14,6 +15,7 @@ CREATE TABLE public.users (
 );
 CREATE INDEX idx_users_subscription_expires_at ON public.users USING btree (subscription_expires_at);
 CREATE INDEX idx_users_personality_profile ON public.users USING gin (personality_profile);
+CREATE INDEX idx_users_language ON public.users (language);
 
 -- Partitioned messages table by month on created_at
 CREATE TABLE public.messages (
@@ -100,6 +102,24 @@ CREATE TABLE public.payments (
 );
 CREATE INDEX idx_payments_user_id ON public.payments USING btree (user_id);
 
+CREATE TABLE public.subscriptions (
+    id SERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    plan_type TEXT DEFAULT 'free' NOT NULL,
+    status TEXT DEFAULT 'active' NOT NULL,
+    price DECIMAL(10,2) DEFAULT 0.00,
+    currency TEXT DEFAULT 'USD',
+    billing_period TEXT DEFAULT 'monthly',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP,
+    CONSTRAINT subscriptions_user_id_plan_unique UNIQUE (user_id, plan_type),
+    CONSTRAINT subscriptions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE
+);
+CREATE INDEX idx_subscriptions_expires_at ON public.subscriptions USING btree (expires_at);
+CREATE INDEX idx_subscriptions_plan_type ON public.subscriptions USING btree (plan_type);
+CREATE INDEX idx_subscriptions_status ON public.subscriptions USING btree (status);
+CREATE INDEX idx_subscriptions_user_id ON public.subscriptions USING btree (user_id);
 
 CREATE TABLE IF NOT EXISTS public.user_daily_counters (
     user_id BIGINT NOT NULL,
@@ -282,5 +302,12 @@ $$;
 ALTER TABLE public.users 
 ADD COLUMN IF NOT EXISTS personality_profile JSONB;
 
+-- Migration: Add language column to users table
+ALTER TABLE public.users 
+ADD COLUMN IF NOT EXISTS language TEXT DEFAULT 'ru';
+
 -- Migration: Add index for personality profile queries
 CREATE INDEX IF NOT EXISTS idx_users_personality_profile ON public.users USING gin (personality_profile);
+
+-- Migration: Add index for language queries
+CREATE INDEX IF NOT EXISTS idx_users_language ON public.users (language);

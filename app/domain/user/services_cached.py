@@ -2,6 +2,7 @@
 Enhanced User Service with FSM caching support.
 """
 
+import logging
 from typing import Optional
 
 import asyncpg
@@ -213,3 +214,29 @@ class UserService:
     async def get_personality_profile(self, user_id: int) -> Optional[dict]:
         """Get user personality profile."""
         return await db_get_user_personality_profile(self.pool, user_id)
+
+    async def get_language(self, user_id: int) -> str:
+        """Get user language preference."""
+        async with self.pool.acquire() as conn:
+            try:
+                result = await conn.fetchval(
+                    "SELECT language FROM users WHERE id = $1",
+                    user_id
+                )
+                return result or "en"
+            except Exception as e:
+                logging.warning(f"Error getting language for user {user_id}: {e}")
+                return "en"
+
+    async def set_language(self, user_id: int, language: str) -> None:
+        """Set user language preference."""
+        async with self.pool.acquire() as conn:
+            try:
+                await conn.execute(
+                    "UPDATE users SET language = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2",
+                    language, user_id
+                )
+                logging.info(f"Language set to '{language}' for user {user_id}")
+            except Exception as e:
+                logging.error(f"Error setting language for user {user_id}: {e}")
+                raise UserException(f"Error setting language for user {user_id}: {e}", e)

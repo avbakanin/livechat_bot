@@ -12,26 +12,27 @@
       "reset_info": "Il limite si resetterà domani a mezzanotte",
       "premium_days": "⏰ L'abbonamento premium scade tra {days} giorni",
       "premium_hours": "⏰ L'abbonamento premium scade tra {hours} ore",
-      "premium_expiring": "⚠️ L'abbonamento premium scade oggi!"
+      "premium_expiring": "⏰ L'abbonamento premium scade oggi!"
     },
     "help": {
       "title": "🤖 Aiuto del bot",
       "commands_title": "Comandi disponibili:",
-      "start_command": "/start - Inizia a chattare con il bot",
-      "help_command": "/help - Mostra questo aiuto",
-      "gender_command": "/choose_gender - Scegli il genere del compagno",
-      "status_command": "/status - Mostra lo stato dell'account e dell'abbonamento",
-      "language_command": "/language - Scegli la lingua dell'interfaccia",
-      "restart_command": "/restart - Riavvia il bot e cancella tutti i dati",
-      "stop_command": "/stop - Interrompi l'interazione e cancella tutti i dati",
+      "start_command": "/start - Avvia bot",
+      "help_command": "/help - Aiuto",
+      "gender_command": "/choose_gender - Cambia genere",
+      "status_command": "/status - Stato account",
+      "language_command": "/language - Lingua",
+      "quiz_command": "/quiz - Conosciamoci",
+      "restart_command": "/restart - Riavvia bot",
+      "stop_command": "/stop - Ferma bot",
       "communication_title": "💬 Comunicazione:",
       "free_limit": "• Gratuito: {free_limit} messaggi al giorno",
-      "premium_unlimited": "• Premium: comunicazione illimitata",
+      "premium_unlimited": "• Premium: comunicazione illimitata.",
       "companion_title": "🎭 Scelta del compagno:",
       "female_description": "• Ragazza - carina ed empatica",
       "male_description": "• Ragazzo - sicuro e giocoso",
       "premium_title": "💎 Abbonamento premium:",
-      "premium_description": "Apre comunicazione illimitata e funzionalità aggiuntive",
+      "premium_description": "• Apre comunicazione illimitata e funzionalità aggiuntive.",
       "faq_title": "❓ Domande frequenti:",
       "context_memory": "• Il bot ricorda il contesto della conversazione",
       "gender_change": "• Puoi cambiare il genere del compagno in qualsiasi momento",
@@ -45,12 +46,12 @@
       "available_languages": "Lingue disponibili:"
     },
     "restart": {
-      "confirmation": "⚠️ <b>Riavvio del bot</b>\n\nSei sicuro di voler riavviare il bot?\n\n<b>Tutti i tuoi dati saranno eliminati:</b>\n• Cronologia delle conversazioni\n• Impostazioni\n• Cache\n\nQuesta azione non può essere annullata!",
+      "confirmation": "🔄 <b>Riavvio del bot</b>\n\nSei sicuro di voler riavviare il bot?\n\n<b>Tutti i tuoi dati saranno eliminati:</b>\n• Cronologia delle conversazioni\n• Impostazioni\n• Cache\n\nPer favore, conferma questa azione.",
       "success": "✅ <b>Bot riavviato!</b>\n\nTutti i dati sono stati cancellati. Ricominciamo...",
       "cancelled": "❌ Riavvio annullato"
     },
     "stop": {
-      "confirmation": "⚠️ <b>Arresto del bot</b>\n\nSei sicuro di voler fermare il bot?\n\n<b>Tutti i tuoi dati saranno eliminati:</b>\n• Cronologia delle conversazioni\n• Impostazioni\n• Cache\n\nQuesta azione non può essere annullata!",
+      "confirmation": "🛑 <b>Arresto del bot</b>\n\nSei sicuro di voler fermare il bot?\n\n<b>Tutti i tuoi dati saranno eliminati:</b>\n• Cronologia delle conversazioni\n• Impostazioni\n• Cache\n\nQuesta azione non può essere annullata!",
       "success": "👋 <b>Bot fermato</b>\n\nTutti i dati sono stati eliminati. Arrivederci!",
       "cancelled": "❌ Arresto annullato"
     }
@@ -66,7 +67,7 @@
     "choose_gender": "Scegli il genere del tuo compagno:",
     "gender_selected": "Genere selezionato: {gender} 😊",
     "toggle_gender": "Genere del compagno cambiato in {gender} 😊",
-    "change_warning": "⚠️ Sei sicuro di voler cambiare il genere del compagno?\n\nTutta la cronologia delle conversazioni sarà eliminata!",
+    "change_warning": "🔄 Sei sicuro di voler cambiare il genere del compagno?\n\nTutta la cronologia delle conversazioni sarà eliminata!",
     "change_confirmed": "La cronologia delle conversazioni è stata eliminata. Scegli il genere del tuo compagno:",
     "change_cancelled": "Cambio di genere annullato. Puoi continuare a chattare."
   },
@@ -121,8 +122,33 @@
     "price_title": "Prezzi:",
     "price": "A partire da 299 RUB/mese"
   },
-  "error": {
-    "try_again": "❌ Errore. Riprova più tardi.",
+  "errors": {
+    "general": "Si è verificato un errore. Riprova più tardi.",
+    "database": "Errore del database. Riprova più tardi.",
+    "openai": "Errore nell'elaborazione del messaggio. Riprova più tardi.",
+    "validation": "Dati non corretti. Controlla l'input.",
+    "permission": "Non hai i permessi per eseguire questa azione.",
+    "limit": "Limite superato. Riprova più tardi.",
+    "access_denied": "❌ Accesso negato. Contatta l'amministratore.",
+    "access_denied_alert": "❌ Accesso negato.",
+    "private_bot": "Bot privato. Accesso limitato.",
+    "try_again": "Si è verificato un errore. Riprova.",
     "unsupported_language": "❌ Lingua non supportata"
+  },
+  "privacy": {
+    "title": "🔐 Politica sulla privacy",
+    "text": "Qui il tuo testo della politica sulla privacy...",
+    "full": "Versione completa: %{url}"
+  },
+  "success": {
+    "general": "Operazione completata con successo!",
+    "saved": "Dati salvati!",
+    "updated": "Dati aggiornati!",
+    "deleted": "Dati eliminati!",
+    "sent": "Messaggio inviato!"
+  },
+  "ai_prompts": {
+    "female": "Sei un'IA ragazza, flirt e di supporto per persone sole. Sii carina, empatica e giocosa.",
+    "male": "Sei un IA ragazzo, flirt e di supporto per persone sole. Sii sicuro, empatico e giocoso."
   }
 }

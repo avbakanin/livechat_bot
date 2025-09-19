@@ -13,6 +13,7 @@ from domain.user.keyboards import (
     get_help_keyboard,
     get_restart_confirmation_keyboard,
     get_stop_confirmation_keyboard,
+    get_status_keyboard,
 )
 from domain.user.messages import (
     get_format_metrics_summary,
@@ -28,14 +29,13 @@ from shared.metrics.metrics import (
     safe_record_user_interaction,
 )
 from shared.middlewares.i18n_middleware import I18nMiddleware
-from shared.middlewares.middlewares import AccessMiddleware
+# AccessMiddleware imported in setup_routers
 from shared.helpers import destructure_user
 
 
 router = Router()
 
-router.message.middleware(AccessMiddleware(allowed_ids={627875032, 1512454100, 826795306}))
-router.callback_query.middleware(AccessMiddleware(allowed_ids={627875032, 1512454100, 826795306}))
+# AccessMiddleware now applied globally in setup_routers
 
 
 @router.message(Command(commands=[BotCommands.START]))
@@ -169,7 +169,8 @@ async def cmd_status(
             await message.answer(
                 f"{i18n.t('commands.status.title')}\n\n"
                 f"{i18n.t('commands.status.unlimited')}\n\n"
-                f"{premium_info}"
+                f"{premium_info}",
+                reply_markup=get_status_keyboard()
             )
             return
 
@@ -187,7 +188,7 @@ async def cmd_status(
 
     response += f"\n\n{i18n.t('commands.status.reset_info')}"
 
-    await message.answer(response)
+    await message.answer(response, reply_markup=get_status_keyboard())
 
 
 # ЧТО ЭТО??

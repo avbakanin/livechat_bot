@@ -21,6 +21,7 @@ from core.middleware import AccessMiddleware, LoggingMiddleware, ServiceMiddlewa
 
 
 async def main():
+    print("🚀 Starting bot...")
     logging.info("MAIN IS STARTED")
 
     # Setup logging
@@ -39,7 +40,9 @@ async def main():
 
     try:
         # Create database pool
+        print("📊 Creating database pool...")
         pool = await db_manager.create_pool()
+        print("✅ Database pool created")
 
         # Initialize bot and OpenAI client
         bot = Bot(token=TELEGRAM_CONFIG["token"])
@@ -85,7 +88,6 @@ async def main():
             [
                 i18n_middleware,
                 FSMMiddleware(),  # Add FSM middleware for caching
-                AccessMiddleware(TELEGRAM_CONFIG["allowed_user_ids"]),
                 LoggingMiddleware(),
                 ServiceMiddleware(user_service, message_service, pool),
             ],
@@ -112,15 +114,20 @@ async def main():
         await partition_management_task.start()
 
         # Include routers
+        print("🔗 Setting up routers...")
         setup_routers(dp)
+        print("✅ Routers setup complete")
 
+        print("📝 Logging startup messages...")
         logging.info("Connected to PostgreSQL!")
         logging.info("FSM cache initialized!")
         logging.info("Daily reset task started!")
         logging.info("Partition management task started!")
         logging.info("Bot started!")
+        print("✅ All startup messages logged")
 
         # Start polling
+        print("🔄 Starting polling...")
         await dp.start_polling(bot)
 
     except (KeyboardInterrupt, SystemExit):

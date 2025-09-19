@@ -28,12 +28,11 @@ from shared.metrics.metrics import (
     safe_record_user_interaction,
 )
 from shared.middlewares.i18n_middleware import I18nMiddleware
-from shared.middlewares.middlewares import AccessMiddleware
+# AccessMiddleware imported in setup_routers
 
 router = Router()
 
-router.message.middleware(AccessMiddleware(allowed_ids={627875032, 1512454100}))
-router.callback_query.middleware(AccessMiddleware(allowed_ids={627875032, 1512454100}))
+# AccessMiddleware now applied globally in setup_routers
 
 
 @router.callback_query(F.data.in_([Callbacks.GENDER_FEMALE, Callbacks.GENDER_MALE]))
@@ -312,3 +311,15 @@ async def stop_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
         parse_mode="HTML",
     )
     await callback.answer(text=i18n.t("commands.stop.cancelled"))
+
+
+@router.callback_query(F.data == Callbacks.BUY_PREMIUM)
+@error_decorator
+async def buy_premium(callback: CallbackQuery, i18n: I18nMiddleware):
+    """Обработчик кнопки 'Купить премиум'."""
+    await callback.message.edit_text(
+        text=get_premium_info_text(),
+        reply_markup=get_premium_info_keyboard(),
+        parse_mode="HTML",
+    )
+    await callback.answer()

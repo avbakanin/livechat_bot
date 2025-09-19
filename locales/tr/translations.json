@@ -12,26 +12,27 @@
       "reset_info": "Limit yarın gece yarısı sıfırlanacak",
       "premium_days": "⏰ Premium abonelik {days} gün sonra sona eriyor",
       "premium_hours": "⏰ Premium abonelik {hours} saat sonra sona eriyor",
-      "premium_expiring": "⚠️ Premium abonelik bugün sona eriyor!"
+      "premium_expiring": "⏰ Premium abonelik bugün sona eriyor!"
     },
     "help": {
       "title": "🤖 Bot yardımı",
       "commands_title": "Mevcut komutlar:",
-      "start_command": "/start - Bot ile sohbet etmeye başla",
-      "help_command": "/help - Bu yardımı göster",
-      "gender_command": "/choose_gender - Arkadaşın cinsiyetini seç",
-      "status_command": "/status - Hesap ve abonelik durumunu göster",
-      "language_command": "/language - Arayüz dilini seç",
-      "restart_command": "/restart - Botu yeniden başlat ve tüm verileri sil",
-      "stop_command": "/stop - Etkileşimi durdur ve tüm verileri sil",
+      "start_command": "/start - Botu başlat",
+      "help_command": "/help - Yardım",
+      "gender_command": "/choose_gender - Cinsiyet değiştir",
+      "status_command": "/status - Hesap durumu",
+      "language_command": "/language - Dil",
+      "quiz_command": "/quiz - Tanışalım",
+      "restart_command": "/restart - Botu yeniden başlat",
+      "stop_command": "/stop - Botu durdur",
       "communication_title": "💬 İletişim:",
       "free_limit": "• Ücretsiz: günde {free_limit} mesaj",
-      "premium_unlimited": "• Premium: sınırsız iletişim",
+      "premium_unlimited": "• Premium: sınırsız iletişim.",
       "companion_title": "🎭 Arkadaş seçimi:",
       "female_description": "• Kız - sevimli ve empatik",
       "male_description": "• Erkek - kendinden emin ve oyuncu",
       "premium_title": "💎 Premium abonelik:",
-      "premium_description": "Sınırsız iletişim ve ek özellikler açar",
+      "premium_description": "• Sınırsız iletişim ve ek özellikler açar.",
       "faq_title": "❓ Sık sorulan sorular:",
       "context_memory": "• Bot konuşma bağlamını hatırlar",
       "gender_change": "• Arkadaşın cinsiyetini istediğin zaman değiştirebilirsin",
@@ -45,12 +46,12 @@
       "available_languages": "Mevcut diller:"
     },
     "restart": {
-      "confirmation": "⚠️ <b>Bot yeniden başlatılıyor</b>\n\nBotu yeniden başlatmak istediğinizden emin misiniz?\n\n<b>Tüm verileriniz silinecek:</b>\n• Sohbet geçmişi\n• Ayarlar\n• Önbellek\n\nBu işlem geri alınamaz!",
+      "confirmation": "🔄 <b>Bot yeniden başlatılıyor</b>\n\nBotu yeniden başlatmak istediğinizden emin misiniz?\n\n<b>Tüm verileriniz silinecek:</b>\n• Sohbet geçmişi\n• Ayarlar\n• Önbellek\n\nLütfen bu işlemi onaylayın.",
       "success": "✅ <b>Bot yeniden başlatıldı!</b>\n\nTüm veriler temizlendi. Yeniden başlıyoruz...",
       "cancelled": "❌ Yeniden başlatma iptal edildi"
     },
     "stop": {
-      "confirmation": "⚠️ <b>Bot durduruluyor</b>\n\nBotu durdurmak istediğinizden emin misiniz?\n\n<b>Tüm verileriniz silinecek:</b>\n• Sohbet geçmişi\n• Ayarlar\n• Önbellek\n\nBu işlem geri alınamaz!",
+      "confirmation": "🛑 <b>Bot durduruluyor</b>\n\nBotu durdurmak istediğinizden emin misiniz?\n\n<b>Tüm verileriniz silinecek:</b>\n• Sohbet geçmişi\n• Ayarlar\n• Önbellek\n\nBu işlem geri alınamaz!",
       "success": "👋 <b>Bot durduruldu</b>\n\nTüm veriler silindi. Hoşça kal!",
       "cancelled": "❌ Durdurma iptal edildi"
     }
@@ -66,7 +67,7 @@
     "choose_gender": "Arkadaşın cinsiyetini seç:",
     "gender_selected": "Seçilen cinsiyet: {gender} 😊",
     "toggle_gender": "Arkadaşın cinsiyeti {gender} olarak değiştirildi 😊",
-    "change_warning": "⚠️ Arkadaşın cinsiyetini değiştirmek istediğinizden emin misiniz?\n\nTüm sohbet geçmişi silinecek!",
+    "change_warning": "🔄 Arkadaşın cinsiyetini değiştirmek istediğinizden emin misiniz?\n\nTüm sohbet geçmişi silinecek!",
     "change_confirmed": "Sohbet geçmişi silindi. Arkadaşın cinsiyetini seç:",
     "change_cancelled": "Cinsiyet değişikliği iptal edildi. Sohbete devam edebilirsin."
   },
@@ -121,8 +122,33 @@
     "price_title": "Fiyatlar:",
     "price": "299 RUB/ay'dan başlayan fiyatlarla"
   },
-  "error": {
-    "try_again": "❌ Hata. Lütfen daha sonra tekrar deneyin.",
+  "errors": {
+    "general": "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+    "database": "Veritabanı hatası. Lütfen daha sonra tekrar deneyin.",
+    "openai": "Mesaj işlenirken hata oluştu. Lütfen daha sonra tekrar deneyin.",
+    "validation": "Geçersiz veriler. Girişi kontrol edin.",
+    "permission": "Bu işlemi gerçekleştirmek için izniniz yok.",
+    "limit": "Limit aşıldı. Lütfen daha sonra tekrar deneyin.",
+    "access_denied": "❌ Erişim reddedildi. Yöneticiye başvurun.",
+    "access_denied_alert": "❌ Erişim reddedildi.",
+    "private_bot": "Özel bot. Erişim sınırlı.",
+    "try_again": "Bir hata oluştu. Tekrar deneyin.",
     "unsupported_language": "❌ Desteklenmeyen dil"
+  },
+  "privacy": {
+    "title": "🔐 Gizlilik Politikası",
+    "text": "Burada gizlilik politikası metniniz...",
+    "full": "Tam sürüm: %{url}"
+  },
+  "success": {
+    "general": "İşlem başarıyla tamamlandı!",
+    "saved": "Veriler kaydedildi!",
+    "updated": "Veriler güncellendi!",
+    "deleted": "Veriler silindi!",
+    "sent": "Mesaj gönderildi!"
+  },
+  "ai_prompts": {
+    "female": "Sen yalnız insanlar için flört eden ve destekleyici bir AI kızsın. Tatlı, empatik ve oyuncu ol.",
+    "male": "Sen yalnız insanlar için flört eden ve destekleyici bir AI erkeksin. Kendinden emin, empatik ve oyuncu ol."
   }
 }

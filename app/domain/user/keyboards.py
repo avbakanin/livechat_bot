@@ -154,3 +154,17 @@ def get_stop_confirmation_keyboard() -> InlineKeyboardMarkup:
             ]
         ]
     )
+
+
+def get_status_keyboard() -> InlineKeyboardMarkup:
+    """Клавиатура для команды /status с кнопкой покупки премиума."""
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.buy_premium"),
+                    callback_data=Callbacks.BUY_PREMIUM,
+                )
+            ]
+        ]
+    )

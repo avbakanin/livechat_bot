@@ -7,11 +7,13 @@ CREATE TABLE public.users (
     subscription_status TEXT DEFAULT 'free',
 	consent_given BOOLEAN DEFAULT FALSE,
 	subscription_expires_at TIMESTAMP,
+    personality_profile JSONB,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 CREATE INDEX idx_users_subscription_expires_at ON public.users USING btree (subscription_expires_at);
+CREATE INDEX idx_users_personality_profile ON public.users USING gin (personality_profile);
 
 -- Partitioned messages table by month on created_at
 CREATE TABLE public.messages (
@@ -247,3 +249,38 @@ BEGIN
         updated_at = CURRENT_TIMESTAMP;
 END;
 $$;
+
+-- Function to update user personality profile
+CREATE OR REPLACE FUNCTION public.update_user_personality_profile(
+    p_user_id BIGINT, 
+    p_personality_profile JSONB
+)
+RETURNS VOID LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE public.users 
+    SET personality_profile = p_personality_profile,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = p_user_id;
+END;
+$$;
+
+-- Function to get user personality profile
+CREATE OR REPLACE FUNCTION public.get_user_personality_profile(p_user_id BIGINT)
+RETURNS JSONB LANGUAGE plpgsql AS $$
+DECLARE
+    v_profile JSONB;
+BEGIN
+    SELECT personality_profile INTO v_profile
+    FROM public.users 
+    WHERE id = p_user_id;
+    
+    RETURN COALESCE(v_profile, '{}'::jsonb);
+END;
+$$;
+
+-- Migration: Add personality_profile column to users table
+ALTER TABLE public.users 
+ADD COLUMN IF NOT EXISTS personality_profile JSONB;
+
+-- Migration: Add index for personality profile queries
+CREATE INDEX IF NOT EXISTS idx_users_personality_profile ON public.users USING gin (personality_profile);

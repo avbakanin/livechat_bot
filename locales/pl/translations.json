@@ -12,26 +12,27 @@
       "reset_info": "Limit zostanie zresetowany jutro o północy",
       "premium_days": "⏰ Subskrypcja premium wygasa za {days} dni",
       "premium_hours": "⏰ Subskrypcja premium wygasa za {hours} godzin",
-      "premium_expiring": "⚠️ Subskrypcja premium wygasa dzisiaj!"
+      "premium_expiring": "⏰ Subskrypcja premium wygasa dzisiaj!"
     },
     "help": {
       "title": "🤖 Pomoc bota",
       "commands_title": "Dostępne komendy:",
-      "start_command": "/start - Zacznij rozmowę z botem",
-      "help_command": "/help - Pokaż tę pomoc",
-      "gender_command": "/choose_gender - Wybierz płeć towarzysza",
-      "status_command": "/status - Pokaż status konta i subskrypcji",
-      "language_command": "/language - Wybierz język interfejsu",
-      "restart_command": "/restart - Uruchom ponownie bota i usuń wszystkie dane",
-      "stop_command": "/stop - Zatrzymaj interakcję i usuń wszystkie dane",
+      "start_command": "/start - Uruchom bota",
+      "help_command": "/help - Pomoc",
+      "gender_command": "/choose_gender - Zmień płeć",
+      "status_command": "/status - Status konta",
+      "language_command": "/language - Język",
+      "quiz_command": "/quiz - Poznajmy się",
+      "restart_command": "/restart - Restart bota",
+      "stop_command": "/stop - Zatrzymaj bota",
       "communication_title": "💬 Komunikacja:",
       "free_limit": "• Darmowe: {free_limit} wiadomości dziennie",
-      "premium_unlimited": "• Premium: nieograniczona komunikacja",
+      "premium_unlimited": "• Premium: nieograniczona komunikacja.",
       "companion_title": "🎭 Wybór towarzysza:",
       "female_description": "• Dziewczyna - słodka i empatyczna",
       "male_description": "• Chłopak - pewny siebie i zabawny",
       "premium_title": "💎 Subskrypcja premium:",
-      "premium_description": "Otwiera nieograniczoną komunikację i dodatkowe funkcje",
+      "premium_description": "• Otwiera nieograniczoną komunikację i dodatkowe funkcje.",
       "faq_title": "❓ Często zadawane pytania:",
       "context_memory": "• Bot pamięta kontekst rozmowy",
       "gender_change": "• Możesz zmienić płeć towarzysza w dowolnym momencie",
@@ -45,12 +46,12 @@
       "available_languages": "Dostępne języki:"
     },
     "restart": {
-      "confirmation": "⚠️ <b>Ponowne uruchomienie bota</b>\n\nCzy na pewno chcesz ponownie uruchomić bota?\n\n<b>Wszystkie Twoje dane zostaną usunięte:</b>\n• Historia rozmów\n• Ustawienia\n• Cache\n\nTa akcja nie może być cofnięta!",
+      "confirmation": "🔄 <b>Ponowne uruchomienie bota</b>\n\nCzy na pewno chcesz ponownie uruchomić bota?\n\n<b>Wszystkie Twoje dane zostaną usunięte:</b>\n• Historia rozmów\n• Ustawienia\n• Cache\n\nProszę potwierdzić tę akcję.",
       "success": "✅ <b>Bot ponownie uruchomiony!</b>\n\nWszystkie dane zostały wyczyszczone. Zaczynamy od nowa...",
       "cancelled": "❌ Ponowne uruchomienie anulowane"
     },
     "stop": {
-      "confirmation": "⚠️ <b>Zatrzymanie bota</b>\n\nCzy na pewno chcesz zatrzymać bota?\n\n<b>Wszystkie Twoje dane zostaną usunięte:</b>\n• Historia rozmów\n• Ustawienia\n• Cache\n\nTa akcja nie może być cofnięta!",
+      "confirmation": "🛑 <b>Zatrzymanie bota</b>\n\nCzy na pewno chcesz zatrzymać bota?\n\n<b>Wszystkie Twoje dane zostaną usunięte:</b>\n• Historia rozmów\n• Ustawienia\n• Cache\n\nTa akcja nie może być cofnięta!",
       "success": "👋 <b>Bot zatrzymany</b>\n\nWszystkie dane zostały usunięte. Do widzenia!",
       "cancelled": "❌ Zatrzymanie anulowane"
     }
@@ -66,7 +67,7 @@
     "choose_gender": "Wybierz płeć swojego towarzysza:",
     "gender_selected": "Wybrana płeć: {gender} 😊",
     "toggle_gender": "Płeć towarzysza zmieniona na {gender} 😊",
-    "change_warning": "⚠️ Czy na pewno chcesz zmienić płeć towarzysza?\n\nCała historia rozmów zostanie usunięta!",
+    "change_warning": "🔄 Czy na pewno chcesz zmienić płeć towarzysza?\n\nCała historia rozmów zostanie usunięta!",
     "change_confirmed": "Historia rozmów została usunięta. Wybierz płeć swojego towarzysza:",
     "change_cancelled": "Zmiana płci anulowana. Możesz kontynuować rozmowę."
   },
@@ -121,8 +122,33 @@
     "price_title": "Ceny:",
     "price": "Od 299 RUB/miesiąc"
   },
-  "error": {
-    "try_again": "❌ Błąd. Spróbuj ponownie później.",
+  "errors": {
+    "general": "Wystąpił błąd. Spróbuj ponownie później.",
+    "database": "Błąd bazy danych. Spróbuj ponownie później.",
+    "openai": "Błąd podczas przetwarzania wiadomości. Spróbuj ponownie później.",
+    "validation": "Nieprawidłowe dane. Sprawdź wprowadzone informacje.",
+    "permission": "Nie masz uprawnień do wykonania tej akcji.",
+    "limit": "Przekroczono limit. Spróbuj ponownie później.",
+    "access_denied": "❌ Dostęp zabroniony. Skontaktuj się z administratorem.",
+    "access_denied_alert": "❌ Dostęp zabroniony.",
+    "private_bot": "Bot prywatny. Dostęp ograniczony.",
+    "try_again": "Wystąpił błąd. Spróbuj ponownie.",
     "unsupported_language": "❌ Nieobsługiwany język"
+  },
+  "privacy": {
+    "title": "🔐 Polityka prywatności",
+    "text": "Tutaj twój tekst polityki prywatności...",
+    "full": "Pełna wersja: %{url}"
+  },
+  "success": {
+    "general": "Operacja zakończona pomyślnie!",
+    "saved": "Dane zapisane!",
+    "updated": "Dane zaktualizowane!",
+    "deleted": "Dane usunięte!",
+    "sent": "Wiadomość wysłana!"
+  },
+  "ai_prompts": {
+    "female": "Jesteś AI dziewczyną, flirtującą i wspierającą dla samotnych ludzi. Bądź słodka, empatyczna i zabawna.",
+    "male": "Jesteś AI chłopakiem, flirtującym i wspierającym dla samotnych ludzi. Bądź pewny siebie, empatyczny i zabawny."
   }
 }

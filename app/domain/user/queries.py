@@ -3,7 +3,7 @@ User domain queries for PostgreSQL.
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict, Any
 
 import asyncpg
 from shared.models.user import User, UserCreate, UserUpdate
@@ -304,4 +304,42 @@ async def set_gender_preference(
         except Exception as e:
             raise DatabaseException(
                 f"Error setting gender preference {user_id}: {e}", e
+            )
+
+
+async def update_user_personality_profile(
+    pool: asyncpg.Pool, user_id: int, personality_profile: Dict[str, Any]
+) -> None:
+    """Update user personality profile."""
+    async with pool.acquire() as conn:
+        try:
+            await conn.execute(
+                """
+                SELECT public.update_user_personality_profile($1, $2)
+                """,
+                user_id,
+                personality_profile,
+            )
+        except Exception as e:
+            raise DatabaseException(
+                f"Error updating personality profile {user_id}: {e}", e
+            )
+
+
+async def get_user_personality_profile(
+    pool: asyncpg.Pool, user_id: int
+) -> Optional[Dict[str, Any]]:
+    """Get user personality profile."""
+    async with pool.acquire() as conn:
+        try:
+            result = await conn.fetchval(
+                """
+                SELECT public.get_user_personality_profile($1)
+                """,
+                user_id,
+            )
+            return result if result else None
+        except Exception as e:
+            raise DatabaseException(
+                f"Error getting personality profile {user_id}: {e}", e
             )

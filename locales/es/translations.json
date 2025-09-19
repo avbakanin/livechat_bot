@@ -12,26 +12,27 @@
       "reset_info": "El límite se restablecerá mañana a medianoche",
       "premium_days": "⏰ La suscripción premium expira en {days} días",
       "premium_hours": "⏰ La suscripción premium expira en {hours} horas",
-      "premium_expiring": "⚠️ ¡La suscripción premium expira hoy!"
+      "premium_expiring": "⏰ ¡La suscripción premium expira hoy!"
     },
     "help": {
       "title": "🤖 Ayuda del bot",
       "commands_title": "Comandos disponibles:",
-      "start_command": "/start - Comenzar a chatear con el bot",
-      "help_command": "/help - Mostrar esta ayuda",
-      "gender_command": "/choose_gender - Elegir el género del compañero",
-      "status_command": "/status - Mostrar estado de la cuenta e información de suscripción",
-      "language_command": "/language - Elegir idioma de la interfaz",
-      "restart_command": "/restart - Reiniciar el bot y borrar todos los datos",
-      "stop_command": "/stop - Detener interacción y borrar todos los datos",
+      "start_command": "/start - Iniciar bot",
+      "help_command": "/help - Ayuda",
+      "gender_command": "/choose_gender - Cambiar género",
+      "status_command": "/status - Estado de cuenta",
+      "language_command": "/language - Idioma",
+      "quiz_command": "/quiz - Conocerse",
+      "restart_command": "/restart - Reiniciar bot",
+      "stop_command": "/stop - Detener bot",
       "communication_title": "💬 Comunicación:",
       "free_limit": "• Gratis: {free_limit} mensajes por día",
-      "premium_unlimited": "• Premium: comunicación ilimitada",
+      "premium_unlimited": "• Premium: comunicación ilimitada.",
       "companion_title": "🎭 Selección de compañero:",
       "female_description": "• Chica - dulce y empática",
       "male_description": "• Chico - seguro de sí mismo y juguetón",
       "premium_title": "💎 Suscripción Premium:",
-      "premium_description": "Abre comunicación ilimitada y funciones adicionales",
+      "premium_description": "• Abre comunicación ilimitada y funciones adicionales.",
       "faq_title": "❓ Preguntas frecuentes:",
       "context_memory": "• El bot recuerda el contexto de la conversación",
       "gender_change": "• Puedes cambiar el género del compañero en cualquier momento",
@@ -45,12 +46,12 @@
       "available_languages": "Idiomas disponibles:"
     },
     "restart": {
-      "confirmation": "⚠️ <b>Reiniciar Bot</b>\n\n¿Estás seguro de que quieres reiniciar el bot?\n\n<b>Todos tus datos serán eliminados:</b>\n• Historia del chat\n• Configuraciones\n• Caché\n\n¡Esta acción no se puede deshacer!",
+      "confirmation": "🔄 <b>Reiniciar Bot</b>\n\n¿Estás seguro de que quieres reiniciar el bot?\n\n<b>Todos tus datos serán eliminados:</b>\n• Historia del chat\n• Configuraciones\n• Caché\n\nPor favor, confirma esta acción.",
       "success": "✅ <b>¡Bot reiniciado!</b>\n\nTodos los datos eliminados. Empezando de nuevo...",
       "cancelled": "❌ Reinicio cancelado"
     },
     "stop": {
-      "confirmation": "⚠️ <b>Detener Bot</b>\n\n¿Estás seguro de que quieres detener el bot?\n\n<b>Todos tus datos serán eliminados:</b>\n• Historia del chat\n• Configuraciones\n• Caché\n\n¡Esta acción no se puede deshacer!",
+      "confirmation": "🛑 <b>Detener Bot</b>\n\n¿Estás seguro de que quieres detener el bot?\n\n<b>Todos tus datos serán eliminados:</b>\n• Historia del chat\n• Configuraciones\n• Caché\n\n¡Esta acción no se puede deshacer!",
       "success": "👋 <b>Bot detenido</b>\n\nTodos los datos eliminados. ¡Hasta luego!",
       "cancelled": "❌ Detención cancelada"
     }
@@ -64,7 +65,7 @@
   "gender": {
     "choose": "Elige el género de tu compañero:",
     "toggle_gender": "El género del compañero cambió a {gender} 😊",
-    "change_warning": "⚠️ ¿Estás seguro de que quieres cambiar el género del compañero?\n\n¡Toda la historia del chat será eliminada!",
+    "change_warning": "🔄 ¿Estás seguro de que quieres cambiar el género del compañero?\n\n¡Toda la historia del chat será eliminada!",
     "change_confirmed": "Historia del chat eliminada. Elige el género de tu compañero:",
     "change_cancelled": "Cambio de género cancelado. Puedes continuar chateando."
   },

@@ -22,6 +22,7 @@ class Callbacks:
     CLEAN_METRICS = "/clean_metrics"
     # Subscription
     SUBSCRIBE_PREMIUM = "subscribe_premium"
+    BUY_PREMIUM = "buy_premium"
     PREMIUM_INFO_HELP = "premium_info_help"
 
     @classmethod
@@ -45,6 +46,7 @@ class Callbacks:
             cls.RESET_DAILY_METRICS,
             cls.CLEAN_METRICS,
             cls.SUBSCRIBE_PREMIUM,
+            cls.BUY_PREMIUM,
             cls.PREMIUM_INFO_HELP,
         ]
 
@@ -70,6 +72,7 @@ class Callbacks:
             "CLEAN_METRICS": cls.CLEAN_METRICS,
             "PREMIUM_INFO_HELP": cls.PREMIUM_INFO_HELP,
             "SUBSCRIBE_PREMIUM": cls.SUBSCRIBE_PREMIUM,
+            "BUY_PREMIUM": cls.BUY_PREMIUM,
         }
 
 

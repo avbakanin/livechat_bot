@@ -54,13 +54,26 @@ def analyze_personality(answers: Dict[str, Any]) -> Dict[str, float]:
 # Функция сохранения профиля личности
 async def save_personality_profile(user_id: int, personality_profile: Dict[str, float]):
     """Сохраняет профиль личности в базу данных"""
-    # Здесь реализуйте логику сохранения в вашу БД
-    # Например:
-    # await database.update_user(
-    #     user_id,
-    #     personality_traits=personality_profile
-    # )
-    pass
+    # Import here to avoid circular imports
+    from core.database import db_manager
+    
+    try:
+        # Get database pool
+        pool = await db_manager.get_pool()
+        if not pool:
+            raise Exception("Database pool not available")
+        
+        # Import UserService here to avoid circular imports
+        from domain.user.services_cached import UserService
+        user_service = UserService(pool)
+        
+        # Save personality profile
+        await user_service.update_personality_profile(user_id, personality_profile)
+        
+    except Exception as e:
+        # Log error but don't fail the quiz
+        print(f"Error saving personality profile for user {user_id}: {e}")
+        pass
 
 
 # Функция форматирования результатов

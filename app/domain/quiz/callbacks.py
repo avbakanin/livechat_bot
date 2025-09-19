@@ -195,3 +195,13 @@ async def process_animal(callback: CallbackQuery, state: FSMContext):
     )
 
     await state.clear()
+
+
+# Обработчик кнопки "Начать общение"
+@router.callback_query(F.data == "start_chatting")
+async def start_chatting_after_quiz(callback: CallbackQuery):
+    await callback.message.edit_text(
+        "Отлично! Теперь я знаю тебя лучше. Давай общаться! 😊\n\n"
+        "Просто напиши мне что-нибудь, и я отвечу с учетом твоих предпочтений."
+    )
+    await callback.answer()

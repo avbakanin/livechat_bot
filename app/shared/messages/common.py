@@ -30,6 +30,7 @@ def get_help_text(free_limit: int = None) -> str:
 {i18n.t('commands.help.gender_command')}
 {i18n.t('commands.help.status_command')}
 {i18n.t('commands.help.language_command')}
+{i18n.t('commands.help.quiz_command')}
 {i18n.t('commands.help.restart_command')}
 {i18n.t('commands.help.stop_command')}
 

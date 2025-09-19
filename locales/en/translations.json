@@ -12,26 +12,27 @@
       "reset_info": "Limit will reset tomorrow at midnight",
       "premium_days": "⏰ Premium subscription expires in {days} days",
       "premium_hours": "⏰ Premium subscription expires in {hours} hours",
-      "premium_expiring": "⚠️ Premium subscription expires today!"
+      "premium_expiring": "⏰ Premium subscription expires today!"
     },
     "help": {
       "title": "🤖 Bot Help",
       "commands_title": "Available commands:",
-      "start_command": "/start - Start chatting with the bot",
-      "help_command": "/help - Show this help",
-      "gender_command": "/choose_gender - Choose companion's gender",
-      "status_command": "/status - Show account status and subscription info",
-      "language_command": "/language - Choose interface language",
-      "restart_command": "/restart - Restart the bot and clear all data",
-      "stop_command": "/stop - Stop interaction and clear all data",
+      "start_command": "/start - Start bot",
+      "help_command": "/help - Help",
+      "gender_command": "/choose_gender - Change gender",
+      "status_command": "/status - Account status",
+      "language_command": "/language - Language",
+      "quiz_command": "/quiz - Get acquainted",
+      "restart_command": "/restart - Restart bot",
+      "stop_command": "/stop - Stop bot",
       "communication_title": "💬 Communication:",
       "free_limit": "• Free: {free_limit} messages per day",
-      "premium_unlimited": "• Premium: unlimited communication",
+      "premium_unlimited": "• Premium: unlimited communication.",
       "companion_title": "🎭 Companion Selection:",
       "female_description": "• Girl - sweet and empathetic",
       "male_description": "• Young man - confident and playful",
       "premium_title": "💎 Premium Subscription:",
-      "premium_description": "Opens unlimited communication and additional features",
+      "premium_description": "• Opens unlimited communication and additional features.",
       "faq_title": "❓ Frequently Asked Questions:",
       "context_memory": "• Bot remembers conversation context",
       "gender_change": "• You can change companion's gender anytime",
@@ -45,12 +46,12 @@
       "available_languages": "Available languages:"
     },
     "restart": {
-      "confirmation": "⚠️ <b>Bot Restart</b>\n\nAre you sure you want to restart the bot?\n\n<b>All your data will be deleted:</b>\n• Chat history\n• Settings\n• Cache\n\nThis action cannot be undone!",
+      "confirmation": "🔄 <b>Bot Restart</b>\n\nAre you sure you want to restart the bot?\n\n<b>All your data will be deleted:</b>\n• Chat history\n• Settings\n• Cache\n\nPlease confirm this action.",
       "success": "✅ <b>Bot restarted!</b>\n\nAll data cleared. Starting fresh...",
       "cancelled": "❌ Restart cancelled"
     },
     "stop": {
-      "confirmation": "⚠️ <b>Stop Bot</b>\n\nAre you sure you want to stop the bot?\n\n<b>All your data will be deleted:</b>\n• Chat history\n• Settings\n• Cache\n\nThis action cannot be undone!",
+      "confirmation": "🛑 <b>Stop Bot</b>\n\nAre you sure you want to stop the bot?\n\n<b>All your data will be deleted:</b>\n• Chat history\n• Settings\n• Cache\n\nThis action cannot be undone!",
       "success": "👋 <b>Bot stopped</b>\n\nAll data deleted. Goodbye!",
       "cancelled": "❌ Stop cancelled"
     }
@@ -66,7 +67,7 @@
     "choose_gender": "Choose companion's gender:",
     "gender_selected": "Gender selected: {gender} 😊",
     "toggle_gender": "Companion's gender changed to {gender} 😊",
-    "change_warning": "⚠️ Are you sure you want to change companion's gender?\n\nAll chat history will be deleted!",
+    "change_warning": "🔄 Are you sure you want to change companion's gender?\n\nAll chat history will be deleted!",
     "change_confirmed": "Chat history deleted. Choose companion's gender:",
     "change_cancelled": "Gender change cancelled. You can continue chatting."
   },

@@ -13,6 +13,8 @@ from domain.user.queries import get_user_consent as db_get_user_consent
 from domain.user.queries import set_gender_preference as db_set_gender_preference
 from domain.user.queries import set_user_consent as db_set_user_consent
 from domain.user.queries import update_user as db_update_user
+from domain.user.queries import update_user_personality_profile as db_update_user_personality_profile
+from domain.user.queries import get_user_personality_profile as db_get_user_personality_profile
 from shared.fsm.user_cache import UserCacheData, user_cache
 from shared.models.user import User, UserCreate, UserUpdate
 
@@ -194,3 +196,20 @@ class UserService:
         
         # Invalidate cache to ensure fresh data on next access
         await self.invalidate_cache(user_id)
+
+    async def update_personality_profile(
+        self, user_id: int, personality_profile: dict
+    ) -> None:
+        """Update user personality profile."""
+        await db_update_user_personality_profile(self.pool, user_id, personality_profile)
+        
+        # Update cache if user exists
+        cached_data = await user_cache.get(user_id)
+        if cached_data:
+            # Add personality profile to cache if needed
+            # For now, we'll just invalidate cache to ensure fresh data
+            await user_cache.delete(user_id)
+
+    async def get_personality_profile(self, user_id: int) -> Optional[dict]:
+        """Get user personality profile."""
+        return await db_get_user_personality_profile(self.pool, user_id)

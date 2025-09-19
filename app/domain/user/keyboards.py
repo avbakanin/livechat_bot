@@ -16,7 +16,19 @@ def get_consent_keyboard() -> InlineKeyboardMarkup:
             [
                 InlineKeyboardButton(
                     text=i18n.t("buttons.read_privacy"),
-                    url="https://your-site.com/privacy",
+                    url="https://mindlythica-neurivantis-ai-bot-priv.netlify.app/html/privacy",
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.read_terms"),
+                    url="https://mindlythica-neurivantis-ai-bot-priv.netlify.app/html/terms",
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text=i18n.t("buttons.read_disclaimer"),
+                    url="https://mindlythica-neurivantis-ai-bot-priv.netlify.app/html/disclaimer",
                 )
             ],
         ]

@@ -4,35 +4,35 @@ import logging
 from aiogram import F, Router
 from aiogram.types import CallbackQuery, Message
 
+from domain.subscription.keyboards import get_premium_info_keyboard
+from domain.subscription.messages import get_premium_info_text
+
+
 from shared.constants import LANGUAGE_NAMES, Callbacks
 from shared.decorators import error_decorator
-from domain.user.keyboards import (
+from shared.i18n import i18n
+from shared.keyboards.language import get_language_keyboard_with_current
+from shared.messages.common import get_help_text, get_privacy_info_text
+from shared.middlewares.i18n_middleware import I18nMiddleware
+from shared.metrics.metrics import (
+    safe_record_security_metric,
+    safe_record_user_interaction,
+)
+
+from .keyboards import (
     get_consent_given_keyboard,
     get_gender_keyboard,
     get_help_keyboard,
     get_privacy_info_keyboard,
 )
-from domain.subscription.keyboards import get_premium_info_keyboard
-from domain.user.messages import (
+from .services_cached import UserService
+from .messages import (
     get_consent_given_text,
     get_format_clean_metrics_response,
     get_format_reset_daily_metrics_response,
 )
-from domain.subscription.messages import get_premium_info_text
-from domain.user.services_cached import UserService
-from shared.i18n import i18n
-from shared.keyboards.language import get_language_keyboard_with_current
-from shared.messages.common import get_help_text, get_privacy_info_text
-from shared.metrics.metrics import (
-    safe_record_security_metric,
-    safe_record_user_interaction,
-)
-from shared.middlewares.i18n_middleware import I18nMiddleware
-# AccessMiddleware imported in setup_routers
 
 router = Router()
-
-# AccessMiddleware now applied globally in setup_routers
 
 
 @router.callback_query(F.data.in_([Callbacks.GENDER_FEMALE, Callbacks.GENDER_MALE]))

@@ -1,12 +1,10 @@
 from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import Message
-from shared.constants import LANGUAGE_NAMES, BotCommands
-from shared.decorators import error_decorator
 
 
 from domain.message.services import MessageService
-from domain.user.keyboards import (
+from .keyboards import (
     get_consent_keyboard,
     get_gender_change_confirmation_keyboard,
     get_gender_keyboard,
@@ -15,20 +13,24 @@ from domain.user.keyboards import (
     get_stop_confirmation_keyboard,
     get_status_keyboard,
 )
-from domain.user.messages import (
+from .messages import (
     get_format_metrics_summary,
     get_format_security_metrics,
 )
-from domain.user.services_cached import UserService
+from .services_cached import UserService
+
+from shared.constants import LANGUAGE_NAMES, BotCommands
+from shared.decorators import error_decorator
 from shared.fsm.user_cache import UserCacheData
 from shared.i18n import i18n
 from shared.keyboards.language import get_language_keyboard_with_current
 from shared.messages.common import get_help_text, get_privacy_info_text
+from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.metrics.metrics import (
     safe_record_metric,
     safe_record_user_interaction,
 )
-from shared.middlewares.i18n_middleware import I18nMiddleware
+
 # AccessMiddleware imported in setup_routers
 from shared.helpers import destructure_user
 
@@ -170,7 +172,7 @@ async def cmd_status(
                 f"{i18n.t('commands.status.title')}\n\n"
                 f"{i18n.t('commands.status.unlimited')}\n\n"
                 f"{premium_info}",
-                reply_markup=get_status_keyboard()
+                reply_markup=get_status_keyboard(),
             )
             return
 

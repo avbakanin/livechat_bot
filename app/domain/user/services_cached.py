@@ -195,6 +195,9 @@ class UserService:
         # Clear gender preference so next selection is treated as first choice
         await self.clear_gender_preference(user_id)
         
+        # Clear personality profile to reset quiz results
+        await self.clear_personality_profile(user_id)
+        
         # Invalidate cache to ensure fresh data on next access
         await self.invalidate_cache(user_id)
 
@@ -210,6 +213,13 @@ class UserService:
             # Add personality profile to cache if needed
             # For now, we'll just invalidate cache to ensure fresh data
             await user_cache.delete(user_id)
+
+    async def clear_personality_profile(self, user_id: int) -> None:
+        """Clear user personality profile."""
+        await db_update_user_personality_profile(self.pool, user_id, None)
+        
+        # Invalidate cache to ensure fresh data
+        await self.invalidate_cache(user_id)
 
     async def get_personality_profile(self, user_id: int) -> Optional[dict]:
         """Get user personality profile."""

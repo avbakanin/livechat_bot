@@ -155,12 +155,12 @@ async def cmd_status(
 ):
     user_id = message.from_user.id
 
-    if cached_user:
-        subscription_status = cached_user.subscription_status
-        subscription_expires_at = cached_user.subscription_expires_at
-    else:
-        subscription_status = await user_service.get_subscription_status(user_id)
-        subscription_expires_at = await user_service.get_subscription_expires_at(user_id)
+    # Always invalidate cache to get fresh subscription data
+    await user_service.invalidate_cache(user_id)
+    
+    # Get fresh data from database
+    subscription_status = await user_service.get_subscription_status(user_id)
+    subscription_expires_at = await user_service.get_subscription_expires_at(user_id)
 
     if subscription_status == "premium" and subscription_expires_at:
         from datetime import datetime

@@ -90,7 +90,7 @@
     "no": "Nie",
     "female": "Dziewczyna",
     "male": "Chłopak",
-    "back_to_help": "Powrót do pomocy",
+    "back_to_help": "↩️ Powrót do pomocy",
     "read_terms": "Przeczytaj warunki usługi",
     "read_disclaimer": "Przeczytaj zastrzeżenie"
   },
@@ -162,7 +162,7 @@
     "personality_section_with_persona": "Jesteś AI {gender}, flirtującym i wspierającym dla samotnych ludzi. Bądź {gender_traits}.\n\nWAŻNE: Zawsze odpowiadaj po polsku.\n\nCechy użytkownika: {traits_description}. Dostosuj swój styl odpowiednio."
   },
   "quiz": {
-    "start_text": "Cześć! Poznajmy się lepiej. Zadam ci kilka nietypowych pytań, aby lepiej zrozumieć twój charakter i preferencje. To pomoże mi komunikować się z tobą w bardziej znaczący sposób!",
+    "start_text": "👋 Cześć! Poznajmy się lepiej! 🧠\n\nZadam ci kilka nietypowych pytań, aby lepiej zrozumieć twój charakter i preferencje. To pomoże mi komunikować się z tobą w bardziej znaczący sposób! ✨",
     "start_button": "Rozpocznij Quiz ✨",
     "questions": {
       "landscape": "1/7 Wybierz krajobraz, który cię najbardziej przyciąga:",

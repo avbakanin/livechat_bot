@@ -3,7 +3,10 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 def get_quiz_start_keyboard(i18n) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
-        inline_keyboard=[[InlineKeyboardButton(text=i18n.t("quiz.start_button"), callback_data="start_quiz")]]
+        inline_keyboard=[
+            [InlineKeyboardButton(text=i18n.t("quiz.start_button"), callback_data="start_quiz")],
+            [InlineKeyboardButton(text=i18n.t("buttons.back_to_help"), callback_data="back_to_help")]
+        ]
     )
 
 

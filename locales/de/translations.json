@@ -231,7 +231,7 @@
     }
   },
   "quiz": {
-    "start_text": "Hallo! Lass uns uns besser kennenlernen. Ich stelle dir einige ungewöhnliche Fragen, um deinen Charakter und deine Vorlieben besser zu verstehen. Das wird mir helfen, mit dir bedeutungsvoller zu kommunizieren!",
+    "start_text": "👋 Hallo! Lass uns uns besser kennenlernen! 🧠\n\nIch stelle dir einige ungewöhnliche Fragen, um deinen Charakter und deine Vorlieben besser zu verstehen. Das wird mir helfen, mit dir bedeutungsvoller zu kommunizieren! ✨",
     "start_button": "Quiz starten ✨",
     "questions": {
       "landscape": "1/7 Wähle die Landschaft, die dir am nächsten ist:",

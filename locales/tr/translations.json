@@ -90,7 +90,7 @@
     "no": "Hayır",
     "female": "Kız",
     "male": "Erkek",
-    "back_to_help": "Yardıma dön",
+    "back_to_help": "↩️ Yardıma dön",
     "read_terms": "Hizmet şartlarını oku",
     "read_disclaimer": "Sorumluluk reddini oku"
   },
@@ -162,7 +162,7 @@
     "personality_section_with_persona": "Sen yalnız insanlar için flört eden ve destekleyen bir AI {gender}'sın. {gender_traits} ol.\n\nÖNEMLİ: Her zaman Türkçe cevap verin.\n\nKullanıcı özellikleri: {traits_description}. Stilinizi buna göre ayarlayın."
   },
   "quiz": {
-    "start_text": "Merhaba! Daha iyi tanışalım. Karakterinizi ve tercihlerinizi daha iyi anlamak için size bazı alışılmadık sorular soracağım. Bu, sizinle daha anlamlı iletişim kurmama yardımcı olacak!",
+    "start_text": "👋 Merhaba! Daha iyi tanışalım! 🧠\n\nKarakterinizi ve tercihlerinizi daha iyi anlamak için size bazı alışılmadık sorular soracağım. Bu, sizinle daha anlamlı iletişim kurmama yardımcı olacak! ✨",
     "start_button": "Quiz'i Başlat ✨",
     "questions": {
       "landscape": "1/7 Sizi en çok çeken manzarayı seçin:",

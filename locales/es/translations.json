@@ -216,7 +216,7 @@
     "personality_section_with_persona": "Eres una IA {gender}, que coquetea y apoya a personas solitarias. Sé {gender_traits}.\n\nIMPORTANTE: Siempre responde en español.\n\nRasgos del usuario: {traits_description}. Adapta tu estilo en consecuencia."
   },
   "quiz": {
-    "start_text": "¡Hola! Conozcámonos mejor. Te haré algunas preguntas inusuales para entender mejor tu carácter y preferencias. ¡Esto me ayudará a comunicarme contigo de manera más significativa!",
+    "start_text": "👋 ¡Hola! ¡Conozcámonos mejor! 🧠\n\nTe haré algunas preguntas inusuales para entender mejor tu carácter y preferencias. ¡Esto me ayudará a comunicarme contigo de manera más significativa! ✨",
     "start_button": "Comenzar Quiz ✨",
     "questions": {
       "landscape": "1/7 Elige el paisaje que más te atraiga:",

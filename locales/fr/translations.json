@@ -92,7 +92,7 @@
     "no": "Non",
     "female": "Fille",
     "male": "Garçon",
-    "back_to_help": "Retour à l'aide"
+    "back_to_help": "↩️ Retour à l'aide"
   },
   "persons": {
     "gender": {
@@ -162,7 +162,7 @@
     "personality_section_with_persona": "Tu es une IA {gender}, flirt et supportive pour les personnes seules. Sois {gender_traits}.\n\nIMPORTANT: Répondez toujours en français.\n\nTraits de l'utilisateur: {traits_description}. Adaptez votre style en conséquence."
   },
   "quiz": {
-    "start_text": "Salut ! Apprenons à mieux nous connaître. Je vais te poser quelques questions inhabituelles pour mieux comprendre ton caractère et tes préférences. Cela m'aidera à communiquer avec toi de manière plus significative !",
+    "start_text": "👋 Salut ! Apprenons à mieux nous connaître ! 🧠\n\nJe vais te poser quelques questions inhabituelles pour mieux comprendre ton caractère et tes préférences. Cela m'aidera à communiquer avec toi de manière plus significative ! ✨",
     "start_button": "Commencer le Quiz ✨",
     "questions": {
       "landscape": "1/7 Choisis le paysage qui t'attire le plus :",

@@ -234,7 +234,7 @@
     }
   },
   "quiz": {
-    "start_text": "Hi! Let's get to know each other better. I'll ask you some unusual questions to better understand your character and preferences. This will help me communicate with you more meaningfully!",
+    "start_text": "👋 Hi! Let's get to know each other better! 🧠\n\nI'll ask you some unusual questions to better understand your character and preferences. This will help me communicate with you more meaningfully! ✨",
     "start_button": "Start Quiz ✨",
     "questions": {
       "landscape": "1/7 Choose the landscape that appeals to you most:",

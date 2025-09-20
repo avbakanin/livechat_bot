@@ -180,7 +180,7 @@ async def cmd_status(
                 f"{i18n.t('commands.status.title')}\n\n"
                 f"{i18n.t('commands.status.unlimited')}\n\n"
                 f"{premium_info}",
-                reply_markup=get_status_keyboard(),
+                reply_markup=get_status_keyboard(is_premium=True),
             )
             return
 
@@ -198,7 +198,7 @@ async def cmd_status(
 
     response += f"\n\n{i18n.t('commands.status.reset_info')}"
 
-    await message.answer(response, reply_markup=get_status_keyboard())
+    await message.answer(response, reply_markup=get_status_keyboard(is_premium=False))
 
 
 # ЧТО ЭТО??
@@ -211,7 +211,7 @@ async def cmd_security(message: Message):
     user_id = message.from_user.id
 
     # Check if user is admin (hardcoded for now)
-    if user_id not in {627875032, 1512454100, 826795306}:
+    if user_id not in {627875032, 1512454100, 826795306, 284506756}:
         await message.answer("Access denied.")
         return
 
@@ -231,7 +231,7 @@ async def cmd_security(message: Message):
 async def cmd_reset_metrics(message: Message):
     user_id = message.from_user.id
 
-    if user_id not in {627875032, 1512454100, 826795306}:
+    if user_id not in {627875032, 1512454100, 826795306, 284506756}:
         await message.answer("Access denied.")
         return
 
@@ -295,7 +295,7 @@ async def cmd_stop(message: Message, i18n: I18nMiddleware, cached_user: UserCach
 async def cmd_metrics(message: Message):
     user_id = message.from_user.id
 
-    if user_id not in {627875032, 1512454100, 826795306}:
+    if user_id not in {627875032, 1512454100, 826795306, 284506756}:
         await message.answer("Access denied.")
         return
 
@@ -323,3 +323,78 @@ async def cmd_metrics(message: Message):
     _metrics_cache["last_update"] = current_time
 
     await message.answer(response)
+
+
+@router.message(Command(commands=["debug_user"]))
+@error_decorator
+async def cmd_debug_user(
+    message: Message,
+    user_service: UserService,
+    i18n: I18nMiddleware,
+    cached_user: UserCacheData = None,
+):
+    """Debug user data - admin command."""
+    user_id = message.from_user.id
+    
+    # Only allow for specific user (admin)
+    if user_id != 627875032:
+        await message.answer("❌ Доступ запрещен")
+        return
+    
+    try:
+        # Get user from database
+        user = await user_service.get_user(user_id)
+        
+        debug_info = f"🔍 Debug информация для пользователя {user_id}:\n\n"
+        
+        if user:
+            debug_info += f"📊 Данные из БД:\n"
+            debug_info += f"  ID: {user.id}\n"
+            debug_info += f"  Username: {user.username}\n"
+            debug_info += f"  Subscription Status: {user.subscription_status}\n"
+            debug_info += f"  Subscription Expires At: {user.subscription_expires_at}\n"
+            debug_info += f"  Consent Given: {user.consent_given}\n\n"
+        else:
+            debug_info += f"❌ Пользователь не найден в БД!\n\n"
+        
+        if cached_user:
+            debug_info += f"💾 Данные из кэша:\n"
+            debug_info += f"  Subscription Status: {cached_user.subscription_status}\n"
+            debug_info += f"  Subscription Expires At: {cached_user.subscription_expires_at}\n"
+            debug_info += f"  Consent Given: {cached_user.consent_given}\n"
+        else:
+            debug_info += f"💾 Кэш пуст\n"
+        
+        await message.answer(debug_info)
+        
+    except Exception as e:
+        await message.answer(f"❌ Ошибка при получении данных: {e}")
+
+
+@router.message(Command(commands=[BotCommands.CLEAR_CACHE]))
+@error_decorator
+async def cmd_clear_cache(
+    message: Message,
+    user_service: UserService,
+    i18n: I18nMiddleware,
+    cached_user: UserCacheData = None,
+):
+    """Clear user cache - admin command for debugging."""
+    user_id = message.from_user.id
+    
+    # Only allow for specific user (admin)
+    if user_id != 627875032:
+        await message.answer("❌ Доступ запрещен")
+        return
+    
+    try:
+        # Clear cache for this user
+        await user_service.invalidate_cache(user_id)
+        
+        await message.answer(
+            f"✅ Кэш пользователя {user_id} очищен!\n\n"
+            "Теперь попробуйте команду /status"
+        )
+        
+    except Exception as e:
+        await message.answer(f"❌ Ошибка при очистке кэша: {e}")

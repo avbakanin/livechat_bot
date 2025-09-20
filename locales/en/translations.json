@@ -67,8 +67,8 @@
   "gender": {
     "choose": "Choose companion's gender:",
     "choose_gender": "Choose companion's gender:",
-    "gender_selected": "Gender selected: {gender} 😊",
-    "toggle_gender": "Companion's gender selected: {gender} 😊",
+    "gender_selected": "Gender selected: {gender} 😊\n\nNow you can start chatting! 💬",
+    "toggle_gender": "Companion's gender selected: {gender} 😊\n\nNow you can start chatting! 💬",
     "change_warning": "🔄 Are you sure you want to change companion's gender?\n\nAll chat history will be deleted!",
     "change_confirmed": "Chat history deleted. Choose companion's gender:",
     "change_cancelled": "Gender change cancelled. You can continue chatting."
@@ -193,6 +193,7 @@
     "female": "Girl 😊",
     "male": "Young man 😉",
     "buy_premium": "Buy premium 💳",
+    "extend_premium": "Extend premium 💳",
     "pay": "💳 Pay",
     "yes_change": "Yes, change gender",
     "cancel": "Cancel",
@@ -213,5 +214,60 @@
   "ai_prompts": {
     "female": "You are an AI girl, flirty and supportive for lonely people. Be sweet, empathetic and playful.",
     "male": "You are an AI young man, flirty and supportive for lonely people. Be confident, empathetic and playful."
+  },
+  "quiz": {
+    "start_text": "Hi! Let's get to know each other better. I'll ask you some unusual questions to better understand your character and preferences. This will help me communicate with you more meaningfully!",
+    "start_button": "Start Quiz ✨",
+    "questions": {
+      "landscape": "1/7 Choose the landscape that appeals to you most:",
+      "superpower": "2/7 What superpower would you choose?",
+      "time_of_day": "3/7 What time of day is closest to you?",
+      "book": "4/7 What book would you take to a deserted island?",
+      "three_words": "5/7 Describe yourself in three words (write your answer as a message):",
+      "rest": "6/7 What is your ideal rest?",
+      "animal": "7/7 What animal is closest to your character?"
+    },
+    "options": {
+      "landscape_mountains": "🏔️ Mountain peaks",
+      "landscape_ocean": "🌊 Ocean shore",
+      "landscape_forest": "🏞️ Quiet forest",
+      "landscape_city": "🌇 City lights",
+      "superpower_mind_reading": "🧠 Mind reading",
+      "superpower_time_stop": "🕰️ Time stop",
+      "superpower_teleport": "✈️ Teleportation",
+      "superpower_immortality": "🐢 Immortality",
+      "time_morning": "🌅 Early morning",
+      "time_day": "☀️ Day",
+      "time_evening": "🌇 Evening",
+      "time_night": "🌙 Night",
+      "book_encyclopedia": "📚 Encyclopedia",
+      "book_detective": "📖 Detective",
+      "book_novel": "📙 Novel",
+      "book_poetry": "📗 Poetry",
+      "rest_party": "🎉 Party with friends",
+      "rest_home": "🎮 Games/movies at home",
+      "rest_nature": "🏕️ Nature hike",
+      "rest_reading": "📚 Reading a book",
+      "animal_lion": "🦁 Lion",
+      "animal_fox": "🦊 Fox",
+      "animal_dolphin": "🐬 Dolphin",
+      "animal_owl": "🦉 Owl"
+    },
+    "messages": {
+      "min_words": "Please write at least two words to describe yourself",
+      "completion": "Thank you for taking the quiz! Here's what I learned about you:\n\n{result}\n\nThis information will help me be a more helpful conversationalist!",
+      "start_chatting": "Great! Now I know you better. Let's chat! 😊\n\nJust write me something, and I'll respond taking into account your preferences.",
+      "start_chatting_button": "Start Chatting 💬"
+    },
+    "personality_traits": {
+      "adventurous": "• You are an adventurer and love new challenges",
+      "analytical": "• You have an analytical mind",
+      "creative": "• You are a creative person",
+      "social": "• You are sociable and social person",
+      "introverted": "• You value solitude and self-reflection",
+      "empathic": "• You are empathetic and understand other people",
+      "practical": "• You are a practical and realistic person",
+      "free_spirited": "• You are a free-spirited personality"
+    }
   }
 }

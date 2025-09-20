@@ -65,8 +65,8 @@
   "gender": {
     "choose": "Arkadaşın cinsiyetini seç:",
     "choose_gender": "Arkadaşın cinsiyetini seç:",
-    "gender_selected": "Seçilen cinsiyet: {gender} 😊",
-    "toggle_gender": "Arkadaşın cinsiyeti seçildi: {gender} 😊",
+    "gender_selected": "Seçilen cinsiyet: {gender} 😊\n\nArtık sohbet etmeye başlayabilirsiniz! 💬",
+    "toggle_gender": "Arkadaşın cinsiyeti seçildi: {gender} 😊\n\nArtık sohbet etmeye başlayabilirsiniz! 💬",
     "change_warning": "🔄 Arkadaşın cinsiyetini değiştirmek istediğinizden emin misiniz?\n\nTüm sohbet geçmişi silinecek!",
     "change_confirmed": "Sohbet geçmişi silindi. Arkadaşın cinsiyetini seç:",
     "change_cancelled": "Cinsiyet değişikliği iptal edildi. Sohbete devam edebilirsin."
@@ -84,6 +84,7 @@
     "choose_female": "👩 Kız seç",
     "choose_male": "👨 Erkek seç",
     "buy_premium": "💎 Premium Satın Al",
+    "extend_premium": "💎 Premium Uzat",
     "yes": "Evet",
     "no": "Hayır",
     "female": "Kız",
@@ -156,5 +157,60 @@
   "ai_prompts": {
     "female": "Sen yalnız insanlar için flört eden ve destekleyici bir AI kızsın. Tatlı, empatik ve oyuncu ol.",
     "male": "Sen yalnız insanlar için flört eden ve destekleyici bir AI erkeksin. Kendinden emin, empatik ve oyuncu ol."
+  },
+  "quiz": {
+    "start_text": "Merhaba! Daha iyi tanışalım. Karakterinizi ve tercihlerinizi daha iyi anlamak için size bazı alışılmadık sorular soracağım. Bu, sizinle daha anlamlı iletişim kurmama yardımcı olacak!",
+    "start_button": "Quiz'i Başlat ✨",
+    "questions": {
+      "landscape": "1/7 Sizi en çok çeken manzarayı seçin:",
+      "superpower": "2/7 Hangi süper gücü seçerdiniz?",
+      "time_of_day": "3/7 Hangi zaman size en yakın?",
+      "book": "4/7 Issız bir adaya hangi kitabı götürürdünüz?",
+      "three_words": "5/7 Kendinizi üç kelimeyle tanımlayın (cevabınızı mesaj olarak yazın):",
+      "rest": "6/7 Sizin için ideal dinlenme nedir?",
+      "animal": "7/7 Hangi hayvan karakter olarak size en yakın?"
+    },
+    "options": {
+      "landscape_mountains": "🏔️ Dağ zirveleri",
+      "landscape_ocean": "🌊 Okyanus kıyısı",
+      "landscape_forest": "🏞️ Sessiz orman",
+      "landscape_city": "🌇 Şehir ışıkları",
+      "superpower_mind_reading": "🧠 Zihin okuma",
+      "superpower_time_stop": "🕰️ Zamanı durdurma",
+      "superpower_teleport": "✈️ Işınlanma",
+      "superpower_immortality": "🐢 Ölümsüzlük",
+      "time_morning": "🌅 Erken sabah",
+      "time_day": "☀️ Gündüz",
+      "time_evening": "🌇 Akşam",
+      "time_night": "🌙 Gece",
+      "book_encyclopedia": "📚 Ansiklopedi",
+      "book_detective": "📖 Polisiye",
+      "book_novel": "📙 Roman",
+      "book_poetry": "📗 Şiir",
+      "rest_party": "🎉 Arkadaşlarla parti",
+      "rest_home": "🎮 Evde oyunlar/filmler",
+      "rest_nature": "🏕️ Doğa yürüyüşü",
+      "rest_reading": "📚 Kitap okuma",
+      "animal_lion": "🦁 Aslan",
+      "animal_fox": "🦊 Tilki",
+      "animal_dolphin": "🐬 Yunus",
+      "animal_owl": "🦉 Baykuş"
+    },
+    "messages": {
+      "min_words": "Lütfen kendinizi tanımlamak için en az iki kelime yazın",
+      "completion": "Quiz'i aldığınız için teşekkürler! Sizin hakkınızda öğrendiklerim:\n\n{result}\n\nBu bilgiler daha yardımcı bir konuşmacı olmama yardımcı olacak!",
+      "start_chatting": "Harika! Artık sizi daha iyi tanıyorum. Sohbet edelim! 😊\n\nSadece bana bir şeyler yazın, tercihlerinizi göz önünde bulundurarak cevap vereceğim.",
+      "start_chatting_button": "Sohbete Başla 💬"
+    },
+    "personality_traits": {
+      "adventurous": "• Sen bir maceracısın ve yeni zorlukları seviyorsun",
+      "analytical": "• Analitik bir zihnin var",
+      "creative": "• Sen yaratıcı bir insansın",
+      "social": "• Sen sosyal ve toplumsal bir insansın",
+      "introverted": "• Yalnızlığı ve kendi kendine analizi değer veriyorsun",
+      "empathic": "• Sen empatiksin ve diğer insanları anlıyorsun",
+      "practical": "• Sen pratik ve gerçekçi bir insansın",
+      "free_spirited": "• Sen özgür ruhlu bir kişisin"
+    }
   }
 }

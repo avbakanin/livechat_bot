@@ -66,7 +66,7 @@ OPENAI_CONFIG: OpenAIConfig = {
 # Telegram configuration
 TELEGRAM_CONFIG: TelegramConfig = {
     "token": os.getenv("TELEGRAM_TOKEN"),
-    "allowed_user_ids": {627875032, 1512454100, 826795306},  # Allowed user IDs
+    "allowed_user_ids": {627875032, 1512454100, 826795306, 284506756},  # Allowed user IDs
 }
 
 # Application configuration (legacy compatibility)

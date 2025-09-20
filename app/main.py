@@ -17,7 +17,7 @@ from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.tasks import DailyResetTask, PartitionManagementTask
 
 from core.database import db_manager
-from core.middleware import AccessMiddleware, LoggingMiddleware, ServiceMiddleware
+from core.middleware import LoggingMiddleware, ServiceMiddleware
 
 
 async def main():

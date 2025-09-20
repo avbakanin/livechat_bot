@@ -134,7 +134,7 @@ async def save_personality_profile(user_id: int, personality_profile: Dict[str, 
 
 
 # Функция форматирования результатов
-def format_personality_results(personality_profile: Dict[str, float]) -> str:
+def format_personality_results(personality_profile: Dict[str, float], i18n) -> str:
     """Форматирует результаты анализа личности в читаемый текст"""
     # Определяем доминирующие черты
     dominant_traits = sorted(personality_profile.items(), key=lambda x: x[1], reverse=True)[
@@ -144,21 +144,6 @@ def format_personality_results(personality_profile: Dict[str, float]) -> str:
     result = ""
     for trait_name, trait_value in dominant_traits:
         if trait_value > 0:  # Only include traits with positive values
-            if trait_name == "adventurous":
-                result += "• Ты авантюрист и любишь новые вызовы\n"
-            elif trait_name == "analytical":
-                result += "• У тебя аналитический склад ума\n"
-            elif trait_name == "creative":
-                result += "• Ты творческая личность\n"
-            elif trait_name == "social":
-                result += "• Ты общительный и социальный человек\n"
-            elif trait_name == "introverted":
-                result += "• Ты ценишь уединение и самоанализ\n"
-            elif trait_name == "empathic":
-                result += "• Ты empathetic и понимаешь других людей\n"
-            elif trait_name == "practical":
-                result += "• Ты практичный и реалистичный человек\n"
-            elif trait_name == "free_spirited":
-                result += "• Ты свободолюбивая личность\n"
+            result += i18n.t(f"quiz.personality_traits.{trait_name}") + "\n"
 
     return result

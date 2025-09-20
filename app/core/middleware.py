@@ -1,43 +1,10 @@
 """
-Aiogram middleware for access control and other common functionality.
+Aiogram middleware for logging and service injection functionality.
 """
-from typing import Any, Awaitable, Callable, Dict, Set
+from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message, TelegramObject
-from shared.metrics.metrics import safe_record_security_metric
-
-
-class AccessMiddleware(BaseMiddleware):
-    """Middleware to restrict bot access to specific user IDs."""
-
-    def __init__(self, allowed_ids: Set[int]):
-        self.allowed_ids = allowed_ids
-
-    async def __call__(
-        self,
-        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
-        event: TelegramObject,
-        data: Dict[str, Any],
-    ) -> Any:
-        """Check if user is allowed to use the bot."""
-
-        # Get user ID from different event types
-        user_id = None
-        if isinstance(event, Message):
-            user_id = event.from_user.id
-        elif isinstance(event, CallbackQuery):
-            user_id = event.from_user.id
-
-        if user_id and user_id not in self.allowed_ids:
-            safe_record_security_metric("record_access_denied")
-            if isinstance(event, Message):
-                await event.answer("❌ Доступ запрещен. Обратитесь к администратору.")
-            elif isinstance(event, CallbackQuery):
-                await event.answer("❌ Доступ запрещен.", show_alert=True)
-            return
-
-        return await handler(event, data)
 
 
 class LoggingMiddleware(BaseMiddleware):

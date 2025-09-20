@@ -192,13 +192,20 @@ def get_stop_confirmation_keyboard() -> InlineKeyboardMarkup:
     )
 
 
-def get_status_keyboard() -> InlineKeyboardMarkup:
-    """Клавиатура для команды /status с кнопкой покупки премиума и возврата к помощи."""
+def get_status_keyboard(is_premium: bool = False) -> InlineKeyboardMarkup:
+    """Клавиатура для команды /status с кнопкой покупки/продления премиума и возврата к помощи."""
+    
+    # Выбираем текст кнопки в зависимости от статуса подписки
+    if is_premium:
+        premium_button_text = i18n.t("buttons.extend_premium")
+    else:
+        premium_button_text = i18n.t("buttons.buy_premium")
+    
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.buy_premium"),
+                    text=premium_button_text,
                     callback_data=Callbacks.BUY_PREMIUM,
                 )
             ],

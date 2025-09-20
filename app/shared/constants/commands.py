@@ -89,6 +89,7 @@ class BotCommands:
     STOP = "stop"
     METRICS = "metrics"
     QUIZ = "quiz"
+    CLEAR_CACHE = "clear_cache"
 
     @classmethod
     def get_all_commands(cls):
@@ -106,6 +107,7 @@ class BotCommands:
             cls.STOP,
             cls.METRICS,
             cls.QUIZ,
+            cls.CLEAR_CACHE,
         ]
 
     @classmethod
@@ -124,4 +126,5 @@ class BotCommands:
             "STOP": cls.STOP,
             "METRICS": cls.METRICS,
             "QUIZ": cls.QUIZ,
+            "CLEAR_CACHE": cls.CLEAR_CACHE,
         }

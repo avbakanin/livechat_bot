@@ -65,8 +65,8 @@
   "gender": {
     "choose": "Wybierz płeć swojego towarzysza:",
     "choose_gender": "Wybierz płeć swojego towarzysza:",
-    "gender_selected": "Wybrana płeć: {gender} 😊",
-    "toggle_gender": "Płeć towarzysza wybrana: {gender} 😊",
+    "gender_selected": "Wybrana płeć: {gender} 😊\n\nTeraz możesz zacząć czatować! 💬",
+    "toggle_gender": "Płeć towarzysza wybrana: {gender} 😊\n\nTeraz możesz zacząć czatować! 💬",
     "change_warning": "🔄 Czy na pewno chcesz zmienić płeć towarzysza?\n\nCała historia rozmów zostanie usunięta!",
     "change_confirmed": "Historia rozmów została usunięta. Wybierz płeć swojego towarzysza:",
     "change_cancelled": "Zmiana płci anulowana. Możesz kontynuować rozmowę."
@@ -84,6 +84,7 @@
     "choose_female": "👩 Wybierz dziewczynę",
     "choose_male": "👨 Wybierz chłopaka",
     "buy_premium": "💎 Kup Premium",
+    "extend_premium": "💎 Przedłuż Premium",
     "yes": "Tak",
     "no": "Nie",
     "female": "Dziewczyna",
@@ -156,5 +157,60 @@
   "ai_prompts": {
     "female": "Jesteś AI dziewczyną, flirtującą i wspierającą dla samotnych ludzi. Bądź słodka, empatyczna i zabawna.",
     "male": "Jesteś AI chłopakiem, flirtującym i wspierającym dla samotnych ludzi. Bądź pewny siebie, empatyczny i zabawny."
+  },
+  "quiz": {
+    "start_text": "Cześć! Poznajmy się lepiej. Zadam ci kilka nietypowych pytań, aby lepiej zrozumieć twój charakter i preferencje. To pomoże mi komunikować się z tobą w bardziej znaczący sposób!",
+    "start_button": "Rozpocznij Quiz ✨",
+    "questions": {
+      "landscape": "1/7 Wybierz krajobraz, który cię najbardziej przyciąga:",
+      "superpower": "2/7 Jaką supermoc wybrałbyś?",
+      "time_of_day": "3/7 Która pora dnia jest ci najbliższa?",
+      "book": "4/7 Jaką książkę zabrałbyś na bezludną wyspę?",
+      "three_words": "5/7 Opisz siebie trzema słowami (napisz odpowiedź jako wiadomość):",
+      "rest": "6/7 Co jest dla ciebie idealnym odpoczynkiem?",
+      "animal": "7/7 Jakie zwierzę jest ci najbliższe charakterem?"
+    },
+    "options": {
+      "landscape_mountains": "🏔️ Szczyty górskie",
+      "landscape_ocean": "🌊 Wybrzeże oceanu",
+      "landscape_forest": "🏞️ Cichy las",
+      "landscape_city": "🌇 Światła miasta",
+      "superpower_mind_reading": "🧠 Czytanie w myślach",
+      "superpower_time_stop": "🕰️ Zatrzymanie czasu",
+      "superpower_teleport": "✈️ Teleportacja",
+      "superpower_immortality": "🐢 Nieśmiertelność",
+      "time_morning": "🌅 Wczesny poranek",
+      "time_day": "☀️ Dzień",
+      "time_evening": "🌇 Wieczór",
+      "time_night": "🌙 Noc",
+      "book_encyclopedia": "📚 Encyklopedia",
+      "book_detective": "📖 Kryminał",
+      "book_novel": "📙 Powieść",
+      "book_poetry": "📗 Poezja",
+      "rest_party": "🎉 Impreza z przyjaciółmi",
+      "rest_home": "🎮 Gry/filmy w domu",
+      "rest_nature": "🏕️ Wyprawa w naturę",
+      "rest_reading": "📚 Czytanie książki",
+      "animal_lion": "🦁 Lew",
+      "animal_fox": "🦊 Lis",
+      "animal_dolphin": "🐬 Delfin",
+      "animal_owl": "🦉 Sowa"
+    },
+    "messages": {
+      "min_words": "Proszę, napisz przynajmniej dwa słowa, aby się opisać",
+      "completion": "Dziękuję za wzięcie udziału w quizie! Oto czego się o tobie dowiedziałem:\n\n{result}\n\nTe informacje pomogą mi być bardziej pomocnym rozmówcą!",
+      "start_chatting": "Świetnie! Teraz znam cię lepiej. Porozmawiajmy! 😊\n\nPo prostu napisz mi coś, a odpowiem biorąc pod uwagę twoje preferencje.",
+      "start_chatting_button": "Zacznij Czatować 💬"
+    },
+    "personality_traits": {
+      "adventurous": "• Jesteś poszukiwaczem przygód i kochasz nowe wyzwania",
+      "analytical": "• Masz analityczny umysł",
+      "creative": "• Jesteś kreatywną osobą",
+      "social": "• Jesteś towarzyski i osobą społeczną",
+      "introverted": "• Cenisz samotność i autorefleksję",
+      "empathic": "• Jesteś empatyczny i rozumiesz innych ludzi",
+      "practical": "• Jesteś praktyczną i realistyczną osobą",
+      "free_spirited": "• Jesteś wolną duszą"
+    }
   }
 }

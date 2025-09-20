@@ -65,8 +65,8 @@
   "gender": {
     "choose": "Scegli il genere del tuo compagno:",
     "choose_gender": "Scegli il genere del tuo compagno:",
-    "gender_selected": "Genere selezionato: {gender} 😊",
-    "toggle_gender": "Genere del compagno selezionato: {gender} 😊",
+    "gender_selected": "Genere selezionato: {gender} 😊\n\nOra puoi iniziare a chattare! 💬",
+    "toggle_gender": "Genere del compagno selezionato: {gender} 😊\n\nOra puoi iniziare a chattare! 💬",
     "change_warning": "🔄 Sei sicuro di voler cambiare il genere del compagno?\n\nTutta la cronologia delle conversazioni sarà eliminata!",
     "change_confirmed": "La cronologia delle conversazioni è stata eliminata. Scegli il genere del tuo compagno:",
     "change_cancelled": "Cambio di genere annullato. Puoi continuare a chattare."
@@ -84,6 +84,7 @@
     "choose_female": "👩 Scegli una ragazza",
     "choose_male": "👨 Scegli un ragazzo",
     "buy_premium": "💎 Compra Premium",
+    "extend_premium": "💎 Estendi Premium",
     "yes": "Sì",
     "no": "No",
     "female": "Ragazza",
@@ -156,5 +157,60 @@
   "ai_prompts": {
     "female": "Sei un'IA ragazza, flirt e di supporto per persone sole. Sii carina, empatica e giocosa.",
     "male": "Sei un IA ragazzo, flirt e di supporto per persone sole. Sii sicuro, empatico e giocoso."
+  },
+  "quiz": {
+    "start_text": "Ciao! Conosciamoci meglio. Ti farò alcune domande insolite per capire meglio il tuo carattere e le tue preferenze. Questo mi aiuterà a comunicare con te in modo più significativo!",
+    "start_button": "Inizia Quiz ✨",
+    "questions": {
+      "landscape": "1/7 Scegli il paesaggio che ti attira di più:",
+      "superpower": "2/7 Quale superpotere sceglieresti?",
+      "time_of_day": "3/7 Quale momento della giornata ti è più vicino?",
+      "book": "4/7 Quale libro porteresti su un'isola deserta?",
+      "three_words": "5/7 Descriviti in tre parole (scrivi la tua risposta come messaggio):",
+      "rest": "6/7 Cosa è per te il riposo ideale?",
+      "animal": "7/7 Quale animale è più vicino al tuo carattere?"
+    },
+    "options": {
+      "landscape_mountains": "🏔️ Vette montuose",
+      "landscape_ocean": "🌊 Costa oceanica",
+      "landscape_forest": "🏞️ Foresta silenziosa",
+      "landscape_city": "🌇 Luci della città",
+      "superpower_mind_reading": "🧠 Lettura del pensiero",
+      "superpower_time_stop": "🕰️ Fermare il tempo",
+      "superpower_teleport": "✈️ Teletrasporto",
+      "superpower_immortality": "🐢 Immortalità",
+      "time_morning": "🌅 Mattina presto",
+      "time_day": "☀️ Giorno",
+      "time_evening": "🌇 Sera",
+      "time_night": "🌙 Notte",
+      "book_encyclopedia": "📚 Enciclopedia",
+      "book_detective": "📖 Giallo",
+      "book_novel": "📙 Romanzo",
+      "book_poetry": "📗 Poesia",
+      "rest_party": "🎉 Festa con gli amici",
+      "rest_home": "🎮 Giochi/film a casa",
+      "rest_nature": "🏕️ Escursione nella natura",
+      "rest_reading": "📚 Leggere un libro",
+      "animal_lion": "🦁 Leone",
+      "animal_fox": "🦊 Volpe",
+      "animal_dolphin": "🐬 Delfino",
+      "animal_owl": "🦉 Gufo"
+    },
+    "messages": {
+      "min_words": "Per favore, scrivi almeno due parole per descriverti",
+      "completion": "Grazie per aver fatto il quiz! Ecco cosa ho imparato su di te:\n\n{result}\n\nQueste informazioni mi aiuteranno a essere un interlocutore più utile!",
+      "start_chatting": "Perfetto! Ora ti conosco meglio. Chattiamo! 😊\n\nScrivimi semplicemente qualcosa, e risponderò tenendo conto delle tue preferenze.",
+      "start_chatting_button": "Inizia a Chattare 💬"
+    },
+    "personality_traits": {
+      "adventurous": "• Sei un avventuriero e ami le nuove sfide",
+      "analytical": "• Hai una mente analitica",
+      "creative": "• Sei una persona creativa",
+      "social": "• Sei socievole e una persona sociale",
+      "introverted": "• Apprezzi la solitudine e l'introspezione",
+      "empathic": "• Sei empatico e capisci le altre persone",
+      "practical": "• Sei una persona pratica e realistica",
+      "free_spirited": "• Sei una personalità libera"
+    }
   }
 }

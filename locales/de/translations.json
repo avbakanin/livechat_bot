@@ -64,11 +64,11 @@
   },
   "gender": {
     "choose": "Wähle das Geschlecht deines Begleiters:",
-    "toggle_gender": "Geschlecht des Begleiters ausgewählt: {gender} 😊",
+    "toggle_gender": "Geschlecht des Begleiters ausgewählt: {gender} 😊\n\nJetzt können Sie mit dem Chatten beginnen! 💬",
     "change_warning": "🔄 Bist du sicher, dass du das Geschlecht des Begleiters ändern möchtest?\n\nDie gesamte Chat-Historie wird gelöscht!",
     "change_confirmed": "Chat-Historie gelöscht. Wähle das Geschlecht deines Begleiters:",
     "change_cancelled": "Geschlechtsänderung abgebrochen. Du kannst weiter chatten.",
-    "gender_selected": "Geschlecht ausgewählt: {gender} 😊"
+    "gender_selected": "Geschlecht ausgewählt: {gender} 😊\n\nJetzt können Sie mit dem Chatten beginnen! 💬"
   },
   "messages": {
     "limit_exceeded": "Tägliches Limit für kostenlose Nachrichten überschritten. Willst du unbegrenzt? Kaufe Premium!",
@@ -190,6 +190,7 @@
     "female": "Mädchen 😊",
     "male": "Junge 😉",
     "buy_premium": "Premium kaufen 💳",
+    "extend_premium": "Premium verlängern 💳",
     "pay": "💳 Bezahlen",
     "yes_change": "Ja, Geschlecht ändern",
     "cancel": "Abbrechen",
@@ -210,5 +211,60 @@
   "ai_prompts": {
     "female": "Du bist ein KI-Mädchen, das flirtet und einsame Menschen unterstützt. Sei süß, einfühlsam und verspielt.",
     "male": "Du bist ein KI-Junge, der flirtet und einsame Menschen unterstützt. Sei selbstbewusst, einfühlsam und verspielt."
+  },
+  "quiz": {
+    "start_text": "Hallo! Lass uns uns besser kennenlernen. Ich stelle dir einige ungewöhnliche Fragen, um deinen Charakter und deine Vorlieben besser zu verstehen. Das wird mir helfen, mit dir bedeutungsvoller zu kommunizieren!",
+    "start_button": "Quiz starten ✨",
+    "questions": {
+      "landscape": "1/7 Wähle die Landschaft, die dir am nächsten ist:",
+      "superpower": "2/7 Welche Superkraft würdest du wählen?",
+      "time_of_day": "3/7 Welche Tageszeit ist dir am nächsten?",
+      "book": "4/7 Welches Buch würdest du auf eine einsame Insel mitnehmen?",
+      "three_words": "5/7 Beschreibe dich in drei Worten (schreibe deine Antwort als Nachricht):",
+      "rest": "6/7 Was ist für dich die perfekte Erholung?",
+      "animal": "7/7 Welches Tier ist dir vom Charakter her am nächsten?"
+    },
+    "options": {
+      "landscape_mountains": "🏔️ Berggipfel",
+      "landscape_ocean": "🌊 Ozeanküste",
+      "landscape_forest": "🏞️ Ruhiger Wald",
+      "landscape_city": "🌇 Stadtlichter",
+      "superpower_mind_reading": "🧠 Gedankenlesen",
+      "superpower_time_stop": "🕰️ Zeit stoppen",
+      "superpower_teleport": "✈️ Teleportation",
+      "superpower_immortality": "🐢 Unsterblichkeit",
+      "time_morning": "🌅 Früher Morgen",
+      "time_day": "☀️ Tag",
+      "time_evening": "🌇 Abend",
+      "time_night": "🌙 Nacht",
+      "book_encyclopedia": "📚 Enzyklopädie",
+      "book_detective": "📖 Krimi",
+      "book_novel": "📙 Roman",
+      "book_poetry": "📗 Poesie",
+      "rest_party": "🎉 Party mit Freunden",
+      "rest_home": "🎮 Spiele/Filme zu Hause",
+      "rest_nature": "🏕️ Naturwanderung",
+      "rest_reading": "📚 Buch lesen",
+      "animal_lion": "🦁 Löwe",
+      "animal_fox": "🦊 Fuchs",
+      "animal_dolphin": "🐬 Delfin",
+      "animal_owl": "🦉 Eule"
+    },
+    "messages": {
+      "min_words": "Bitte schreibe mindestens zwei Worte zur Beschreibung von dir",
+      "completion": "Danke für das Quiz! Hier ist, was ich über dich gelernt habe:\n\n{result}\n\nDiese Informationen werden mir helfen, ein hilfreicherer Gesprächspartner zu sein!",
+      "start_chatting": "Großartig! Jetzt kenne ich dich besser. Lass uns plaudern! 😊\n\nSchreibe mir einfach etwas, und ich werde unter Berücksichtigung deiner Vorlieben antworten.",
+      "start_chatting_button": "Chatten beginnen 💬"
+    },
+    "personality_traits": {
+      "adventurous": "• Du bist ein Abenteurer und liebst neue Herausforderungen",
+      "analytical": "• Du hast einen analytischen Verstand",
+      "creative": "• Du bist eine kreative Persönlichkeit",
+      "social": "• Du bist gesellig und sozial",
+      "introverted": "• Du schätzt Einsamkeit und Selbstreflexion",
+      "empathic": "• Du bist empathisch und verstehst andere Menschen",
+      "practical": "• Du bist ein praktischer und realistischer Mensch",
+      "free_spirited": "• Du bist eine freiheitsliebende Persönlichkeit"
+    }
   }
 }

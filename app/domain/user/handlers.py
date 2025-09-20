@@ -197,6 +197,7 @@ async def cmd_status(
         response = f"{i18n.t('commands.status.title')}\n\n{i18n.t('commands.status.remaining_free', remaining=remaining, total=daily_limit)}"
 
     response += f"\n\n{i18n.t('commands.status.reset_info')}"
+    response += f"\n\n{i18n.t('commands.status.premium_promo')}"
 
     await message.answer(response, reply_markup=get_status_keyboard(is_premium=False))
 

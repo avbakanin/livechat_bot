@@ -9,7 +9,8 @@
       "remaining_free": "Du hast {remaining} von {total} kostenlosen Nachrichten für heute übrig",
       "unlimited": "Du hast ein Premium-Abonnement - unbegrenzte Kommunikation! 💎",
       "used_all": "Du hast alle kostenlosen Nachrichten für heute verwendet ({total}/{total})",
-      "reset_info": "Das Limit wird morgen um Mitternacht zurückgesetzt",
+      "reset_info": "⏰ Das Limit wird morgen um Mitternacht zurückgesetzt",
+      "premium_promo": "💎 Möchten Sie ohne Grenzen chatten? Kaufen Sie ein Premium-Abonnement!",
       "premium_days": "⏰ Premium-Abonnement läuft in {days} Tagen ab",
       "premium_hours": "⏰ Premium-Abonnement läuft in {hours} Stunden ab",
       "premium_expiring": "⏰ Premium-Abonnement läuft heute ab!"
@@ -52,7 +53,7 @@
     },
     "stop": {
       "confirmation": "🛑 <b>Bot stoppen</b>\n\nBist du sicher, dass du den Bot stoppen möchtest?\n\n<b>Alle deine Daten werden gelöscht:</b>\n• Chat-Historie\n• Einstellungen\n• Cache\n\nDiese Aktion kann nicht rückgängig gemacht werden!",
-      "success": "👋 <b>Bot gestoppt</b>\n\nAlle Daten gelöscht. Auf Wiedersehen!",
+      "success": "👋 <b>Bot gestoppt</b>\n\nAlle Daten gelöscht. Auf Wiedersehen!\n\n😢 Es tut uns leid, dass Sie gehen. Wir warten auf Ihre Rückkehr!",
       "cancelled": "❌ Stoppen abgebrochen"
     }
   },
@@ -185,8 +186,8 @@
     "read_privacy": "Richtlinie lesen",
     "read_terms": "Nutzungsbedingungen lesen",
     "read_disclaimer": "Haftungsausschluss lesen",
-    "choose_female": "Mädchen wählen 😊",
-    "choose_male": "Jungen wählen 😉",
+    "choose_female": "Mädchen 😊",
+    "choose_male": "Junge 😉",
     "female": "Mädchen 😊",
     "male": "Junge 😉",
     "buy_premium": "Premium kaufen 💳",

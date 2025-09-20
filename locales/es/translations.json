@@ -9,7 +9,8 @@
       "remaining_free": "Te quedan {remaining} de {total} mensajes gratuitos para hoy",
       "unlimited": "¡Tienes suscripción premium - comunicación ilimitada! 💎",
       "used_all": "Has usado todos los mensajes gratuitos para hoy ({total}/{total})",
-      "reset_info": "El límite se restablecerá mañana a medianoche",
+      "reset_info": "⏰ El límite se restablecerá mañana a medianoche",
+      "premium_promo": "💎 ¿Quieres chatear sin límites? ¡Compra una suscripción premium!",
       "premium_days": "⏰ La suscripción premium expira en {days} días",
       "premium_hours": "⏰ La suscripción premium expira en {hours} horas",
       "premium_expiring": "⏰ ¡La suscripción premium expira hoy!"
@@ -52,7 +53,7 @@
     },
     "stop": {
       "confirmation": "🛑 <b>Detener Bot</b>\n\n¿Estás seguro de que quieres detener el bot?\n\n<b>Todos tus datos serán eliminados:</b>\n• Historia del chat\n• Configuraciones\n• Caché\n\n¡Esta acción no se puede deshacer!",
-      "success": "👋 <b>Bot detenido</b>\n\nTodos los datos eliminados. ¡Hasta luego!",
+      "success": "👋 <b>Bot detenido</b>\n\nTodos los datos eliminados. ¡Hasta luego!\n\n😢 Lamentamos verte ir. ¡Esperaremos tu regreso!",
       "cancelled": "❌ Detención cancelada"
     }
   },
@@ -183,8 +184,8 @@
   "buttons": {
     "agree_privacy": "Aceptar política de privacidad",
     "read_privacy": "Leer política",
-    "choose_female": "Elegir chica 😊",
-    "choose_male": "Elegir chico 😉",
+    "choose_female": "Chica 😊",
+    "choose_male": "Chico 😉",
     "female": "Chica 😊",
     "male": "Chico 😉",
     "buy_premium": "Comprar premium 💳",

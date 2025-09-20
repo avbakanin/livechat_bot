@@ -9,7 +9,8 @@
       "remaining_free": "Bugün {total} ücretsiz mesajdan {remaining} tanesi kaldı",
       "unlimited": "Premium aboneliğin var - sınırsız iletişim! 💎",
       "used_all": "Bugün tüm ücretsiz mesajlarını kullandın ({total}/{total})",
-      "reset_info": "Limit yarın gece yarısı sıfırlanacak",
+      "reset_info": "⏰ Limit yarın gece yarısı sıfırlanacak",
+      "premium_promo": "💎 Sınırsız sohbet etmek ister misin? Premium abonelik satın al!",
       "premium_days": "⏰ Premium abonelik {days} gün sonra sona eriyor",
       "premium_hours": "⏰ Premium abonelik {hours} saat sonra sona eriyor",
       "premium_expiring": "⏰ Premium abonelik bugün sona eriyor!"
@@ -52,7 +53,7 @@
     },
     "stop": {
       "confirmation": "🛑 <b>Bot durduruluyor</b>\n\nBotu durdurmak istediğinizden emin misiniz?\n\n<b>Tüm verileriniz silinecek:</b>\n• Sohbet geçmişi\n• Ayarlar\n• Önbellek\n\nBu işlem geri alınamaz!",
-      "success": "👋 <b>Bot durduruldu</b>\n\nTüm veriler silindi. Hoşça kal!",
+      "success": "👋 <b>Bot durduruldu</b>\n\nTüm veriler silindi. Hoşça kal!\n\n😢 Gitmenize üzüldük. Dönüşünüzü bekleyeceğiz!",
       "cancelled": "❌ Durdurma iptal edildi"
     }
   },
@@ -81,8 +82,8 @@
   "buttons": {
     "agree_privacy": "Gizlilik politikasını kabul ediyorum",
     "read_privacy": "Gizlilik politikasını oku",
-    "choose_female": "👩 Kız seç",
-    "choose_male": "👨 Erkek seç",
+    "choose_female": "Kız",
+    "choose_male": "Erkek",
     "buy_premium": "💎 Premium Satın Al",
     "extend_premium": "💎 Premium Uzat",
     "yes": "Evet",

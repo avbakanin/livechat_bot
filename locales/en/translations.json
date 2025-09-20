@@ -9,7 +9,8 @@
       "remaining_free": "You have {remaining} of {total} free messages remaining for today",
       "unlimited": "You have premium subscription - unlimited communication! 💎",
       "used_all": "You've used all free messages for today ({total}/{total})",
-      "reset_info": "Limit will reset tomorrow at midnight",
+      "reset_info": "⏰ Limit will reset tomorrow at midnight",
+      "premium_promo": "💎 Want to chat without limits? Buy a premium subscription!",
       "premium_days": "⏰ Premium subscription expires in {days} days",
       "premium_hours": "⏰ Premium subscription expires in {hours} hours",
       "premium_expiring": "⏰ Premium subscription expires today!"
@@ -53,7 +54,7 @@
     },
     "stop": {
       "confirmation": "🛑 <b>Stop Bot</b>\n\nAre you sure you want to stop the bot?\n\n<b>All your data will be deleted:</b>\n• Chat history\n• Settings\n• Cache\n\nThis action cannot be undone!",
-      "success": "👋 <b>Bot stopped</b>\n\nAll data deleted. Goodbye!",
+      "success": "👋 <b>Bot stopped</b>\n\nAll data deleted. Goodbye!\n\n😢 We're sorry to see you go. We'll be waiting for your return!",
       "cancelled": "❌ Stop cancelled",
       "already_stopped": "⚠️ <b>Bot Already Stopped</b>\n\nThe bot has already been stopped. You don't need to stop it again.\n\nIf you want to start using the bot, just send a message or use /start command!"
     }
@@ -188,8 +189,8 @@
     "read_privacy": "Read privacy policy",
     "read_terms": "Read terms of service",
     "read_disclaimer": "Read disclaimer",
-    "choose_female": "Choose girl 😊",
-    "choose_male": "Choose young man 😉",
+    "choose_female": "Girl 😊",
+    "choose_male": "Young man 😉",
     "female": "Girl 😊",
     "male": "Young man 😉",
     "buy_premium": "Buy premium 💳",

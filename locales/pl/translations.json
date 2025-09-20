@@ -9,7 +9,8 @@
       "remaining_free": "Pozostało Ci {remaining} z {total} darmowych wiadomości dzisiaj",
       "unlimited": "Masz subskrypcję premium - nieograniczona komunikacja! 💎",
       "used_all": "Wykorzystałeś wszystkie darmowe wiadomości dzisiaj ({total}/{total})",
-      "reset_info": "Limit zostanie zresetowany jutro o północy",
+      "reset_info": "⏰ Limit zostanie zresetowany jutro o północy",
+      "premium_promo": "💎 Chcesz rozmawiać bez ograniczeń? Kup subskrypcję premium!",
       "premium_days": "⏰ Subskrypcja premium wygasa za {days} dni",
       "premium_hours": "⏰ Subskrypcja premium wygasa za {hours} godzin",
       "premium_expiring": "⏰ Subskrypcja premium wygasa dzisiaj!"
@@ -52,7 +53,7 @@
     },
     "stop": {
       "confirmation": "🛑 <b>Zatrzymanie bota</b>\n\nCzy na pewno chcesz zatrzymać bota?\n\n<b>Wszystkie Twoje dane zostaną usunięte:</b>\n• Historia rozmów\n• Ustawienia\n• Cache\n\nTa akcja nie może być cofnięta!",
-      "success": "👋 <b>Bot zatrzymany</b>\n\nWszystkie dane zostały usunięte. Do widzenia!",
+      "success": "👋 <b>Bot zatrzymany</b>\n\nWszystkie dane zostały usunięte. Do widzenia!\n\n😢 Szkoda, że odchodzisz. Będziemy czekać na Twój powrót!",
       "cancelled": "❌ Zatrzymanie anulowane"
     }
   },
@@ -81,8 +82,8 @@
   "buttons": {
     "agree_privacy": "Akceptuję politykę prywatności",
     "read_privacy": "Przeczytaj politykę prywatności",
-    "choose_female": "👩 Wybierz dziewczynę",
-    "choose_male": "👨 Wybierz chłopaka",
+    "choose_female": "Dziewczyna",
+    "choose_male": "Chłopak",
     "buy_premium": "💎 Kup Premium",
     "extend_premium": "💎 Przedłuż Premium",
     "yes": "Tak",

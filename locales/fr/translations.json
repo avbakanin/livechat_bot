@@ -9,7 +9,8 @@
       "remaining_free": "Il te reste {remaining} sur {total} messages gratuits aujourd'hui",
       "unlimited": "Tu as un abonnement premium - communication illimitée ! 💎",
       "used_all": "Tu as utilisé tous tes messages gratuits aujourd'hui ({total}/{total})",
-      "reset_info": "La limite sera réinitialisée demain à minuit",
+      "reset_info": "⏰ La limite sera réinitialisée demain à minuit",
+      "premium_promo": "💎 Vous voulez discuter sans limites ? Achetez un abonnement premium !",
       "premium_days": "⏰ L'abonnement premium expire dans {days} jours",
       "premium_hours": "⏰ L'abonnement premium expire dans {hours} heures",
       "premium_expiring": "⏰ L'abonnement premium expire aujourd'hui !"
@@ -52,7 +53,7 @@
     },
     "stop": {
       "confirmation": "🛑 <b>Arrêt du bot</b>\n\nÊtes-vous sûr de vouloir arrêter le bot ?\n\n<b>Toutes vos données seront supprimées :</b>\n• Historique des conversations\n• Paramètres\n• Cache\n\nCette action ne peut pas être annulée !",
-      "success": "👋 <b>Bot arrêté</b>\n\nToutes les données ont été supprimées. Au revoir !",
+      "success": "👋 <b>Bot arrêté</b>\n\nToutes les données ont été supprimées. Au revoir !\n\n😢 Nous sommes désolés de vous voir partir. Nous attendrons votre retour !",
       "cancelled": "❌ Arrêt annulé"
     }
   },
@@ -83,8 +84,8 @@
     "read_privacy": "Lire la politique de confidentialité",
     "read_terms": "Lire les conditions d'utilisation",
     "read_disclaimer": "Lire l'avis de non-responsabilité",
-    "choose_female": "👩 Choisir une fille",
-    "choose_male": "👨 Choisir un garçon",
+    "choose_female": "Fille",
+    "choose_male": "Garçon",
     "buy_premium": "💎 Acheter Premium",
     "extend_premium": "💎 Prolonger Premium",
     "yes": "Oui",

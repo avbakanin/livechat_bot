@@ -311,6 +311,7 @@ async def update_user_personality_profile(
     pool: asyncpg.Pool, user_id: int, personality_profile: Dict[str, Any]
 ) -> None:
     """Update user personality profile."""
+    import json
     async with pool.acquire() as conn:
         try:
             await conn.execute(
@@ -318,7 +319,7 @@ async def update_user_personality_profile(
                 SELECT public.update_user_personality_profile($1, $2)
                 """,
                 user_id,
-                personality_profile,
+                json.dumps(personality_profile),
             )
         except Exception as e:
             raise DatabaseException(

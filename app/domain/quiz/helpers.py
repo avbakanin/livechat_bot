@@ -115,8 +115,13 @@ async def save_personality_profile(user_id: int, personality_profile: Dict[str, 
     from core.database import db_manager
     
     try:
-        # Get database pool
-        pool = await db_manager.get_pool()
+        # Get database pool, create if not exists
+        try:
+            pool = db_manager.pool
+        except RuntimeError:
+            # Pool not initialized, create it
+            pool = await db_manager.create_pool()
+        
         if not pool:
             raise Exception("Database pool not available")
         
@@ -130,7 +135,9 @@ async def save_personality_profile(user_id: int, personality_profile: Dict[str, 
     except Exception as e:
         # Log error but don't fail the quiz
         print(f"Error saving personality profile for user {user_id}: {e}")
-        pass
+        import traceback
+        traceback.print_exc()
+        # Don't re-raise, allow quiz to continue
 
 
 # Функция форматирования результатов

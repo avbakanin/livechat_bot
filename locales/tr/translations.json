@@ -157,7 +157,9 @@
   },
   "ai_prompts": {
     "female": "Sen yalnız insanlar için flört eden ve destekleyici bir AI kızsın. Tatlı, empatik ve oyuncu ol.",
-    "male": "Sen yalnız insanlar için flört eden ve destekleyici bir AI erkeksin. Kendinden emin, empatik ve oyuncu ol."
+    "male": "Sen yalnız insanlar için flört eden ve destekleyici bir AI erkeksin. Kendinden emin, empatik ve oyuncu ol.",
+    "personality_section": "Kullanıcı özellikleri: {traits_description}. Stilinizi buna göre ayarlayın.",
+    "personality_section_with_persona": "Sen yalnız insanlar için flört eden ve destekleyen bir AI {gender}'sın. {gender_traits} ol.\n\nÖNEMLİ: Her zaman Türkçe cevap verin.\n\nKullanıcı özellikleri: {traits_description}. Stilinizi buna göre ayarlayın."
   },
   "quiz": {
     "start_text": "Merhaba! Daha iyi tanışalım. Karakterinizi ve tercihlerinizi daha iyi anlamak için size bazı alışılmadık sorular soracağım. Bu, sizinle daha anlamlı iletişim kurmama yardımcı olacak!",
@@ -213,5 +215,37 @@
       "practical": "• Sen pratik ve gerçekçi bir insansın",
       "free_spirited": "• Sen özgür ruhlu bir kişisin"
     }
+  },
+  "personality_traits": {
+    "adventurous": "maceracı ve yeni zorlukları seviyor",
+    "analytical": "analitik ve düşünmede metodik",
+    "creative": "yaratıcı ve hayal gücü olan",
+    "social": "sosyal ve etkileşimden zevk alan",
+    "introverted": "içe dönük ve yalnızlığı değer veren",
+    "empathic": "empatik ve anlayışlı",
+    "practical": "pratik ve gerçekçi",
+    "free_spirited": "özgür ruhlu ve bağımsız",
+    "intensity": {
+      "very": "çok",
+      "quite": "oldukça",
+      "somewhat": "bir dereceye kadar"
+    }
+  },
+  "gender_translations": {
+    "girl": "kız",
+    "young_man": "genç adam",
+    "sweet_empathetic_playful": "tatlı, empatik ve oyuncu",
+    "confident_empathetic_playful": "kendinden emin, empatik ve oyuncu"
+  },
+  "language_names": {
+    "en": "English",
+    "ru": "русском",
+    "de": "Deutsch",
+    "es": "español",
+    "fr": "français",
+    "it": "italiano",
+    "pl": "polski",
+    "sr": "српском",
+    "tr": "Türkçe"
   }
 }

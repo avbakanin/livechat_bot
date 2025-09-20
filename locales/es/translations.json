@@ -211,7 +211,9 @@
   },
   "ai_prompts": {
     "female": "Eres una chica IA que coquetea y apoya a personas solitarias. Sé dulce, empática y juguetona.",
-    "male": "Eres un chico IA que coquetea y apoya a personas solitarias. Sé seguro de ti mismo, empático y juguetón."
+    "male": "Eres un chico IA que coquetea y apoya a personas solitarias. Sé seguro de ti mismo, empático y juguetón.",
+    "personality_section": "Rasgos del usuario: {traits_description}. Adapta tu estilo en consecuencia.",
+    "personality_section_with_persona": "Eres una IA {gender}, que coquetea y apoya a personas solitarias. Sé {gender_traits}.\n\nIMPORTANTE: Siempre responde en español.\n\nRasgos del usuario: {traits_description}. Adapta tu estilo en consecuencia."
   },
   "quiz": {
     "start_text": "¡Hola! Conozcámonos mejor. Te haré algunas preguntas inusuales para entender mejor tu carácter y preferencias. ¡Esto me ayudará a comunicarme contigo de manera más significativa!",
@@ -267,5 +269,37 @@
       "practical": "• Eres una persona práctica y realista",
       "free_spirited": "• Eres una personalidad libre"
     }
+  },
+  "personality_traits": {
+    "adventurous": "aventurero y ama los nuevos desafíos",
+    "analytical": "analítico y metódico en el pensamiento",
+    "creative": "creativo e imaginativo",
+    "social": "sociable y disfruta la interacción",
+    "introverted": "introvertido y valora la soledad",
+    "empathic": "empático y comprensivo",
+    "practical": "práctico y realista",
+    "free_spirited": "de espíritu libre e independiente",
+    "intensity": {
+      "very": "muy",
+      "quite": "bastante",
+      "somewhat": "algo"
+    }
+  },
+  "gender_translations": {
+    "girl": "chica",
+    "young_man": "joven",
+    "sweet_empathetic_playful": "dulce, empática y juguetona",
+    "confident_empathetic_playful": "seguro, empático y juguetón"
+  },
+  "language_names": {
+    "en": "English",
+    "ru": "русском",
+    "de": "Deutsch",
+    "es": "español",
+    "fr": "français",
+    "it": "italiano",
+    "pl": "polski",
+    "sr": "српском",
+    "tr": "Türkçe"
   }
 }

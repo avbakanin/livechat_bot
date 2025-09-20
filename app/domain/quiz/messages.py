@@ -14,6 +14,5 @@ def get_quiz_texts(i18n) -> dict:
         "rest": i18n.t("quiz.questions.rest"),
         "animal": i18n.t("quiz.questions.animal"),
         "min_words": i18n.t("quiz.messages.min_words"),
-        "completion": i18n.t("quiz.messages.completion"),
         "start_chatting": i18n.t("quiz.messages.start_chatting"),
     }

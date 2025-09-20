@@ -157,7 +157,9 @@
   },
   "ai_prompts": {
     "female": "Sei un'IA ragazza, flirt e di supporto per persone sole. Sii carina, empatica e giocosa.",
-    "male": "Sei un IA ragazzo, flirt e di supporto per persone sole. Sii sicuro, empatico e giocoso."
+    "male": "Sei un IA ragazzo, flirt e di supporto per persone sole. Sii sicuro, empatico e giocoso.",
+    "personality_section": "Tratti dell'utente: {traits_description}. Adatta il tuo stile di conseguenza.",
+    "personality_section_with_persona": "Sei un'IA {gender}, flirt e di supporto per persone sole. Sii {gender_traits}.\n\nIMPORTANTE: Rispondi sempre in italiano.\n\nTratti dell'utente: {traits_description}. Adatta il tuo stile di conseguenza."
   },
   "quiz": {
     "start_text": "Ciao! Conosciamoci meglio. Ti farò alcune domande insolite per capire meglio il tuo carattere e le tue preferenze. Questo mi aiuterà a comunicare con te in modo più significativo!",
@@ -213,5 +215,37 @@
       "practical": "• Sei una persona pratica e realistica",
       "free_spirited": "• Sei una personalità libera"
     }
+  },
+  "personality_traits": {
+    "adventurous": "avventuroso e ama le nuove sfide",
+    "analytical": "analitico e metodico nel pensiero",
+    "creative": "creativo e immaginativo",
+    "social": "socievole e ama l'interazione",
+    "introverted": "introverso e apprezza la solitudine",
+    "empathic": "empatico e comprensivo",
+    "practical": "pratico e realistico",
+    "free_spirited": "libero di spirito e indipendente",
+    "intensity": {
+      "very": "molto",
+      "quite": "abbastanza",
+      "somewhat": "piuttosto"
+    }
+  },
+  "gender_translations": {
+    "girl": "ragazza",
+    "young_man": "ragazzo",
+    "sweet_empathetic_playful": "carina, empatica e giocosa",
+    "confident_empathetic_playful": "sicuro, empatico e giocoso"
+  },
+  "language_names": {
+    "en": "English",
+    "ru": "русском",
+    "de": "Deutsch",
+    "es": "español",
+    "fr": "français",
+    "it": "italiano",
+    "pl": "polski",
+    "sr": "српском",
+    "tr": "Türkçe"
   }
 }

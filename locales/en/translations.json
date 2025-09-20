@@ -214,7 +214,24 @@
   },
   "ai_prompts": {
     "female": "You are an AI girl, flirty and supportive for lonely people. Be sweet, empathetic and playful.",
-    "male": "You are an AI young man, flirty and supportive for lonely people. Be confident, empathetic and playful."
+    "male": "You are an AI young man, flirty and supportive for lonely people. Be confident, empathetic and playful.",
+    "personality_section": "User traits: {traits_description}. Adapt your style accordingly.",
+    "personality_section_with_persona": "You are an AI {gender}, flirty and supportive for lonely people. Be {gender_traits}.\n\nIMPORTANT: Always respond in {language_name} language.\n\nUser traits: {traits_description}. Adapt your style accordingly."
+  },
+  "personality_traits": {
+    "adventurous": "adventurous and loves new challenges",
+    "analytical": "analytical and methodical in thinking",
+    "creative": "creative and imaginative",
+    "social": "sociable and enjoys interaction",
+    "introverted": "introverted and values solitude",
+    "empathic": "empathetic and understanding",
+    "practical": "practical and realistic",
+    "free_spirited": "free-spirited and independent",
+    "intensity": {
+      "very": "very",
+      "quite": "quite",
+      "somewhat": "somewhat"
+    }
   },
   "quiz": {
     "start_text": "Hi! Let's get to know each other better. I'll ask you some unusual questions to better understand your character and preferences. This will help me communicate with you more meaningfully!",
@@ -270,5 +287,22 @@
       "practical": "• You are a practical and realistic person",
       "free_spirited": "• You are a free-spirited personality"
     }
+  },
+  "gender_translations": {
+    "girl": "girl",
+    "young_man": "young man",
+    "sweet_empathetic_playful": "sweet, empathetic and playful",
+    "confident_empathetic_playful": "confident, empathetic and playful"
+  },
+  "language_names": {
+    "en": "English",
+    "ru": "русском",
+    "de": "Deutsch",
+    "es": "español",
+    "fr": "français",
+    "it": "italiano",
+    "pl": "polski",
+    "sr": "српском",
+    "tr": "Türkçe"
   }
 }

@@ -211,7 +211,24 @@
   },
   "ai_prompts": {
     "female": "Du bist ein KI-Mädchen, das flirtet und einsame Menschen unterstützt. Sei süß, einfühlsam und verspielt.",
-    "male": "Du bist ein KI-Junge, der flirtet und einsame Menschen unterstützt. Sei selbstbewusst, einfühlsam und verspielt."
+    "male": "Du bist ein KI-Junge, der flirtet und einsame Menschen unterstützt. Sei selbstbewusst, einfühlsam und verspielt.",
+    "personality_section": "Benutzer-Eigenschaften: {traits_description}. Passen Sie Ihren Stil entsprechend an.",
+    "personality_section_with_persona": "Du bist ein KI-{gender}, der flirtet und einsame Menschen unterstützt. Sei {gender_traits}.\n\nWICHTIG: Antworte immer auf Deutsch.\n\nBenutzer-Eigenschaften: {traits_description}. Passen Sie Ihren Stil entsprechend an."
+  },
+  "personality_traits": {
+    "adventurous": "abenteuerlustig und liebt neue Herausforderungen",
+    "analytical": "analytisch und methodisch im Denken",
+    "creative": "kreativ und fantasievoll",
+    "social": "gesellig und genießt Interaktion",
+    "introverted": "introvertiert und schätzt Einsamkeit",
+    "empathic": "einfühlsam und verständnisvoll",
+    "practical": "praktisch und realistisch",
+    "free_spirited": "freiheitsliebend und unabhängig",
+    "intensity": {
+      "very": "sehr",
+      "quite": "ziemlich",
+      "somewhat": "einigermaßen"
+    }
   },
   "quiz": {
     "start_text": "Hallo! Lass uns uns besser kennenlernen. Ich stelle dir einige ungewöhnliche Fragen, um deinen Charakter und deine Vorlieben besser zu verstehen. Das wird mir helfen, mit dir bedeutungsvoller zu kommunizieren!",
@@ -267,5 +284,22 @@
       "practical": "• Du bist ein praktischer und realistischer Mensch",
       "free_spirited": "• Du bist eine freiheitsliebende Persönlichkeit"
     }
+  },
+  "gender_translations": {
+    "girl": "Mädchen",
+    "young_man": "Junge",
+    "sweet_empathetic_playful": "süß, einfühlsam und verspielt",
+    "confident_empathetic_playful": "selbstbewusst, einfühlsam und verspielt"
+  },
+  "language_names": {
+    "en": "English",
+    "ru": "русском",
+    "de": "Deutsch",
+    "es": "español",
+    "fr": "français",
+    "it": "italiano",
+    "pl": "polski",
+    "sr": "српском",
+    "tr": "Türkçe"
   }
 }

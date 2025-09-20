@@ -3,10 +3,11 @@ Message domain services - business logic and OpenAI integration.
 """
 
 import logging
-from typing import List
+from typing import Dict, List, Optional
 
 import asyncpg
 from shared.constants import OPENAI_CONFIG
+from domain.personality.prompts import personality_prompt_generator
 from domain.message.queries import (
     count_user_messages_today as db_count_user_messages_today,
 )
@@ -79,17 +80,24 @@ class MessageService:
             remaining = daily_limit - messages_today
             return max(0, remaining)
 
-    async def generate_response(self, user_id: int, user_message: str, gender_preference: str) -> str:
-        """Generate AI response using OpenAI with dynamic personas."""
+    async def generate_response(self, user_id: int, user_message: str, gender_preference: str, 
+                              personality_profile: Optional[Dict[str, float]] = None, 
+                              user_language: str = "en") -> str:
+        """Generate AI response using OpenAI with dynamic personas and personality adaptation."""
         try:
             # Get chat history
             history = await self.get_chat_history(user_id, limit=10)
 
             # Create system prompt - use persona service if available, otherwise fallback
             if self.persona_service:
-                system_prompt = self.persona_service.get_persona_for_gender(gender_preference)
+                base_system_prompt = self.persona_service.get_persona_for_gender(gender_preference)
             else:
-                system_prompt = self._get_system_prompt(gender_preference)
+                base_system_prompt = self._get_system_prompt(gender_preference)
+            
+            # Enhance prompt with personality information
+            system_prompt = self._enhance_prompt_with_personality(
+                base_system_prompt, personality_profile, user_language, gender_preference
+            )
 
             # Prepare messages for OpenAI
             messages = [{"role": "system", "content": system_prompt}]
@@ -123,3 +131,10 @@ class MessageService:
             "male": "You are an AI companion. Be friendly, empathetic and supportive.",
         }
         return fallback_prompts.get(gender_preference, fallback_prompts["female"])
+    
+    def _enhance_prompt_with_personality(self, base_prompt: str, personality_profile: Optional[Dict[str, float]], 
+                                       user_language: str = "en", gender_preference: str = "female") -> str:
+        """Enhance system prompt with personality information."""
+        return personality_prompt_generator.generate_personality_prompt(
+            personality_profile, base_prompt, user_language, gender_preference
+        )

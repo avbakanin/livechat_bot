@@ -142,9 +142,17 @@ async def handle_message(
             else:
                 gender = await user_service.get_gender_preference(user_id)
 
+            # Get user personality profile
+            personality_profile = await user_service.get_personality_profile(user_id)
+            
+            # Get user language
+            user_language = await user_service.get_language(user_id)
+
             # Generate AI response with timing
             start_time = time.time()
-            answer = await message_service.generate_response(user_id, message_text, gender)
+            answer = await message_service.generate_response(
+                user_id, message_text, gender, personality_profile, user_language
+            )
             response_time = time.time() - start_time
 
             # Record successful response with timing

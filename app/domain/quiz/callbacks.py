@@ -142,8 +142,11 @@ async def process_animal(callback: CallbackQuery, state: FSMContext):
     # Формируем ответ с результатами
     result_message = format_personality_results(personality_profile, i18n)
 
+    # Формируем сообщение завершения с результатами
+    completion_message = i18n.t("quiz.messages.completion", result=result_message)
+
     await callback.message.edit_text(
-        texts["completion"].format(result=result_message),
+        completion_message,
         reply_markup=get_completion_keyboard(i18n),
     )
 

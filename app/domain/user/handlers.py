@@ -212,7 +212,7 @@ async def cmd_security(message: Message):
     user_id = message.from_user.id
 
     # Check if user is admin (hardcoded for now)
-    if user_id not in {627875032, 1512454100, 826795306, 284506756}:
+    if user_id not in {627875032, 1512454100, 826795306, 284506756, 443852052}:
         await message.answer("Access denied.")
         return
 
@@ -232,7 +232,7 @@ async def cmd_security(message: Message):
 async def cmd_reset_metrics(message: Message):
     user_id = message.from_user.id
 
-    if user_id not in {627875032, 1512454100, 826795306, 284506756}:
+    if user_id not in {627875032, 1512454100, 826795306, 284506756, 443852052}:
         await message.answer("Access denied.")
         return
 
@@ -296,7 +296,7 @@ async def cmd_stop(message: Message, i18n: I18nMiddleware, cached_user: UserCach
 async def cmd_metrics(message: Message):
     user_id = message.from_user.id
 
-    if user_id not in {627875032, 1512454100, 826795306, 284506756}:
+    if user_id not in {627875032, 1512454100, 826795306, 284506756, 443852052}:
         await message.answer("Access denied.")
         return
 

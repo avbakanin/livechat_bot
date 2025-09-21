@@ -313,9 +313,9 @@ async def restart_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
     await callback.answer(text=i18n.t("commands.restart.cancelled"))
 
 
-@router.callback_query(F.data == Callbacks.STOP_CONFIRM)
+@router.callback_query(F.data == Callbacks.DELETE_ME_CONFIRM)
 @error_decorator
-async def stop_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
+async def delete_me_confirm(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
     user_id = callback.from_user.id
 
     # Check if bot is already stopped
@@ -323,35 +323,35 @@ async def stop_confirm(callback: CallbackQuery, user_service: UserService, i18n:
     cached_data = await user_cache.get(user_id)
     if cached_data and cached_data.is_stopped:
         await callback.message.edit_text(
-            i18n.t("commands.stop.already_stopped"),
+            i18n.t("commands.delete_me.already_stopped"),
             reply_markup=get_command_already_executed_keyboard(),
             parse_mode="HTML",
         )
         await callback.answer()
         return
 
-    await user_service.reset_user_state(user_id)
-
-    # Update cache to mark as stopped
+    # Update cache to mark as stopped BEFORE deleting user
     if cached_data:
         cached_data.is_stopped = True
         cached_data.is_restarted = False  # Reset restart state
         await user_cache.set(user_id, cached_data)
 
-    await callback.message.edit_text(text=i18n.t("commands.stop.success"), parse_mode="HTML")
+    await user_service.reset_user_state(user_id)
+
+    await callback.message.edit_text(text=i18n.t("commands.delete_me.success"), parse_mode="HTML")
 
     await callback.answer()
 
 
-@router.callback_query(F.data == Callbacks.STOP_CANCEL)
+@router.callback_query(F.data == Callbacks.DELETE_ME_CANCEL)
 @error_decorator
-async def stop_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
+async def delete_me_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
     await callback.message.edit_text(
         text=get_help_text(),
         reply_markup=get_help_keyboard(),
         parse_mode="HTML",
     )
-    await callback.answer(text=i18n.t("commands.stop.cancelled"))
+    await callback.answer(text=i18n.t("commands.delete_me.cancelled"))
 
 
 @router.callback_query(F.data == Callbacks.BUY_PREMIUM)

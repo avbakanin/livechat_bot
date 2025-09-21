@@ -25,7 +25,7 @@
       "language_command": "/language - Lingua",
       "quiz_command": "/quiz - Conosciamoci",
       "restart_command": "/restart - Riavvia bot",
-      "stop_command": "/stop - Ferma bot",
+      "delete_me_command": "/delete_me - Eliminazione completa dei dati",
       "communication_title": "💬 Comunicazione:",
       "free_limit": "• Gratuito: {free_limit} messaggi al giorno",
       "premium_unlimited": "• Premium: comunicazione illimitata.",
@@ -51,17 +51,17 @@
       "success": "✅ <b>Bot riavviato!</b>\n\nTutti i dati sono stati cancellati. Ricominciamo...",
       "cancelled": "❌ Riavvio annullato"
     },
-    "stop": {
-      "confirmation": "🛑 <b>Arresto del bot</b>\n\nSei sicuro di voler fermare il bot?\n\n<b>Tutti i tuoi dati saranno eliminati:</b>\n• Cronologia delle conversazioni\n• Impostazioni\n• Cache\n\nQuesta azione non può essere annullata!",
-      "success": "👋 <b>Bot fermato</b>\n\nTutti i dati sono stati eliminati. Arrivederci!\n\n😢 Ci dispiace vederti andare via. Aspetteremo il tuo ritorno!",
-      "cancelled": "❌ Arresto annullato"
+    "delete_me": {
+      "confirmation": "🗑️ <b>Eliminazione Completa dei Dati</b>\n\nSei sicuro di voler eliminare completamente tutti i tuoi dati?\n\n<b>Saranno eliminati PERMANENTEMENTE:</b>\n• Cronologia delle conversazioni\n• Impostazioni\n• 💎 <b>Abbonamento Premium</b>\n• Cache\n• Tutti i dati personali\n\n⚠️ Questa azione non può essere annullata!",
+      "success": "👋 <b>Dati Eliminati</b>\n\nTutti i tuoi dati sono stati completamente eliminati dal sistema.\n\n😢 Ci dispiace vederti andare via. Aspetteremo il tuo ritorno!\n\n💡 Se vorrai ricominciare dall'inizio, premi /start",
+      "cancelled": "❌ Eliminazione annullata"
     }
   },
   "consent": {
     "request": "Si prega di accettare la politica sulla privacy:",
     "agreed": "Grazie per l'accordo! Hai {free_limit} messaggi gratuiti al giorno. Scegli il genere del tuo compagno:",
     "privacy_title": "🔐 Politica sulla privacy",
-    "privacy_text": "Il tuo testo della politica sulla privacy qui...\n\nVersione completa: https://yourwebsite.com/privacy"
+    "privacy_text": "🔒 Memorizziamo solo i dati necessari per il corretto funzionamento del bot.\n\n📋 Maggiori dettagli nella nostra Politica sulla Privacy:\n\n🔗 https://mindlythica-neurivantis-ai-bot-priv.netlify.app"
   },
   "gender": {
     "choose": "Scegli il genere del tuo compagno:",
@@ -88,6 +88,8 @@
     "extend_premium": "💳 Estendi Premium",
     "yes": "Sì",
     "no": "No",
+    "yes_change": "Sì, cambia genere",
+    "cancel": "Annulla",
     "female": "Ragazza",
     "male": "Ragazzo",
     "back_to_help": "↩️ Torna all'aiuto",

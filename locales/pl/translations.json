@@ -25,7 +25,7 @@
       "language_command": "/language - Język",
       "quiz_command": "/quiz - Poznajmy się",
       "restart_command": "/restart - Restart bota",
-      "stop_command": "/stop - Zatrzymaj bota",
+      "delete_me_command": "/delete_me - Pełne usunięcie danych",
       "communication_title": "💬 Komunikacja:",
       "free_limit": "• Darmowe: {free_limit} wiadomości dziennie",
       "premium_unlimited": "• Premium: nieograniczona komunikacja.",
@@ -51,17 +51,17 @@
       "success": "✅ <b>Bot ponownie uruchomiony!</b>\n\nWszystkie dane zostały wyczyszczone. Zaczynamy od nowa...",
       "cancelled": "❌ Ponowne uruchomienie anulowane"
     },
-    "stop": {
-      "confirmation": "🛑 <b>Zatrzymanie bota</b>\n\nCzy na pewno chcesz zatrzymać bota?\n\n<b>Wszystkie Twoje dane zostaną usunięte:</b>\n• Historia rozmów\n• Ustawienia\n• Cache\n\nTa akcja nie może być cofnięta!",
-      "success": "👋 <b>Bot zatrzymany</b>\n\nWszystkie dane zostały usunięte. Do widzenia!\n\n😢 Szkoda, że odchodzisz. Będziemy czekać na Twój powrót!",
-      "cancelled": "❌ Zatrzymanie anulowane"
+    "delete_me": {
+      "confirmation": "🗑️ <b>Pełne Usunięcie Danych</b>\n\nCzy na pewno chcesz całkowicie usunąć wszystkie swoje dane?\n\n<b>Zostaną usunięte NA ZAWSZE:</b>\n• Historia rozmów\n• Ustawienia\n• 💎 <b>Subskrypcja Premium</b>\n• Cache\n• Wszystkie dane osobowe\n\n⚠️ Ta akcja nie może być cofnięta!",
+      "success": "👋 <b>Dane Usunięte</b>\n\nWszystkie Twoje dane zostały całkowicie usunięte z systemu.\n\n😢 Szkoda, że odchodzisz. Będziemy czekać na Twój powrót!\n\n💡 Jeśli będziesz chciał zacząć od nowa, naciśnij /start",
+      "cancelled": "❌ Usuwanie anulowane"
     }
   },
   "consent": {
     "request": "Proszę zaakceptować politykę prywatności:",
     "agreed": "Dziękuję za zgodę! Masz {free_limit} darmowych wiadomości dziennie. Wybierz płeć swojego towarzysza:",
     "privacy_title": "🔐 Polityka Prywatności",
-    "privacy_text": "Twój tekst polityki prywatności tutaj...\n\nPełna wersja: https://yourwebsite.com/privacy"
+    "privacy_text": "🔒 Przechowujemy tylko niezbędne dane, aby bot działał poprawnie.\n\n📋 Więcej szczegółów w naszej Polityce Prywatności:\n\n🔗 https://mindlythica-neurivantis-ai-bot-priv.netlify.app"
   },
   "gender": {
     "choose": "Wybierz płeć swojego towarzysza:",
@@ -83,13 +83,15 @@
     "agree_privacy": "Akceptuję politykę prywatności",
     "read_privacy": "Przeczytaj politykę prywatności",
     "choose_female": "Dziewczyna",
-    "choose_male": "Chłopak",
+    "choose_male": "Facet",
     "buy_premium": "💳 Kup Premium",
     "extend_premium": "💳 Przedłuż Premium",
     "yes": "Tak",
     "no": "Nie",
+    "yes_change": "Tak, zmień płeć",
+    "cancel": "Anuluj",
     "female": "Dziewczyna",
-    "male": "Chłopak",
+    "male": "Facet",
     "back_to_help": "↩️ Powrót do pomocy",
     "read_terms": "Przeczytaj warunki usługi",
     "read_disclaimer": "Przeczytaj zastrzeżenie"

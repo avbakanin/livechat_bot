@@ -5,7 +5,7 @@ Performance test to compare FSM caching vs direct database queries.
 import asyncio
 import time
 
-from domain.user.services import UserService as OriginalUserService
+# from domain.user.services import UserService as OriginalUserService  # File removed during refactoring
 from domain.user.services_cached import UserService as CachedUserService
 
 

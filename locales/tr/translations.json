@@ -25,7 +25,7 @@
       "language_command": "/language - Dil",
       "quiz_command": "/quiz - Tanışalım",
       "restart_command": "/restart - Botu yeniden başlat",
-      "stop_command": "/stop - Botu durdur",
+      "delete_me_command": "/delete_me - Tam veri silme",
       "communication_title": "💬 İletişim:",
       "free_limit": "• Ücretsiz: günde {free_limit} mesaj",
       "premium_unlimited": "• Premium: sınırsız iletişim.",
@@ -51,17 +51,17 @@
       "success": "✅ <b>Bot yeniden başlatıldı!</b>\n\nTüm veriler temizlendi. Yeniden başlıyoruz...",
       "cancelled": "❌ Yeniden başlatma iptal edildi"
     },
-    "stop": {
-      "confirmation": "🛑 <b>Bot durduruluyor</b>\n\nBotu durdurmak istediğinizden emin misiniz?\n\n<b>Tüm verileriniz silinecek:</b>\n• Sohbet geçmişi\n• Ayarlar\n• Önbellek\n\nBu işlem geri alınamaz!",
-      "success": "👋 <b>Bot durduruldu</b>\n\nTüm veriler silindi. Hoşça kal!\n\n😢 Gitmenize üzüldük. Dönüşünüzü bekleyeceğiz!",
-      "cancelled": "❌ Durdurma iptal edildi"
+    "delete_me": {
+      "confirmation": "🗑️ <b>Tam Veri Silme</b>\n\nTüm verilerinizi tamamen silmek istediğinizden emin misiniz?\n\n<b>KALICI olarak silinecek:</b>\n• Sohbet geçmişi\n• Ayarlar\n• 💎 <b>Premium Abonelik</b>\n• Önbellek\n• Tüm kişisel veriler\n\n⚠️ Bu işlem geri alınamaz!",
+      "success": "👋 <b>Veriler Silindi</b>\n\nTüm verileriniz sistemden tamamen silindi.\n\n😢 Gitmenize üzüldük. Dönüşünüzü bekleyeceğiz!\n\n💡 Baştan başlamak isterseniz, /start tuşuna basın",
+      "cancelled": "❌ Silme iptal edildi"
     }
   },
   "consent": {
     "request": "Lütfen gizlilik politikasını kabul edin:",
     "agreed": "Kabul için teşekkürler! Günde {free_limit} ücretsiz mesajın var. Arkadaşın cinsiyetini seç:",
     "privacy_title": "🔐 Gizlilik Politikası",
-    "privacy_text": "Gizlilik politikası metniniz burada...\n\nTam sürüm: https://yourwebsite.com/privacy"
+    "privacy_text": "🔒 Bot'un doğru çalışması için sadece gerekli verileri saklıyoruz.\n\n📋 Daha fazla ayrıntı için Gizlilik Politikamız:\n\n🔗 https://mindlythica-neurivantis-ai-bot-priv.netlify.app"
   },
   "gender": {
     "choose": "Arkadaşın cinsiyetini seç:",
@@ -88,6 +88,8 @@
     "extend_premium": "💳 Premium Uzat",
     "yes": "Evet",
     "no": "Hayır",
+    "yes_change": "Evet, cinsiyeti değiştir",
+    "cancel": "İptal",
     "female": "Kız",
     "male": "Erkek",
     "back_to_help": "↩️ Yardıma dön",

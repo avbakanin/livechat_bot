@@ -25,7 +25,7 @@
       "language_command": "/language - Language",
       "quiz_command": "/quiz - Get acquainted",
       "restart_command": "/restart - Restart bot",
-      "stop_command": "/stop - Stop bot",
+      "delete_me_command": "/delete_me - Complete data deletion",
       "communication_title": "💬 Communication:",
       "free_limit": "• Free: {free_limit} messages per day",
       "premium_unlimited": "• Premium: unlimited communication.",
@@ -52,18 +52,18 @@
       "cancelled": "❌ Restart cancelled",
       "already_restarted": "⚠️ <b>Bot Already Restarted</b>\n\nThe bot has already been restarted. You don't need to restart it again.\n\nIf you want to start fresh, just send a message to begin a new conversation!"
     },
-    "stop": {
-      "confirmation": "🛑 <b>Stop Bot</b>\n\nAre you sure you want to stop the bot?\n\n<b>All your data will be deleted:</b>\n• Chat history\n• Settings\n• Cache\n\nThis action cannot be undone!",
-      "success": "👋 <b>Bot stopped</b>\n\nAll data deleted. Goodbye!\n\n😢 We're sorry to see you go. We'll be waiting for your return!",
-      "cancelled": "❌ Stop cancelled",
-      "already_stopped": "⚠️ <b>Bot Already Stopped</b>\n\nThe bot has already been stopped. You don't need to stop it again.\n\nIf you want to start using the bot, just send a message or use /start command!"
+    "delete_me": {
+      "confirmation": "🗑️ <b>Complete Data Deletion</b>\n\nAre you sure you want to completely delete all your data?\n\n<b>Will be deleted PERMANENTLY:</b>\n• Chat history\n• Settings\n• 💎 <b>Premium Subscription</b>\n• Cache\n• All personal data\n\n⚠️ This action cannot be undone!",
+      "success": "👋 <b>Data Deleted</b>\n\nAll your data has been completely deleted from the system.\n\n😢 We're sorry to see you go. We'll be waiting for your return!\n\n💡 If you want to start from the very beginning, press /start",
+      "cancelled": "❌ Deletion cancelled",
+      "already_stopped": "⚠️ <b>Data Already Deleted</b>\n\nYour data has already been deleted from the system.\n\n💡 If you want to start using the bot, press /start"
     }
   },
   "consent": {
     "request": "Please agree to the privacy policy:",
     "agreed": "Thank you for agreeing! You have {free_limit} free messages per day. Choose your companion's gender:",
     "privacy_title": "🔐 Privacy Policy",
-    "privacy_text": "Your privacy policy text here...\n\nFull version: https://yourwebsite.com/privacy"
+    "privacy_text": "🔒 We store only necessary data for the bot to work correctly.\n\n📋 More details in our Privacy Policy:\n\n🔗 https://mindlythica-neurivantis-ai-bot-priv.netlify.app"
   },
   "gender": {
     "choose": "Choose companion's gender:",
@@ -190,9 +190,9 @@
     "read_terms": "Read terms of service",
     "read_disclaimer": "Read disclaimer",
     "choose_female": "Girl 😊",
-    "choose_male": "Young man 😉",
+    "choose_male": "Guy 😉",
     "female": "Girl 😊",
-    "male": "Young man 😉",
+    "male": "Guy 😉",
     "buy_premium": "💳 Buy premium",
     "extend_premium": "💳 Extend premium",
     "pay": "💳 Pay",

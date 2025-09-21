@@ -11,7 +11,7 @@ from .keyboards import (
     get_gender_keyboard,
     get_help_keyboard,
     get_restart_confirmation_keyboard,
-    get_stop_confirmation_keyboard,
+    get_delete_me_confirmation_keyboard,
     get_status_keyboard,
 )
 from .messages import (
@@ -281,23 +281,23 @@ async def cmd_restart(message: Message, i18n: I18nMiddleware, cached_user: UserC
     )
 
 
-@router.message(Command(commands=[BotCommands.STOP]))
+@router.message(Command(commands=[BotCommands.DELETE_ME]))
 @error_decorator
-async def cmd_stop(message: Message, i18n: I18nMiddleware, cached_user: UserCacheData = None):
+async def cmd_delete_me(message: Message, i18n: I18nMiddleware, cached_user: UserCacheData = None):
     user_id = message.from_user.id
     
     # Check if bot is already stopped
     if cached_user and cached_user.is_stopped:
         await message.answer(
-            i18n.t("commands.stop.already_stopped"),
+            i18n.t("commands.delete_me.already_stopped"),
             reply_markup=get_command_already_executed_keyboard(),
             parse_mode="HTML",
         )
         return
     
     await message.answer(
-        i18n.t("commands.stop.confirmation"),
-        reply_markup=get_stop_confirmation_keyboard(),
+        i18n.t("commands.delete_me.confirmation"),
+        reply_markup=get_delete_me_confirmation_keyboard(),
         parse_mode="HTML",
     )
 

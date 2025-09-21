@@ -25,7 +25,7 @@
       "language_command": "/language - Sprache",
       "quiz_command": "/quiz - Kennenlernen",
       "restart_command": "/restart - Bot neustarten",
-      "stop_command": "/stop - Bot stoppen",
+      "delete_me_command": "/delete_me - Vollständige Datenlöschung",
       "communication_title": "💬 Kommunikation:",
       "free_limit": "• Kostenlos: {free_limit} Nachrichten pro Tag",
       "premium_unlimited": "• Premium: unbegrenzte Kommunikation.",
@@ -51,17 +51,17 @@
       "success": "✅ <b>Bot neu gestartet!</b>\n\nAlle Daten gelöscht. Neuer Start...",
       "cancelled": "❌ Neustart abgebrochen"
     },
-    "stop": {
-      "confirmation": "🛑 <b>Bot stoppen</b>\n\nBist du sicher, dass du den Bot stoppen möchtest?\n\n<b>Alle deine Daten werden gelöscht:</b>\n• Chat-Historie\n• Einstellungen\n• Cache\n\nDiese Aktion kann nicht rückgängig gemacht werden!",
-      "success": "👋 <b>Bot gestoppt</b>\n\nAlle Daten gelöscht. Auf Wiedersehen!\n\n😢 Es tut uns leid, dass Sie gehen. Wir warten auf Ihre Rückkehr!",
-      "cancelled": "❌ Stoppen abgebrochen"
+    "delete_me": {
+      "confirmation": "🗑️ <b>Vollständige Datenlöschung</b>\n\nBist du sicher, dass du alle deine Daten vollständig löschen möchtest?\n\n<b>Werden PERMANENT gelöscht:</b>\n• Chat-Historie\n• Einstellungen\n• 💎 <b>Premium-Abonnement</b>\n• Cache\n• Alle persönlichen Daten\n\n⚠️ Diese Aktion kann nicht rückgängig gemacht werden!",
+      "success": "👋 <b>Daten Gelöscht</b>\n\nAlle deine Daten wurden vollständig aus dem System gelöscht.\n\n😢 Es tut uns leid, dass Sie gehen. Wir warten auf Ihre Rückkehr!\n\n💡 Wenn du von vorne anfangen möchtest, drücke /start",
+      "cancelled": "❌ Löschung abgebrochen"
     }
   },
   "consent": {
     "request": "Bitte stimme der Datenschutzrichtlinie zu:",
     "agreed": "Danke für deine Zustimmung! Du hast {free_limit} kostenlose Nachrichten pro Tag. Wähle das Geschlecht deines Begleiters:",
     "privacy_title": "🔐 Datenschutzrichtlinie",
-    "privacy_text": "Hier ist Ihr Datenschutzrichtlinien-Text...\n\nVollversion: https://yourwebsite.com/privacy"
+    "privacy_text": "🔒 Wir speichern nur die notwendigen Daten, damit der Bot korrekt funktioniert.\n\n📋 Weitere Details in unserer Datenschutzrichtlinie:\n\n🔗 https://mindlythica-neurivantis-ai-bot-priv.netlify.app"
   },
   "gender": {
     "choose": "Wähle das Geschlecht deines Begleiters:",
@@ -187,9 +187,9 @@
     "read_terms": "Nutzungsbedingungen lesen",
     "read_disclaimer": "Haftungsausschluss lesen",
     "choose_female": "Mädchen 😊",
-    "choose_male": "Junge 😉",
+    "choose_male": "Typ 😉",
     "female": "Mädchen 😊",
-    "male": "Junge 😉",
+    "male": "Typ 😉",
     "buy_premium": "💳 Premium kaufen",
     "extend_premium": "💳 Premium verlängern",
     "pay": "💳 Bezahlen",

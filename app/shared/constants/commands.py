@@ -1,8 +1,8 @@
 class Callbacks:
     # Confirm / Cancel
-    STOP_CONFIRM = "stop_confirm"
+    DELETE_ME_CONFIRM = "delete_me_confirm"
     RESTART_CONFIRM = "restart_confirm"
-    STOP_CANCEL = "stop_cancel"
+    DELETE_ME_CANCEL = "delete_me_cancel"
     RESTART_CANCEL = "restart_cancel"
     # Help / Navigation
     CHOOSE_GENDER_HELP = "choose_gender_help"
@@ -29,9 +29,9 @@ class Callbacks:
     def get_all_commands(cls):
         """Возвращает список всех команд"""
         return [
-            cls.STOP_CONFIRM,
+            cls.DELETE_ME_CONFIRM,
             cls.RESTART_CONFIRM,
-            cls.STOP_CANCEL,
+            cls.DELETE_ME_CANCEL,
             cls.RESTART_CANCEL,
             cls.CHOOSE_GENDER_HELP,
             cls.CHOOSE_LANGUAGE,
@@ -54,9 +54,9 @@ class Callbacks:
     def as_dict(cls):
         """Возвращает все команды в виде словаря"""
         return {
-            "STOP_CONFIRM": cls.STOP_CONFIRM,
+            "DELETE_ME_CONFIRM": cls.DELETE_ME_CONFIRM,
             "RESTART_CONFIRM": cls.RESTART_CONFIRM,
-            "STOP_CANCEL": cls.STOP_CANCEL,
+            "DELETE_ME_CANCEL": cls.DELETE_ME_CANCEL,
             "RESTART_CANCEL": cls.RESTART_CANCEL,
             "CHOOSE_GENDER_HELP": cls.CHOOSE_GENDER_HELP,
             "CHOOSE_LANGUAGE": cls.CHOOSE_LANGUAGE,
@@ -86,7 +86,7 @@ class BotCommands:
     SECURITY = "security"
     RESET_METRICS = "reset_metrics"
     RESTART = "restart"
-    STOP = "stop"
+    DELETE_ME = "delete_me"
     METRICS = "metrics"
     QUIZ = "quiz"
     CLEAR_CACHE = "clear_cache"
@@ -104,7 +104,7 @@ class BotCommands:
             cls.SECURITY,
             cls.RESET_METRICS,
             cls.RESTART,
-            cls.STOP,
+            cls.DELETE_ME,
             cls.METRICS,
             cls.QUIZ,
             cls.CLEAR_CACHE,
@@ -123,7 +123,7 @@ class BotCommands:
             "SECURITY": cls.SECURITY,
             "RESET_METRICS": cls.RESET_METRICS,
             "RESTART": cls.RESTART,
-            "STOP": cls.STOP,
+            "DELETE_ME": cls.DELETE_ME,
             "METRICS": cls.METRICS,
             "QUIZ": cls.QUIZ,
             "CLEAR_CACHE": cls.CLEAR_CACHE,

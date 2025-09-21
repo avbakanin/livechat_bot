@@ -182,13 +182,13 @@ def get_restart_confirmation_keyboard() -> InlineKeyboardMarkup:
     )
 
 
-def get_stop_confirmation_keyboard() -> InlineKeyboardMarkup:
-    """Keyboard for stop confirmation."""
+def get_delete_me_confirmation_keyboard() -> InlineKeyboardMarkup:
+    """Keyboard for delete me confirmation."""
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text=i18n.t("buttons.yes"), callback_data=Callbacks.STOP_CONFIRM),
-                InlineKeyboardButton(text=i18n.t("buttons.no"), callback_data=Callbacks.STOP_CANCEL),
+                InlineKeyboardButton(text=i18n.t("buttons.yes"), callback_data=Callbacks.DELETE_ME_CONFIRM),
+                InlineKeyboardButton(text=i18n.t("buttons.no"), callback_data=Callbacks.DELETE_ME_CANCEL),
             ],
             [
                 InlineKeyboardButton(

@@ -32,7 +32,7 @@ def get_help_text(free_limit: int = None) -> str:
 {i18n.t('commands.help.language_command')}
 {i18n.t('commands.help.quiz_command')}
 {i18n.t('commands.help.restart_command')}
-{i18n.t('commands.help.stop_command')}
+{i18n.t('commands.help.delete_me_command')}
 
 {hbold(i18n.t('commands.help.communication_title'))}
 {i18n.t('commands.help.free_limit', free_limit=free_limit)}

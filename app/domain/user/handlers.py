@@ -112,9 +112,20 @@ async def cmd_help(message: Message, user_service: UserService, i18n: I18nMiddle
 
     await user_service.add_user(user_id, username, first_name, last_name)
 
+    # Check premium status to show appropriate button
+    subscription_status = await user_service.get_subscription_status(user_id)
+    subscription_expires_at = await user_service.get_subscription_expires_at(user_id)
+    
+    # Determine if user has active premium subscription
+    is_premium = False
+    if subscription_status == "premium" and subscription_expires_at:
+        from datetime import datetime
+        if subscription_expires_at > datetime.utcnow():
+            is_premium = True
+
     await message.answer(
         text=get_help_text(),
-        reply_markup=get_help_keyboard(),
+        reply_markup=get_help_keyboard(is_premium=is_premium),
         parse_mode="HTML",
     )
 

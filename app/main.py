@@ -44,8 +44,14 @@ async def main():
         pool = await db_manager.create_pool()
         print("✅ Database pool created")
 
-        # Initialize bot and OpenAI client
-        bot = Bot(token=TELEGRAM_CONFIG["token"])
+        # Initialize bot and OpenAI client with conservative timeout settings for unstable connections
+        bot = Bot(
+            token=TELEGRAM_CONFIG["token"],
+            session_timeout=120,  # Very high session timeout for unstable connections
+            connect_timeout=120,  # Very high connection timeout
+            read_timeout=120,     # Very high read timeout
+            write_timeout=120     # Very high write timeout
+        )
         openai_client = AsyncOpenAI(
             api_key=OPENAI_CONFIG["api_key"], base_url=OPENAI_CONFIG["base_url"]
         )
@@ -122,11 +128,20 @@ async def main():
         logging.info("Daily reset task started!")
         logging.info("Partition management task started!")
         logging.info("Bot started!")
+        logging.info("Network timeout settings: 300s (optimized for unstable connections)")
         print("✅ All startup messages logged")
 
-        # Start polling
+        # Start polling with increased timeout settings
         print("🔄 Starting polling...")
-        await dp.start_polling(bot)
+        await dp.start_polling(
+            bot,
+            timeout=300,  # 5 minutes timeout for very unstable connections
+            request_timeout=300,  # 5 minutes for individual requests
+            drop_pending_updates=True,  # Drop pending updates to avoid conflicts
+            allowed_updates=["message", "callback_query"],  # Limit updates to reduce load
+            close_bot_session=False,  # Keep session alive between requests
+            fast=False  # Use slower but more reliable polling
+        )
 
     except (KeyboardInterrupt, SystemExit):
         logging.info("KeyboardInterrupt: бот остановлен пользователем (Ctrl+C)")
@@ -134,6 +149,11 @@ async def main():
         logging.info("Polling был отменен")
     except Exception as e:
         logging.error(f"Bot polling error: {e}")
+        # Log specific network errors for debugging
+        if "timeout" in str(e).lower():
+            logging.warning("Network timeout detected - this is usually temporary")
+        elif "connection" in str(e).lower():
+            logging.warning("Connection error detected - check internet connectivity")
     finally:
         logging.info("Завершаем работу...")
 

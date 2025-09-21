@@ -104,7 +104,15 @@ def get_gender_change_confirmation_keyboard() -> InlineKeyboardMarkup:
     )
 
 
-def get_help_keyboard() -> InlineKeyboardMarkup:
+def get_help_keyboard(is_premium: bool = False) -> InlineKeyboardMarkup:
+    """Клавиатура для команды /help с кнопкой покупки/продления премиума."""
+    
+    # Выбираем текст кнопки в зависимости от статуса подписки
+    if is_premium:
+        premium_button_text = i18n.t("buttons.extend_premium")
+    else:
+        premium_button_text = i18n.t("buttons.buy_premium")
+    
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -121,14 +129,14 @@ def get_help_keyboard() -> InlineKeyboardMarkup:
             ],
             [
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.buy_premium"),
-                    callback_data=Callbacks.SUBSCRIBE_PREMIUM,
+                    text=i18n.t("buttons.privacy_info_help"),
+                    callback_data=Callbacks.PRIVACY_INFO_HELP,
                 )
             ],
             [
                 InlineKeyboardButton(
-                    text=i18n.t("buttons.privacy_info_help"),
-                    callback_data=Callbacks.PRIVACY_INFO_HELP,
+                    text=premium_button_text,
+                    callback_data=Callbacks.SUBSCRIBE_PREMIUM,
                 )
             ],
             [

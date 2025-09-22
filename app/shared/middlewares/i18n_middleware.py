@@ -1,12 +1,15 @@
-import logging
 from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message, TelegramObject
 from shared.i18n import i18n
+from shared.utils.logger import get_logger
 
 
 class I18nMiddleware(BaseMiddleware):
+    def __init__(self):
+        self.logger = get_logger("i18n_middleware")
+    
     async def __call__(
         self,
         handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
@@ -29,7 +32,7 @@ class I18nMiddleware(BaseMiddleware):
                         saved_language = await user_service.get_language(user_id)
                         if saved_language and saved_language != "en":  # If user has set a preference
                             user_language = saved_language
-                            logging.debug(f"Using saved language '{user_language}' for user {user_id}")
+                            self.logger.debug(f"Using saved language '{user_language}' for user {user_id}")
                         else:
                             # Use Telegram language as fallback for new users
                             telegram_language = event.from_user.language_code or "en"
@@ -38,18 +41,17 @@ class I18nMiddleware(BaseMiddleware):
                             # Save this as user's initial preference
                             try:
                                 await user_service.set_language(user_id, mapped_language)
-                                logging.info(f"Set initial language '{mapped_language}' for user {user_id}")
                             except Exception as e:
-                                logging.warning(f"Failed to save initial language for user {user_id}: {e}")
-                            logging.debug(f"Using Telegram language '{user_language}' for user {user_id}")
+                                self.logger.warning(f"Failed to save initial language for user {user_id}: {e}")
+                            self.logger.debug(f"Using Telegram language '{user_language}' for user {user_id}")
                     else:
                         # Fallback if user_service not available
                         telegram_language = event.from_user.language_code or "en"
                         mapped_language = i18n.get_user_language(telegram_language)
                         user_language = mapped_language
-                        logging.debug(f"Using fallback language '{user_language}' for user {user_id}")
+                        self.logger.debug(f"Using fallback language '{user_language}' for user {user_id}")
                 except Exception as e:
-                    logging.error(f"Error getting language for user {user_id}: {e}")
+                    self.logger.error(f"Error getting language for user {user_id}: {e}")
                     # Fallback to Telegram language
                     telegram_language = event.from_user.language_code or "en"
                     mapped_language = i18n.get_user_language(telegram_language)

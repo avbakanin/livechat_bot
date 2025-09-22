@@ -48,13 +48,15 @@
     },
     "restart": {
       "confirmation": "🔄 <b>Redémarrage du bot</b>\n\nÊtes-vous sûr de vouloir redémarrer le bot ?\n\n<b>Toutes vos données seront supprimées :</b>\n• Historique des conversations\n• Paramètres\n• Cache\n\nVeuillez confirmer cette action.",
-      "success": "✅ <b>Bot redémarré !</b>\n\nToutes les données ont été effacées. Recommençons...",
-      "cancelled": "❌ Redémarrage annulé"
+      "success": "✅ <b>Bot redémarré !</b>\n\nToutes les données supprimées. Nouveau départ...",
+      "cancelled": "❌ Redémarrage annulé",
+      "already_restarted": "⚠️ <b>Bot déjà redémarré</b>\n\nLe bot a déjà été redémarré. Vous n'avez pas besoin de le redémarrer à nouveau.\n\nSi vous voulez recommencer, envoyez simplement un message pour commencer une nouvelle conversation !"
     },
     "delete_me": {
       "confirmation": "🗑️ <b>Suppression Complète des Données</b>\n\nÊtes-vous sûr de vouloir supprimer complètement toutes vos données ?\n\n<b>Seront supprimées DÉFINITIVEMENT :</b>\n• Historique des conversations\n• Paramètres\n• 💎 <b>Abonnement Premium</b>\n• Cache\n• Toutes les données personnelles\n\n⚠️ Cette action ne peut pas être annulée !",
       "success": "👋 <b>Données Supprimées</b>\n\nToutes vos données ont été complètement supprimées du système.\n\n😢 Nous sommes désolés de vous voir partir. Nous attendrons votre retour !\n\n💡 Si vous voulez recommencer depuis le début, appuyez sur /start",
-      "cancelled": "❌ Suppression annulée"
+      "cancelled": "❌ Suppression annulée",
+      "already_stopped": "⚠️ <b>Données déjà supprimées</b>\n\nVos données ont déjà été supprimées du système.\n\n💡 Si vous voulez commencer à utiliser le bot, appuyez sur /start"
     }
   },
   "consent": {

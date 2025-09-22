@@ -48,13 +48,15 @@
     },
     "restart": {
       "confirmation": "🔄 <b>Reiniciar Bot</b>\n\n¿Estás seguro de que quieres reiniciar el bot?\n\n<b>Todos tus datos serán eliminados:</b>\n• Historia del chat\n• Configuraciones\n• Caché\n\nPor favor, confirma esta acción.",
-      "success": "✅ <b>¡Bot reiniciado!</b>\n\nTodos los datos eliminados. Empezando de nuevo...",
-      "cancelled": "❌ Reinicio cancelado"
+      "success": "✅ <b>¡Bot reiniciado!</b>\n\nTodos los datos eliminados. Comenzando de nuevo...",
+      "cancelled": "❌ Reinicio cancelado",
+      "already_restarted": "⚠️ <b>Bot ya reiniciado</b>\n\nEl bot ya ha sido reiniciado. No necesitas reiniciarlo de nuevo.\n\nSi quieres empezar de nuevo, ¡simplemente envía un mensaje para comenzar una nueva conversación!"
     },
     "delete_me": {
       "confirmation": "🗑️ <b>Eliminación Completa de Datos</b>\n\n¿Estás seguro de que quieres eliminar completamente todos tus datos?\n\n<b>Serán eliminados PERMANENTEMENTE:</b>\n• Historia del chat\n• Configuraciones\n• 💎 <b>Suscripción Premium</b>\n• Caché\n• Todos los datos personales\n\n⚠️ ¡Esta acción no se puede deshacer!",
       "success": "👋 <b>Datos Eliminados</b>\n\nTodos tus datos han sido completamente eliminados del sistema.\n\n😢 Lamentamos verte ir. ¡Esperaremos tu regreso!\n\n💡 Si quieres empezar desde el principio, presiona /start",
-      "cancelled": "❌ Eliminación cancelada"
+      "cancelled": "❌ Eliminación cancelada",
+      "already_stopped": "⚠️ <b>Datos ya eliminados</b>\n\nTus datos ya han sido eliminados del sistema.\n\n💡 Si quieres empezar a usar el bot, presiona /start"
     }
   },
   "consent": {

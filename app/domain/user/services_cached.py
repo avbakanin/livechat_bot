@@ -2,7 +2,6 @@
 Enhanced User Service with FSM caching support.
 """
 
-import logging
 from typing import Optional
 
 import asyncpg
@@ -18,6 +17,7 @@ from domain.user.queries import update_user_personality_profile as db_update_use
 from domain.user.queries import get_user_personality_profile as db_get_user_personality_profile
 from shared.fsm.user_cache import UserCacheData, user_cache
 from shared.models.user import User, UserCreate, UserUpdate
+from shared.utils.logger import get_logger
 
 from core.exceptions import UserException
 
@@ -27,6 +27,7 @@ class UserService:
 
     def __init__(self, pool: asyncpg.Pool):
         self.pool = pool
+        self.logger = get_logger("user_service")
 
     async def add_user(
         self,
@@ -235,7 +236,7 @@ class UserService:
                 )
                 return result or "en"
             except Exception as e:
-                logging.warning(f"Error getting language for user {user_id}: {e}")
+                self.logger.warning(f"Error getting language for user {user_id}: {e}")
                 return "en"
 
     async def set_language(self, user_id: int, language: str) -> None:
@@ -246,7 +247,7 @@ class UserService:
                     "UPDATE users SET language = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2",
                     language, user_id
                 )
-                logging.info(f"Language set to '{language}' for user {user_id}")
+                self.logger.info(f"Language set to '{language}' for user {user_id}")
             except Exception as e:
-                logging.error(f"Error setting language for user {user_id}: {e}")
+                self.logger.error(f"Error setting language for user {user_id}: {e}")
                 raise UserException(f"Error setting language for user {user_id}: {e}", e)

@@ -1,5 +1,4 @@
 import asyncio
-import logging
 
 from aiogram import F, Router
 from aiogram.types import CallbackQuery, Message
@@ -18,6 +17,7 @@ from shared.metrics.metrics import (
     safe_record_security_metric,
     safe_record_user_interaction,
 )
+from shared.utils.logger import get_logger
 
 from .keyboards import (
     get_command_already_executed_keyboard,
@@ -140,11 +140,12 @@ async def handle_language_selection(callback: CallbackQuery, user_service: UserS
     user_id = callback.from_user.id
     
     # Save language to database
+    logger = get_logger("language_selection")
     try:
         await user_service.set_language(user_id, language_code)
-        logging.info(f"Language saved to database for user {user_id}: {language_code}")
+        logger.info(f"Language saved to database for user {user_id}: {language_code}")
     except Exception as e:
-        logging.error(f"Failed to save language for user {user_id}: {e}")
+        logger.error(f"Failed to save language for user {user_id}: {e}")
         await callback.answer("❌ Ошибка сохранения языка", show_alert=True)
         return
 
@@ -167,7 +168,7 @@ async def handle_language_selection(callback: CallbackQuery, user_service: UserS
         try:
             await callback.message.delete()
         except Exception as e:
-            logging.warning(f"Failed to delete language change message: {e}")
+            logger.warning(f"Failed to delete language change message: {e}")
 
     asyncio.create_task(delete_message())
 

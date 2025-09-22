@@ -1,12 +1,12 @@
 """
 Database connection and pool management for PostgreSQL using asyncpg.
 """
-import logging
 from contextlib import asynccontextmanager
 from typing import Optional
 
 import asyncpg
 from shared.constants import DATABASE_CONFIG
+from shared.utils.logger import get_logger
 
 
 class DatabaseManager:
@@ -14,22 +14,23 @@ class DatabaseManager:
 
     def __init__(self):
         self._pool: Optional[asyncpg.Pool] = None
+        self.logger = get_logger("database")
 
     async def create_pool(self) -> asyncpg.Pool:
         """Create and return a new connection pool."""
         try:
             self._pool = await asyncpg.create_pool(**DATABASE_CONFIG)
-            logging.info("Successfully created database pool")
+            self.logger.info("Successfully created database pool")
             return self._pool
         except Exception as e:
-            logging.error(f"Error creating database pool: {e}")
+            self.logger.error(f"Error creating database pool: {e}")
             raise
 
     async def close_pool(self):
         """Close the connection pool."""
         if self._pool:
             await self._pool.close()
-            logging.info("Database pool closed")
+            self.logger.info("Database pool closed")
 
     @property
     def pool(self) -> asyncpg.Pool:

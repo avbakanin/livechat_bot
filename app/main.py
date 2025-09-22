@@ -1,5 +1,4 @@
 import asyncio
-import logging
 from contextlib import suppress
 
 from aiogram import Bot, Dispatcher
@@ -15,6 +14,7 @@ from shared.fsm.fsm_middleware import FSMMiddleware
 from shared.fsm.user_cache import user_cache
 from shared.middlewares.i18n_middleware import I18nMiddleware
 from shared.tasks import DailyResetTask, PartitionManagementTask
+from shared.utils.logger import get_logger
 
 from core.database import db_manager
 from core.middleware import LoggingMiddleware, ServiceMiddleware
@@ -22,17 +22,8 @@ from core.middleware import LoggingMiddleware, ServiceMiddleware
 
 async def main():
     print("🚀 Starting bot...")
-    logging.info("MAIN IS STARTED")
-
-    # Setup logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[
-            logging.StreamHandler(),
-            logging.FileHandler("bot.log", encoding="utf-8"),
-        ],
-    )
+    logger = get_logger("main")
+    logger.info("MAIN IS STARTED")
 
     # Initialize services
     pool = None
@@ -123,12 +114,12 @@ async def main():
         print("✅ Routers setup complete")
 
         print("📝 Logging startup messages...")
-        logging.info("Connected to PostgreSQL!")
-        logging.info("FSM cache initialized!")
-        logging.info("Daily reset task started!")
-        logging.info("Partition management task started!")
-        logging.info("Bot started!")
-        logging.info("Network timeout settings: 300s (optimized for unstable connections)")
+        logger.info("Connected to PostgreSQL!")
+        logger.info("FSM cache initialized!")
+        logger.info("Daily reset task started!")
+        logger.info("Partition management task started!")
+        logger.info("Bot started!")
+        logger.info("Network timeout settings: 300s (optimized for unstable connections)")
         print("✅ All startup messages logged")
 
         # Start polling with increased timeout settings
@@ -144,50 +135,50 @@ async def main():
         )
 
     except (KeyboardInterrupt, SystemExit):
-        logging.info("KeyboardInterrupt: бот остановлен пользователем (Ctrl+C)")
+        logger.info("KeyboardInterrupt: бот остановлен пользователем (Ctrl+C)")
     except asyncio.CancelledError:
-        logging.info("Polling был отменен")
+        logger.info("Polling был отменен")
     except Exception as e:
-        logging.error(f"Bot polling error: {e}")
+        logger.error(f"Bot polling error: {e}")
         # Log specific network errors for debugging
         if "timeout" in str(e).lower():
-            logging.warning("Network timeout detected - this is usually temporary")
+            logger.warning("Network timeout detected - this is usually temporary")
         elif "connection" in str(e).lower():
-            logging.warning("Connection error detected - check internet connectivity")
+            logger.warning("Connection error detected - check internet connectivity")
     finally:
-        logging.info("Завершаем работу...")
+        logger.info("Завершаем работу...")
 
         # Save metrics to database before shutdown
         await metrics_collector.save_to_database()
 
         # Stop metrics auto-save
         await metrics_collector.stop_auto_save()
-        logging.info("Metrics auto-save stopped")
+        logger.info("Metrics auto-save stopped")
 
         # Stop FSM cache cleanup task
         await user_cache.stop_cleanup_task()
-        logging.info("FSM cache cleanup stopped")
+        logger.info("FSM cache cleanup stopped")
 
         # Stop daily reset task
         await daily_reset_task.stop()
-        logging.info("Daily reset task stopped")
+        logger.info("Daily reset task stopped")
 
         # Stop partition management task
         await partition_management_task.stop()
-        logging.info("Partition management task stopped")
+        logger.info("Partition management task stopped")
 
         # Close database pool
         if pool is not None:
             with suppress(Exception):
                 await db_manager.close_pool()
-            logging.info("PostgreSQL pool закрыт")
+            logger.info("PostgreSQL pool закрыт")
 
         # Close bot session
         with suppress(Exception):
             await bot.session.close()
-        logging.info("Сессия бота закрыта")
+        logger.info("Сессия бота закрыта")
 
-        logging.info("✅ Бот полностью остановлен")
+        logger.info("✅ Бот полностью остановлен")
 
 
 # Setup middleware
@@ -201,6 +192,6 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        logging.info("Программа завершена пользователем")
+        print("Программа завершена пользователем")
     except Exception as e:
-        logging.error(f"Критическая ошибка: {e}")
+        print(f"Критическая ошибка: {e}")

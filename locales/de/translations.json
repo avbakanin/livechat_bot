@@ -49,12 +49,14 @@
     "restart": {
       "confirmation": "🔄 <b>Bot-Neustart</b>\n\nBist du sicher, dass du den Bot neu starten möchtest?\n\n<b>Alle deine Daten werden gelöscht:</b>\n• Chat-Historie\n• Einstellungen\n• Cache\n\nBitte bestätige diese Aktion.",
       "success": "✅ <b>Bot neu gestartet!</b>\n\nAlle Daten gelöscht. Neuer Start...",
-      "cancelled": "❌ Neustart abgebrochen"
+      "cancelled": "❌ Neustart abgebrochen",
+      "already_restarted": "⚠️ <b>Bot bereits neu gestartet</b>\n\nDer Bot wurde bereits neu gestartet. Du musst ihn nicht erneut neu starten.\n\nWenn du neu beginnen möchtest, sende einfach eine Nachricht, um ein neues Gespräch zu beginnen!"
     },
     "delete_me": {
       "confirmation": "🗑️ <b>Vollständige Datenlöschung</b>\n\nBist du sicher, dass du alle deine Daten vollständig löschen möchtest?\n\n<b>Werden PERMANENT gelöscht:</b>\n• Chat-Historie\n• Einstellungen\n• 💎 <b>Premium-Abonnement</b>\n• Cache\n• Alle persönlichen Daten\n\n⚠️ Diese Aktion kann nicht rückgängig gemacht werden!",
       "success": "👋 <b>Daten Gelöscht</b>\n\nAlle deine Daten wurden vollständig aus dem System gelöscht.\n\n😢 Es tut uns leid, dass Sie gehen. Wir warten auf Ihre Rückkehr!\n\n💡 Wenn du von vorne anfangen möchtest, drücke /start",
-      "cancelled": "❌ Löschung abgebrochen"
+      "cancelled": "❌ Löschung abgebrochen",
+      "already_stopped": "⚠️ <b>Daten bereits gelöscht</b>\n\nDeine Daten wurden bereits aus dem System gelöscht.\n\n💡 Wenn du den Bot verwenden möchtest, drücke /start"
     }
   },
   "consent": {

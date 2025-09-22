@@ -48,13 +48,15 @@
     },
     "restart": {
       "confirmation": "🔄 <b>Bot yeniden başlatılıyor</b>\n\nBotu yeniden başlatmak istediğinizden emin misiniz?\n\n<b>Tüm verileriniz silinecek:</b>\n• Sohbet geçmişi\n• Ayarlar\n• Önbellek\n\nLütfen bu işlemi onaylayın.",
-      "success": "✅ <b>Bot yeniden başlatıldı!</b>\n\nTüm veriler temizlendi. Yeniden başlıyoruz...",
-      "cancelled": "❌ Yeniden başlatma iptal edildi"
+      "success": "✅ <b>Bot yeniden başlatıldı!</b>\n\nTüm veriler silindi. Yeniden başlıyoruz...",
+      "cancelled": "❌ Yeniden başlatma iptal edildi",
+      "already_restarted": "⚠️ <b>Bot zaten yeniden başlatıldı</b>\n\nBot zaten yeniden başlatıldı. Tekrar yeniden başlatmanıza gerek yok.\n\nYeniden başlamak istiyorsanız, sadece yeni bir konuşma başlatmak için bir mesaj gönderin!"
     },
     "delete_me": {
       "confirmation": "🗑️ <b>Tam Veri Silme</b>\n\nTüm verilerinizi tamamen silmek istediğinizden emin misiniz?\n\n<b>KALICI olarak silinecek:</b>\n• Sohbet geçmişi\n• Ayarlar\n• 💎 <b>Premium Abonelik</b>\n• Önbellek\n• Tüm kişisel veriler\n\n⚠️ Bu işlem geri alınamaz!",
       "success": "👋 <b>Veriler Silindi</b>\n\nTüm verileriniz sistemden tamamen silindi.\n\n😢 Gitmenize üzüldük. Dönüşünüzü bekleyeceğiz!\n\n💡 Baştan başlamak isterseniz, /start tuşuna basın",
-      "cancelled": "❌ Silme iptal edildi"
+      "cancelled": "❌ Silme iptal edildi",
+      "already_stopped": "⚠️ <b>Veriler zaten silindi</b>\n\nVerileriniz zaten sistemden silindi.\n\n💡 Botu kullanmaya başlamak istiyorsanız, /start tuşuna basın"
     }
   },
   "consent": {

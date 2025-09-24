@@ -24,6 +24,9 @@ class Callbacks:
     SUBSCRIBE_PREMIUM = "subscribe_premium"
     BUY_PREMIUM = "buy_premium"
     PREMIUM_INFO_HELP = "premium_info_help"
+    # Quiz
+    START_QUIZ = "start_quiz"
+    START_CHATTING = "start_chatting"
 
     @classmethod
     def get_all_commands(cls):
@@ -48,6 +51,8 @@ class Callbacks:
             cls.SUBSCRIBE_PREMIUM,
             cls.BUY_PREMIUM,
             cls.PREMIUM_INFO_HELP,
+            cls.START_QUIZ,
+            cls.START_CHATTING,
         ]
 
     @classmethod
@@ -73,6 +78,8 @@ class Callbacks:
             "PREMIUM_INFO_HELP": cls.PREMIUM_INFO_HELP,
             "SUBSCRIBE_PREMIUM": cls.SUBSCRIBE_PREMIUM,
             "BUY_PREMIUM": cls.BUY_PREMIUM,
+            "START_QUIZ": cls.START_QUIZ,
+            "START_CHATTING": cls.START_CHATTING,
         }
 
 

@@ -6,6 +6,7 @@ import logging
 import re
 from datetime import datetime
 from typing import Any, Dict, Optional
+from shared.utils.datetime_utils import DateTimeUtils
 
 
 class SecurityValidator:
@@ -97,7 +98,7 @@ class SecurityValidator:
             "security_flags": []
         }
 
-        current_time = datetime.utcnow()
+        current_time = DateTimeUtils.utc_now_naive()
 
         # Инициализация данных пользователя
         if user_id not in self.suspicious_activities:

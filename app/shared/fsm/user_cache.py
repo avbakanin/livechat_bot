@@ -7,6 +7,7 @@ import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Dict, Optional
+from shared.utils.datetime_utils import DateTimeUtils
 
 from shared.models.user import User
 
@@ -36,16 +37,16 @@ class UserCacheData:
     is_stopped: bool = False
 
     # Cache metadata
-    cached_at: datetime = field(default_factory=datetime.utcnow)
-    last_accessed: datetime = field(default_factory=datetime.utcnow)
+    cached_at: datetime = field(default_factory=DateTimeUtils.utc_now_naive)
+    last_accessed: datetime = field(default_factory=DateTimeUtils.utc_now_naive)
 
     def is_expired(self, ttl_minutes: int = 30) -> bool:
         """Check if cache data is expired."""
-        return datetime.utcnow() - self.cached_at > timedelta(minutes=ttl_minutes)
+        return DateTimeUtils.utc_now_naive() - self.cached_at > timedelta(minutes=ttl_minutes)
 
     def update_access_time(self) -> None:
         """Update last accessed time."""
-        self.last_accessed = datetime.utcnow()
+        self.last_accessed = DateTimeUtils.utc_now_naive()
 
     @classmethod
     def from_user(cls, user: User) -> "UserCacheData":
@@ -143,7 +144,7 @@ class UserCache:
             data = self._cache.get(user_id)
             if data and not data.is_expired(self.ttl_minutes):
                 setattr(data, field_name, value)
-                data.cached_at = datetime.utcnow()  # Reset TTL
+                data.cached_at = DateTimeUtils.utc_now_naive()  # Reset TTL
 
     async def invalidate(self, user_id: int) -> None:
         """Remove user data from cache."""

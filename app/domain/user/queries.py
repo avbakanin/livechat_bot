@@ -7,8 +7,31 @@ from typing import Optional, Dict, Any
 
 import asyncpg
 from shared.models.user import User, UserCreate, UserUpdate
+from shared.utils.datetime_utils import DateTimeUtils
 
 from core.exceptions import DatabaseException
+
+# Cache for column existence checks
+_column_cache = {}
+
+
+async def _check_columns_exist(conn: asyncpg.Connection, table: str, columns: list) -> bool:
+    """Check if columns exist with caching."""
+    cache_key = f"{table}:{','.join(columns)}"
+    
+    if cache_key not in _column_cache:
+        result = await conn.fetchval(
+            """
+            SELECT EXISTS (
+                SELECT 1 FROM information_schema.columns 
+                WHERE table_name = $1 AND column_name = ANY($2)
+            )
+            """,
+            table, columns
+        )
+        _column_cache[cache_key] = result
+    
+    return _column_cache[cache_key]
 
 
 async def create_user(pool: asyncpg.Pool, user_data: UserCreate) -> None:
@@ -34,35 +57,29 @@ async def get_user(pool: asyncpg.Pool, user_id: int) -> Optional[User]:
     """Get user by ID."""
     async with pool.acquire() as conn:
         try:
-            # Check if timestamp columns exist
-            timestamp_columns_exist = await conn.fetchval(
-                """
-                SELECT EXISTS (
-                    SELECT 1 FROM information_schema.columns 
-                    WHERE table_name = 'users' AND column_name IN ('created_at', 'updated_at')
-                )
-            """
-            )
+            # Check if timestamp columns exist (with caching)
+            timestamp_columns_exist = await _check_columns_exist(conn, 'users', ['created_at', 'updated_at'])
 
             if timestamp_columns_exist:
                 row = await conn.fetchrow(
                     """
-                    SELECT id, username, first_name, last_name, gender_preference,
+                    SELECT id, username, first_name, last_name, gender_preference, language,
                            subscription_status, consent_given, subscription_expires_at,
-                           created_at, updated_at
+                           personality_profile, created_at, updated_at
                     FROM users
                     WHERE id = $1
-                """,
+                    """,
                     user_id,
                 )
             else:
                 row = await conn.fetchrow(
                     """
-                    SELECT id, username, first_name, last_name, gender_preference,
-                           subscription_status, consent_given, subscription_expires_at
+                    SELECT id, username, first_name, last_name, gender_preference, language,
+                           subscription_status, consent_given, subscription_expires_at,
+                           personality_profile
                     FROM users
                     WHERE id = $1
-                """,
+                    """,
                     user_id,
                 )
 
@@ -75,9 +92,11 @@ async def get_user(pool: asyncpg.Pool, user_id: int) -> Optional[User]:
                 first_name=row["first_name"],
                 last_name=row["last_name"],
                 gender_preference=row["gender_preference"],
+                language=row.get("language", "en"),
                 subscription_status=row["subscription_status"],
                 consent_given=row["consent_given"],
                 subscription_expires_at=row["subscription_expires_at"],
+                personality_profile=row.get("personality_profile"),
                 created_at=row.get("created_at"),
                 updated_at=row.get("updated_at"),
             )
@@ -114,6 +133,11 @@ async def update_user(pool: asyncpg.Pool, user_id: int, user_data: UserUpdate) -
                 values.append(user_data.gender_preference)
                 param_count += 1
 
+            if user_data.language is not None:
+                fields.append(f"language = ${param_count}")
+                values.append(user_data.language)
+                param_count += 1
+
             if user_data.subscription_status is not None:
                 fields.append(f"subscription_status = ${param_count}")
                 values.append(user_data.subscription_status)
@@ -129,22 +153,20 @@ async def update_user(pool: asyncpg.Pool, user_id: int, user_data: UserUpdate) -
                 values.append(user_data.subscription_expires_at)
                 param_count += 1
 
+            if user_data.personality_profile is not None:
+                fields.append(f"personality_profile = ${param_count}")
+                values.append(user_data.personality_profile)
+                param_count += 1
+
             if not fields:
                 return  # Nothing to update
 
-            # Check if updated_at column exists
-            column_exists = await conn.fetchval(
-                """
-                SELECT EXISTS (
-                    SELECT 1 FROM information_schema.columns 
-                    WHERE table_name = 'users' AND column_name = 'updated_at'
-                )
-            """
-            )
+            # Check if updated_at column exists (with caching)
+            column_exists = await _check_columns_exist(conn, 'users', ['updated_at'])
 
             if column_exists:
                 fields.append(f"updated_at = ${param_count}")
-                values.append(datetime.utcnow())
+                values.append(DateTimeUtils.utc_now_naive())
 
             values.append(user_id)
 

@@ -8,6 +8,7 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, Optional
+from shared.utils.datetime_utils import DateTimeUtils
 
 
 @dataclass
@@ -56,8 +57,8 @@ class BotMetrics:
     access_denied_count: int = 0
 
     # Timestamps
-    last_reset: datetime = field(default_factory=datetime.utcnow)
-    started_at: datetime = field(default_factory=datetime.utcnow)
+    last_reset: datetime = field(default_factory=DateTimeUtils.utc_now_naive)
+    started_at: datetime = field(default_factory=DateTimeUtils.utc_now_naive)
 
     def get_cache_hit_rate(self) -> float:
         """Calculate cache hit rate percentage."""
@@ -71,7 +72,7 @@ class BotMetrics:
 
     def get_uptime(self) -> float:
         """Get uptime in seconds."""
-        return (datetime.utcnow() - self.started_at).total_seconds()
+        return (DateTimeUtils.utc_now_naive() - self.started_at).total_seconds()
 
     def reset_daily_metrics(self):
         """Reset daily metrics (called at midnight)."""
@@ -89,7 +90,7 @@ class BotMetrics:
         self.daily_user_ids.clear()
 
         # Update reset timestamp
-        self.last_reset = datetime.utcnow()
+        self.last_reset = DateTimeUtils.utc_now_naive()
 
 
 class MetricsCollector:
@@ -371,14 +372,14 @@ class MetricsCollector:
             )
 
             # Reset uptime on each startup - this is more logical for monitoring
-            self.metrics.started_at = datetime.utcnow()
+            self.metrics.started_at = DateTimeUtils.utc_now_naive()
             logging.info(f"📊 Started at (reset on startup): {self.metrics.started_at}")
 
             last_reset_epoch = db_metrics.get("last_reset", 0)
             if last_reset_epoch > 0:
                 # Use UTC timestamp directly
                 loaded_last_reset = datetime.utcfromtimestamp(last_reset_epoch)
-                current_time = datetime.utcnow()
+                current_time = DateTimeUtils.utc_now_naive()
                 if loaded_last_reset <= current_time:
                     self.metrics.last_reset = loaded_last_reset
                 else:
@@ -387,7 +388,7 @@ class MetricsCollector:
                     )
                     self.metrics.last_reset = current_time
             else:
-                self.metrics.last_reset = datetime.utcnow()
+                self.metrics.last_reset = DateTimeUtils.utc_now_naive()
 
             logging.info("📊 Loaded metrics from database")
             logging.info(f"📊 Started at: {self.metrics.started_at}")
@@ -439,7 +440,7 @@ class MetricsCollector:
 
     def get_uptime(self) -> float:
         """Get uptime in seconds."""
-        return (datetime.utcnow() - self.metrics.started_at).total_seconds()
+        return (DateTimeUtils.utc_now_naive() - self.metrics.started_at).total_seconds()
 
     async def start_auto_save(self, interval_seconds: int = 300):
         """Start automatic saving of metrics every interval_seconds."""

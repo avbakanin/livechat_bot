@@ -4,6 +4,7 @@ from aiogram.types import Message, CallbackQuery
 
 from shared.decorators import error_decorator
 from shared.i18n import i18n
+from shared.constants import Callbacks
 
 from .messages import get_quiz_texts
 from .keyboards import (
@@ -26,7 +27,7 @@ router = Router()
 
 
 # Запуск квиза
-@router.callback_query(F.data == "start_quiz")
+@router.callback_query(F.data == Callbacks.START_QUIZ)
 @error_decorator
 async def process_start_quiz(callback: CallbackQuery, state: FSMContext):
     await state.set_state(QuizStates.waiting_for_landscape)
@@ -154,7 +155,7 @@ async def process_animal(callback: CallbackQuery, state: FSMContext):
 
 
 # Обработчик кнопки "Начать общение"
-@router.callback_query(F.data == "start_chatting")
+@router.callback_query(F.data == Callbacks.START_CHATTING)
 @error_decorator
 async def start_chatting_after_quiz(callback: CallbackQuery):
     texts = get_quiz_texts(i18n)

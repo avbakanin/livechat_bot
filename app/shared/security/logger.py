@@ -7,6 +7,7 @@ import logging
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from typing import Any, Dict, Optional
+from shared.utils.datetime_utils import DateTimeUtils
 
 
 @dataclass
@@ -72,7 +73,7 @@ class SecurityLogger:
     ) -> None:
         """Log suspicious content detection."""
         event = SecurityEvent(
-            timestamp=datetime.utcnow(),
+            timestamp=DateTimeUtils.utc_now_naive(),
             event_type="SUSPICIOUS_CONTENT",
             user_id=user_id,
             severity="MEDIUM",
@@ -95,7 +96,7 @@ class SecurityLogger:
     ) -> None:
         """Log flood attempt."""
         event = SecurityEvent(
-            timestamp=datetime.utcnow(),
+            timestamp=DateTimeUtils.utc_now_naive(),
             event_type="FLOOD_ATTEMPT",
             user_id=user_id,
             severity="HIGH",
@@ -119,7 +120,7 @@ class SecurityLogger:
         severity = "HIGH" if message_length > limit * 2 else "MEDIUM"
         
         event = SecurityEvent(
-            timestamp=datetime.utcnow(),
+            timestamp=DateTimeUtils.utc_now_naive(),
             event_type="LONG_MESSAGE",
             user_id=user_id,
             severity=severity,
@@ -141,7 +142,7 @@ class SecurityLogger:
     ) -> None:
         """Log repetitive content."""
         event = SecurityEvent(
-            timestamp=datetime.utcnow(),
+            timestamp=DateTimeUtils.utc_now_naive(),
             event_type="REPETITIVE_CONTENT",
             user_id=user_id,
             severity="MEDIUM",
@@ -165,7 +166,7 @@ class SecurityLogger:
         severity = "CRITICAL" if security_score < 30 else "HIGH"
         
         event = SecurityEvent(
-            timestamp=datetime.utcnow(),
+            timestamp=DateTimeUtils.utc_now_naive(),
             event_type="MULTIPLE_SECURITY_FLAGS",
             user_id=user_id,
             severity=severity,
@@ -187,7 +188,7 @@ class SecurityLogger:
     ) -> None:
         """Log potential spam."""
         event = SecurityEvent(
-            timestamp=datetime.utcnow(),
+            timestamp=DateTimeUtils.utc_now_naive(),
             event_type="POTENTIAL_SPAM",
             user_id=user_id,
             severity="MEDIUM",
@@ -219,7 +220,7 @@ class SecurityLogger:
                     severity = "LOW"
         
         event = SecurityEvent(
-            timestamp=datetime.utcnow(),
+            timestamp=DateTimeUtils.utc_now_naive(),
             event_type="SECURITY_METRIC",
             user_id=None,
             severity=severity,
@@ -241,7 +242,7 @@ class SecurityLogger:
     ) -> None:
         """Log access denied event."""
         event = SecurityEvent(
-            timestamp=datetime.utcnow(),
+            timestamp=DateTimeUtils.utc_now_naive(),
             event_type="ACCESS_DENIED",
             user_id=user_id,
             severity="MEDIUM",

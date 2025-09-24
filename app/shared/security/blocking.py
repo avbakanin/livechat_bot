@@ -5,6 +5,7 @@ Blocking service for user management.
 import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, Set
+from shared.utils.datetime_utils import DateTimeUtils
 
 
 class BlockingService:
@@ -27,7 +28,7 @@ class BlockingService:
         """
         self.blocked_users.add(user_id)
         self.block_reasons[user_id] = reason
-        self.block_timestamps[user_id] = datetime.utcnow()
+        self.block_timestamps[user_id] = DateTimeUtils.utc_now_naive()
         
         logging.warning(f"🚫 User {user_id} blocked. Reason: {reason}")
     
@@ -61,7 +62,7 @@ class BlockingService:
         
         # Check temporary blocks
         if user_id in self.temporary_blocks:
-            if datetime.utcnow() < self.temporary_blocks[user_id]:
+            if DateTimeUtils.utc_now_naive() < self.temporary_blocks[user_id]:
                 return True
             else:
                 # Temporary block expired
@@ -79,7 +80,7 @@ class BlockingService:
             duration_minutes: Block duration in minutes
             reason: Reason for blocking
         """
-        block_until = datetime.utcnow() + timedelta(minutes=duration_minutes)
+        block_until = DateTimeUtils.utc_now_naive() + timedelta(minutes=duration_minutes)
         self.temporary_blocks[user_id] = block_until
         self.block_reasons[user_id] = reason
         
@@ -107,7 +108,7 @@ class BlockingService:
         
         if user_id in self.temporary_blocks:
             info["blocked_until"] = self.temporary_blocks[user_id]
-            info["remaining_minutes"] = max(0, int((self.temporary_blocks[user_id] - datetime.utcnow()).total_seconds() / 60))
+            info["remaining_minutes"] = max(0, int((self.temporary_blocks[user_id] - DateTimeUtils.utc_now_naive()).total_seconds() / 60))
         
         return info
     
@@ -122,7 +123,7 @@ class BlockingService:
     
     def cleanup_expired_blocks(self) -> None:
         """Clean up expired temporary blocks."""
-        current_time = datetime.utcnow()
+        current_time = DateTimeUtils.utc_now_naive()
         expired_users = [
             user_id for user_id, block_until in self.temporary_blocks.items()
             if current_time >= block_until

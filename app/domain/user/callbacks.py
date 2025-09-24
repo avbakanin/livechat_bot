@@ -82,7 +82,7 @@ async def gender_change_cancel(callback: CallbackQuery, i18n: I18nMiddleware):
     await callback.answer()
 
 
-@router.callback_query(F.data == "consent_agree")
+@router.callback_query(F.data == Callbacks.CONSENT_AGREE)
 @error_decorator
 async def consent_agree(callback: CallbackQuery, user_service: UserService, i18n: I18nMiddleware):
     user = callback.from_user
@@ -164,7 +164,7 @@ async def handle_language_selection(callback: CallbackQuery, user_service: UserS
     await callback.answer(text=i18n.t("commands.language.changed", language=language_name))
 
     async def delete_message():
-        await asyncio.sleep(2)
+        await asyncio.sleep(0.5)
         try:
             await callback.message.delete()
         except Exception as e:
@@ -293,7 +293,7 @@ async def restart_confirm(callback: CallbackQuery, user_service: UserService, i1
 
     await callback.message.edit_text(i18n.t("commands.restart.success"), parse_mode="HTML")
 
-    await asyncio.sleep(2)
+    await asyncio.sleep(0.5)
     await callback.message.answer(
         text=i18n.t("gender.choose_gender"),
         reply_markup=get_gender_keyboard(),

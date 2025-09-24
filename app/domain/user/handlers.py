@@ -31,6 +31,7 @@ from shared.metrics.metrics import (
     safe_record_metric,
     safe_record_user_interaction,
 )
+from shared.metrics.debug_info import get_user_debug_info
 
 # AccessMiddleware imported in setup_routers
 from shared.helpers import destructure_user
@@ -119,8 +120,8 @@ async def cmd_help(message: Message, user_service: UserService, i18n: I18nMiddle
     # Determine if user has active premium subscription
     is_premium = False
     if subscription_status == "premium" and subscription_expires_at:
-        from datetime import datetime
-        if subscription_expires_at > datetime.utcnow():
+        from shared.utils.datetime_utils import DateTimeUtils
+        if not DateTimeUtils.is_expired(subscription_expires_at):
             is_premium = True
 
     await message.answer(
@@ -174,11 +175,11 @@ async def cmd_status(
     subscription_expires_at = await user_service.get_subscription_expires_at(user_id)
 
     if subscription_status == "premium" and subscription_expires_at:
-        from datetime import datetime
+        from shared.utils.datetime_utils import DateTimeUtils
 
-        if subscription_expires_at > datetime.utcnow():
-            days_remaining = (subscription_expires_at - datetime.utcnow()).days
-            hours_remaining = (subscription_expires_at - datetime.utcnow()).seconds // 3600
+        if not DateTimeUtils.is_expired(subscription_expires_at):
+            days_remaining = DateTimeUtils.days_remaining(subscription_expires_at)
+            hours_remaining = DateTimeUtils.hours_remaining(subscription_expires_at)
 
             if days_remaining > 0:
                 premium_info = i18n.t("commands.status.premium_days", days=days_remaining)
@@ -357,25 +358,8 @@ async def cmd_debug_user(
         # Get user from database
         user = await user_service.get_user(user_id)
         
-        debug_info = f"🔍 Debug информация для пользователя {user_id}:\n\n"
-        
-        if user:
-            debug_info += f"📊 Данные из БД:\n"
-            debug_info += f"  ID: {user.id}\n"
-            debug_info += f"  Username: {user.username}\n"
-            debug_info += f"  Subscription Status: {user.subscription_status}\n"
-            debug_info += f"  Subscription Expires At: {user.subscription_expires_at}\n"
-            debug_info += f"  Consent Given: {user.consent_given}\n\n"
-        else:
-            debug_info += f"❌ Пользователь не найден в БД!\n\n"
-        
-        if cached_user:
-            debug_info += f"💾 Данные из кэша:\n"
-            debug_info += f"  Subscription Status: {cached_user.subscription_status}\n"
-            debug_info += f"  Subscription Expires At: {cached_user.subscription_expires_at}\n"
-            debug_info += f"  Consent Given: {cached_user.consent_given}\n"
-        else:
-            debug_info += f"💾 Кэш пуст\n"
+        # Generate debug info using the new module
+        debug_info = get_user_debug_info(user_id, user, cached_user)
         
         await message.answer(debug_info)
         

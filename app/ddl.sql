@@ -88,9 +88,6 @@ BEGIN
 END;
 $$;
 
--- Optional: unique constraint on id to aid lookups by id
-# CREATE UNIQUE INDEX IF NOT EXISTS idx_messages_id_unique ON public.messages (id);
-
 CREATE TABLE public.payments (
     id SERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL,
